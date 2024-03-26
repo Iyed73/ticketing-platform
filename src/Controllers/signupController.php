@@ -1,30 +1,30 @@
 <?php
-require_once("../Models/classes/UserRepo.php");
+require_once("../Models/UserRepo.php");
 class SignupController {
-    private $firstname;
-    private $lastname;
+    private $firstName;
+    private $lastName;
     private $username;
     private $email;
     private $pwd;
     
-    public function __construct($firstname, $lastname, $username, $email, $pwd) {
-        $this->firstname = $firstname;
-        $this->lastname = $lastname;
+    public function __construct($firstName, $lastName, $username, $email, $pwd) {
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
         $this->username = $username;
         $this->email = $email;
         $this->pwd = $pwd;
     }
     
     public function sanitizeInput() {
-        $this->firstname = htmlspecialchars($this->firstname);
-        $this->lastname = htmlspecialchars($this->lastname);
+        $this->firstName = htmlspecialchars($this->firstName);
+        $this->lastName = htmlspecialchars($this->lastName);
         $this->username = htmlspecialchars($this->username);
         $this->email = htmlspecialchars($this->email);
         $this->pwd = htmlspecialchars($this->pwd);
     }
     
     public function is_input_empty() {
-        return((empty($this->firstname))||(empty($this->lastname))||(empty($this->username))||(empty($this->email))||(empty($this->pwd)));
+        return((empty($this->firstName))||(empty($this->lastName))||(empty($this->username))||(empty($this->email))||(empty($this->pwd)));
     }
 
     public function is_email_invalid() {
@@ -62,8 +62,8 @@ class SignupController {
         $hashedPwd = password_hash($this->pwd, PASSWORD_BCRYPT,$options);  //you can you PASSWORD_DEAULT so that it automatically updates if user updates hashing methode. other options(PASSWORD_ARGON2I || PASSWORD_ARGON2ID winner of a password hashing competition)
 
         $userTable->insert([
-            'firstname' => $this->firstname,
-            'lastname' => $this->lastname,
+            'firstname' => $this->firstName,
+            'lastname' => $this->lastName,
             'username' => $this->username,
             'email' => $this->email,
             'pwd' => $hashedPwd

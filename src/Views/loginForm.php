@@ -1,5 +1,5 @@
 <?php 
-    require_once("../Controllers/includes/config_session.inc.php");
+    require_once("../Controllers/includes/configSession.inc.php");
     require_once("loginView.php");
 ?>
 <!doctype html>

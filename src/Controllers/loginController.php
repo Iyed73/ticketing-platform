@@ -1,5 +1,5 @@
 <?php 
-require_once("../Models/classes/UserRepo.php");
+require_once("../Models/UserRepo.php");
 class loginController {
     private $username;
     private $pwd;
@@ -9,7 +9,7 @@ class loginController {
         $this->pwd = $pwd;
     }
 
-    public function getUsername() {
+    public function getusername() {
         return $this->username;
     }
     
@@ -24,7 +24,7 @@ class loginController {
 
     public function is_user_in_db() {
         $userTable = new UserRepo();
-        $user = $userTable->findByUsername($this->username);
+        $user = $userTable->findByusername($this->username);
         if($user) {
             return true;
         }
@@ -33,7 +33,7 @@ class loginController {
 
     public function is_password_incorrect() {
         $userTable = new UserRepo();
-        $user = $userTable->findByUsername($this->username);
+        $user = $userTable->findByusername($this->username);
         if(!empty($user)){
             if(password_verify($this->pwd, $user->pwd)) {
                 return false;
@@ -47,7 +47,7 @@ class loginController {
 
     function getUserId(){
         $userTable = new UserRepo();
-        $user = $userTable->findByUsername($this->username);
+        $user = $userTable->findByusername($this->username);
         return $user->id;
     }
 
