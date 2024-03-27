@@ -29,8 +29,12 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 
     //If there are no errors, log in the user
 
-    $_SESSION["user_id"] = $logincontroller->getUserId();
-    $_SESSION["username"] = $logincontroller->getUsername();
+    //setting up session variables
+    
+    $user = $logincontroller->getUser();
+    $_SESSION["user_id"] = $user->id;
+    $_SESSION["username"] = $user->username;
+    $_SESSION["role"] = $user->role;
     
     //Create a new session id and append the user id to it for better security and association of data with the user for a personalized experience
     regenerate_session_id_loggedin();

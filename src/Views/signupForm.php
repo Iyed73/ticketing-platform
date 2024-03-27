@@ -18,6 +18,13 @@
         </form>
         <?php checkSignupErrors(); ?>
         <?php checkSignupSuccess(); ?>
+        <?php
+            if(isset($_GET["signup"])){
+                if($_GET["signup"]=="success"){
+                    header("Refresh:2; url=loginForm.php");
+                }
+            }
+        ?>
     </main>
 </body>
 </html>

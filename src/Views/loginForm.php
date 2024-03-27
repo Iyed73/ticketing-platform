@@ -21,7 +21,7 @@
                 <label for="password">Password:</label>
                 <input id="password" name="password" type="password" placeholder="password">
                 <br>
-                <button>SignUp</button>
+                <button>Login</button>
             </form>
         <?php endif; ?>
         <?php checkLoginErrors(); ?>

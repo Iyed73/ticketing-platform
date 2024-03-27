@@ -40,7 +40,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 
     //If there are no errors, create a new user
 
-    $signupcontroller->createUser();
+    $signupcontroller->addCustomer();
     header("Location: ../Views/signupForm.php?signup=success");
     die();
 }else{

@@ -8,10 +8,6 @@ class loginController {
         $this->username = $username;
         $this->pwd = $pwd;
     }
-
-    public function getusername() {
-        return $this->username;
-    }
     
     public function sanitizeInput() {
         $this->username = htmlspecialchars($this->username);
@@ -45,10 +41,9 @@ class loginController {
         return true;
     }
 
-    function getUserId(){
+    public function getUser(){
         $userTable = new UserRepo();
         $user = $userTable->findByusername($this->username);
-        return $user->id;
+        return $user;
     }
-
 }

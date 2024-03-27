@@ -52,7 +52,7 @@ class SignupController {
         return false;
     }
 
-    public function createUser() {
+    public function addCustomer() {
         $userTable = new UserRepo();
         
         //Hashing the password

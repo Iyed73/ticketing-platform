@@ -22,6 +22,9 @@ function checkLoginSuccess(){
 
 function outputUsername(){
     if(isset($_SESSION["username"])){
-        echo "<p class=success-message>Welcome, ".$_SESSION["username"]."!</p>";
+        if($_SESSION["role"]=="admin")
+            echo "<p class=success-message>Welcome, ".$_SESSION["username"].". You are logged in as an admin!</p>";
+        else
+            echo "<p class=success-message>Welcome, ".$_SESSION["username"].". You are logged in as customer"."!</p>";
     }
 }
