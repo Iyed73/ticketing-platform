@@ -7,7 +7,7 @@
             foreach ($eventsByCategory[$category] as $event): ?>
                 <?php
                 // Check if the event category matches the current category and the event is within the selling time
-                if (strtotime($event['startSellTime']) <= time() && time() <= strtotime($event['endSellTime'])):
+                if(strtotime($event['startSellTime']) <= time() && time() <= strtotime($event['endSellTime'])):
                     $hasEvents = true;
                     ?>
                     <div class="border border-primary rounded position-relative event-item">
