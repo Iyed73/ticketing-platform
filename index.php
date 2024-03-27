@@ -104,6 +104,16 @@
                 "image" => "image5.jpg"
             ]
         ];
+
+        $eventsByCategory = [];
+
+        foreach ($events as $event) {
+            $category = $event['category'];
+            if (!isset($eventsByCategory[$category])) {
+                $eventsByCategory[$category] = [];
+            }
+            $eventsByCategory[$category][] = $event;
+        }
         ?>
 
 
@@ -119,7 +129,9 @@
         <?php
 
         foreach ($categories as $category) {
-            include 'src/Views/home/eventCarousel.php';
+            if (isset($eventsByCategory[$category])) {
+                include 'src/Views/home/eventCarousel.php';
+            }
         }
         ?>
 
