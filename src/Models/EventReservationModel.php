@@ -43,7 +43,7 @@ class EventReservationModel extends Repo {
     }
 
     private function isReservationOngoing($eventId, $userId): bool {
-        $query = "SELECT COUNT(*) FROM reservation WHERE event_id = ? AND user_id = ?";
+        $query = "SELECT COUNT(*) FROM {$this->tableName} WHERE event_id = ? AND user_id = ?";
         $response = $this->db->prepare($query);
         $response->execute([$eventId, $userId]);
         $count = $response->fetchColumn();
