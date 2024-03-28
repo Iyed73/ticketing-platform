@@ -10,6 +10,10 @@ class EventReservationModel extends Repo {
         try {
             $this->db->beginTransaction();
 
+            if ($this->isReservationOngoing($eventId, $userId)) {
+                throw new Exception("There is already an ongoing reservation.");
+            }
+
             $availableTickets = $this->getAvailableTickets($eventId);
             if ($availableTickets < $quantity) {
                 throw new Exception("Insufficient tickets available.");
@@ -38,6 +42,14 @@ class EventReservationModel extends Repo {
         }
     }
 
+    private function isReservationOngoing($eventId, $userId): bool {
+        $query = "SELECT COUNT(*) FROM reservation WHERE event_id = ? AND user_id = ?";
+        $response = $this->db->prepare($query);
+        $response->execute([$eventId, $userId]);
+        $count = $response->fetchColumn();
+        return $count > 0;
+    }
+
     private function getAvailableTickets($eventId) {
         $query = "SELECT available_tickets FROM events WHERE id = ?";
         $response = $this->db->prepare($query);
@@ -46,8 +58,18 @@ class EventReservationModel extends Repo {
     }
 
     private function updateAvailableTickets($eventId, $newAvailableTickets): void {
-        $query = "UPDATE events SET availab_tickets = ? WHERE id = ?";
+        $query = "UPDATE events SET available_tickets = ? WHERE id = ?";
         $response = $this->db->prepare($query);
         $response->execute([$newAvailableTickets, $eventId]);
+    }
+
+    // Users can have only 1 ongoing reservation at a time.
+    public function getReservationIdForUser($userId) {
+        $query = "SELECT id FROM {$this->tableName} WHERE user_id = ?";
+        $response = $this->db->prepare($query);
+        $response->execute([$userId]);
+        $reservationId = $response->fetchColumn();
+
+        return $reservationId ? $reservationId : null; // Return reservation ID or null if not found
     }
 }
