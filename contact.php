@@ -29,8 +29,6 @@
 
     <!-- Loading Animation -->
 
-
-    
     <?php include 'src/Views/home/navbar.php' ?>
 
     <?php include 'src/Views/home/modalSearch.php' ?>
@@ -87,7 +85,7 @@
     <!-- Contact End -->
 
     <!-- Back to Top -->
-    <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
+    <a href="contact.php" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
             class="fa fa-arrow-up"></i></a>
 
 
