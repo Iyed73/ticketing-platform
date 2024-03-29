@@ -1,5 +1,5 @@
 <?php
-require_once("../Models/UserRepo.php");
+require_once("../../Models/UserRepo.php");
 class SignupController {
     private $firstName;
     private $lastName;
@@ -57,7 +57,7 @@ class SignupController {
         
         //Hashing the password
         $options = [
-            'cost' => 12   //recommended value berween 10 and 12 (the higher the cost the more complex thehashing is the more time it will take a user to log in but better for security
+            'cost' => 12   //recommended value berween 10 and 12 (the higher the cost the more complex the hashing is the more time it will take a user to log in but better for security
         ];
         $hashedPwd = password_hash($this->pwd, PASSWORD_BCRYPT,$options);  //you can you PASSWORD_DEAULT so that it automatically updates if user updates hashing methode. other options(PASSWORD_ARGON2I || PASSWORD_ARGON2ID winner of a password hashing competition)
 

@@ -21,7 +21,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
     }
     //other error handling can be added here
 
-    require_once("includes/configSession.inc.php");
+    require_once("../includes/configSession.inc.php");
 
     if($errors){
         $_SESSION["signup_errors"] = $errors;
