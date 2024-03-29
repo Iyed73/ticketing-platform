@@ -21,12 +21,25 @@ DROP TABLE IF EXISTS reservation;
    freeing up the reserved tickets for others to purchase.
 */
 CREATE TABLE reservation (
-                             id INT AUTO_INCREMENT PRIMARY KEY,
-                             event_id INT,
-                             user_id INT,
-                             quantity INT,
-                             expiration DATETIME,
-                             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                             FOREIGN KEY (event_id) REFERENCES events(id),
-                             FOREIGN KEY (user_id) REFERENCES users(id)
+     id INT AUTO_INCREMENT PRIMARY KEY,
+     event_id INT,
+     user_id INT,
+     quantity INT,
+     expiration DATETIME,
+     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+     FOREIGN KEY (event_id) REFERENCES events(id),
+     FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE ticket (
+    ticket_id CHAR(36) PRIMARY KEY,
+    user_id INT,
+    event_id INT,
+    first_name VARCHAR(255),
+    last_name VARCHAR(255),
+    email VARCHAR(255),
+    buy_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    email_sent BOOLEAN DEFAULT FALSE, -- Indicates whether the ticket has been sent via email to the holder
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (event_id) REFERENCES events(id)
 );
