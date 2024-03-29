@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <title>Tickety - Event Booking Platform</title>
         <?php include 'src/Views/header.php' ?>
     </head>
 

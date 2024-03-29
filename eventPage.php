@@ -2,6 +2,7 @@
 <html lang="en">
 
     <head>
+        <title>[EVENT_NAME]</title>
         <?php include 'src/Views/header.php' ?>
     </head>
 
