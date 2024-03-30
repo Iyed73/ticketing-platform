@@ -1,8 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 
+    <?php 
+        //dummy event data
+
+        $event = [
+            "name"=> "Concert",
+            "category"=> "Music",
+            "ticketPrice" => 337,
+            "shortDescription" => "Experience the electrifying energy of live music at our concert! Immerse in the rhythm, lights, and the unforgettable atmosphere.",
+            "longDescription"=> "Immerse yourself in the electrifying atmosphere of our live concert. Feel the rhythm pulsate through the crowd as the stage lights dance. Witness the raw energy of the performers, their music resonating in perfect harmony with the audience’s excitement. It’s not just a concert, it’s an unforgettable experience of a lifetime.",
+            "image"=> "Static/Images/event-1.jpg",
+            ]
+
+    ?>
+
+
     <head>
-        <title>[EVENT_NAME]</title>
+        <title><?php echo $event['name'] ?> </title>
         <?php include 'src/Views/header.php' ?>
     </head>
 
@@ -15,13 +30,10 @@
 
         <?php include 'src/Views/modalSearch.php' ?>
 
-
-        
-
-        <div class="container-fluid page-header py-5">
-            <h1 class="text-center text-white display-6">[EVENT_NAME]</h1>
-        </div>
-
+        <!-- needs a workaround :( -->
+        <br />
+        <br />
+        <br />
 
         <div class="container-fluid py-5 mt-5">
             <div class="container py-5">
@@ -31,16 +43,15 @@
                             <div class="col-lg-6">
                                 <div class="border rounded">
                                     <a href="#">
-                                        <img src="img/single-item.jpg" class="img-fluid rounded" alt="Image">
+                                        <img src="<?php echo $event["image"] ?>" class="img-fluid rounded" alt="Image">
                                     </a>
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                                <h4 class="fw-bold mb-3">[EVENT_NAME]</h4>
-                                <p class="mb-3">[CATEGORY]</p>
-                                <h5 class="fw-bold mb-3">3,35 $</h5>
-                                <p class="mb-4">The generated Lorem Ipsum is therefore always free from repetition injected humour, or non-characteristic words etc.</p>
-                                <p class="mb-4">Susp endisse ultricies nisi vel quam suscipit. Sabertooth peacock flounder; chain pickerel hatchetfish, pencilfish snailfish</p>
+                                <h4 class="fw-bold mb-3"><?php echo $event['name'] ?></h4>
+                                <p class="mb-3"><?php echo $event['category'] ?></p>
+                                <h5 class="fw-bold mb-3"><?php echo $event['ticketPrice']/100 ?> $</h5>
+                                <p class="mb-4"><?php echo $event['shortDescription'] ?></p>
                                 <div class="input-group quantity mb-5" style="width: 100px;">
                                     <div class="input-group-btn">
                                         <button class="btn btn-sm btn-minus rounded-circle bg-light border" >
@@ -66,10 +77,9 @@
                                 </nav>
                                 <div class="tab-content mb-5">
                                     <div class="tab-pane active" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
-                                        <p>The generated Lorem Ipsum is therefore always free from repetition injected humour, or non-characteristic words etc. 
-                                            Susp endisse ultricies nisi vel quam suscipit </p>
-                                        <p>Sabertooth peacock flounder; chain pickerel hatchetfish, pencilfish snailfish filefish Antarctic 
-                                            icefish goldeye aholehole trumpetfish pilot fish airbreathing catfish, electric ray sweeper.</p>
+                                        <p>
+                                            <?php echo $event["longDescription"] ?>
+                                        </p>
                                             
                                     </div>
                                 </div>

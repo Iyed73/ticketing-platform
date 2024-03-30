@@ -1,4 +1,4 @@
-<h1 class="fw-bold mb-0">Similar Events</h1>
+<h1 class="fw-bold mb-5">Similar Events</h1>
 <div class="owl-carousel vegetable-carousel justify-content-center">
     <?php
     include 'src/Views/eventArray.php';
