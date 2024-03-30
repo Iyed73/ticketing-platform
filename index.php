@@ -16,6 +16,7 @@
 
 
         <?php include 'src/Views/home/hero.php' ?>
+        
 
         <?php include 'src/Views/eventArray.php' ?>
 
