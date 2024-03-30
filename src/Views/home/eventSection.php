@@ -37,14 +37,14 @@
                                             <div class="col-md-6 col-lg-4 col-xl-3">
                                                 <div class="rounded position-relative event-item">
                                                     <div class="event-img">
-                                                        <img src="<?= $event['image'] ?>" class="img-fluid w-100 rounded-top" alt="">
+                                                        <img src="<?= $event['imagePath'] ?>" class="img-fluid w-100 rounded-top" alt="">
                                                     </div>
                                                     <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;"><?= $event['category'] ?></div>
                                                     <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                                                         <h4><?= $event['name'] ?></h4>
-                                                        <p><?= $event['description'] ?></p>
+                                                        <p><?= $event['shortDescription'] ?></p>
                                                         <div class="d-flex justify-content-between flex-lg-wrap">
-                                                            <p class="text-dark fs-5 fw-bold mb-0">$<?= $event['price'] ?></p>
+                                                            <p class="text-dark fs-5 fw-bold mb-0">$<?= $event['ticketPrice'] ?></p>
                                                             <a href="<?php // url_for('eventPage', ['id' => $event['id']]) ?>" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-eye me-2 text-primary"></i> View Event</a>
                                                         </div>
                                                     </div>
@@ -67,14 +67,14 @@
                                                 <div class="col-md-6 col-lg-4 col-xl-3">
                                                     <div class="rounded position-relative event-item">
                                                         <div class="event-img">
-                                                            <img src="<?= $event['image'] ?>" class="img-fluid w-100 rounded-top" alt="">
+                                                            <img src="<?= $event['imagePath'] ?>" class="img-fluid w-100 rounded-top" alt="">
                                                         </div>
                                                         <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;"><?= $category ?></div>
                                                         <div class="p-4 border border-secondary border-top-0 rounded-bottom">
                                                             <h4><?= $event['name'] ?></h4>
-                                                            <p><?= $event['description'] ?></p>
+                                                            <p><?= $event['shortDescription'] ?></p>
                                                             <div class="d-flex justify-content-between flex-lg-wrap">
-                                                                <p class="text-dark fs-5 fw-bold mb-0">$<?= $event['price'] ?></p>
+                                                                <p class="text-dark fs-5 fw-bold mb-0">$<?= $event['ticketPrice'] ?></p>
                                                                 <a href="<?php // url_for('eventPage', ['id' => $event['id']]) ?>" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-eye me-2 text-primary"></i> View Event</a>
                                                             </div>
                                                         </div>

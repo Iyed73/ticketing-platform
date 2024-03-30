@@ -4,7 +4,6 @@
         <title>Tickety - Event Booking Platform</title>
         <?php include 'src/Views/header.php' ?>
     </head>
-
     <body>
         <?php include 'src/Views/loadingSpinner.php' ?>
 
@@ -20,10 +19,9 @@
 
         <?php include 'src/Views/eventArray.php' ?>
 
-        <?php
+        
 
-        include 'src/Views/home/eventSection.php';
-        ?>
+        <?php include 'src/Views/home/eventSection.php'; ?>
         
 
         <?php //include 'src/Views/home/featuresSection.php' ?>
@@ -37,8 +35,7 @@
                 }
         }
         ?>
-
-
+        
 
         <?php //include 'src/Views/home/bannerSection.php' ?>
         
