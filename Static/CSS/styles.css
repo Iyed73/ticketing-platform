@@ -178,10 +178,7 @@
 
 /*** Hero Header ***/
 .hero-header {
-    background: linear-gradient(rgba(248, 223, 173, 0.1), rgba(248, 223, 173, 0.1)), url(../img/hero-img.jpg);
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    background: linear-gradient(180deg, rgba(244,244,244,1) 0%, rgba(255,255,255,1) 75%);
 }
 
 .carousel-item {
