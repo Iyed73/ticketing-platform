@@ -3,14 +3,12 @@ require_once("../Models/UserRepo.php");
 class SignupController {
     private $firstName;
     private $lastName;
-    private $username;
     private $email;
     private $pwd;
     
-    public function __construct($firstName, $lastName, $username, $email, $pwd) {
+    public function __construct($firstName, $lastName, $email, $pwd) {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
-        $this->username = $username;
         $this->email = $email;
         $this->pwd = $pwd;
     }
@@ -18,26 +16,16 @@ class SignupController {
     public function sanitizeInput() {
         $this->firstName = htmlspecialchars($this->firstName);
         $this->lastName = htmlspecialchars($this->lastName);
-        $this->username = htmlspecialchars($this->username);
         $this->email = htmlspecialchars($this->email);
         $this->pwd = htmlspecialchars($this->pwd);
     }
     
     public function is_input_empty() {
-        return((empty($this->firstName))||(empty($this->lastName))||(empty($this->username))||(empty($this->email))||(empty($this->pwd)));
+        return((empty($this->firstName))||(empty($this->lastName))||(empty($this->email))||(empty($this->pwd)));
     }
 
     public function is_email_invalid() {
         if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
-            return true;
-        }
-        return false;
-    }
-
-    public function is_username_taken() {
-        $userTable = new UserRepo();
-        $user = $userTable->findByUsername($this->username);
-        if($user) {
             return true;
         }
         return false;
@@ -64,7 +52,6 @@ class SignupController {
         $userTable->insert([
             'firstname' => $this->firstName,
             'lastname' => $this->lastName,
-            'username' => $this->username,
             'email' => $this->email,
             'pwd' => $hashedPwd
         ]);
