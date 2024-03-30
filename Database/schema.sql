@@ -1,12 +1,15 @@
 CREATE DATABASE Tickety;
 
+USE Tickety;
+
+
 CREATE TABLE form_submissions (
   id INT AUTO_INCREMENT,
   name VARCHAR(255),
   email VARCHAR(255),
   subject VARCHAR(255),
   message TEXT,
-  date DATETIME,
+  dateSubmission DATETIME,
   status ENUM('pending', 'resolved', 'dismissed'),
   PRIMARY KEY (id)
 );
@@ -23,8 +26,7 @@ CREATE TABLE users (
 );
 
 CREATE TABLE categories (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
+  name VARCHAR(255) NOT NULL PRIMARY KEY
 );
 
 CREATE TABLE events (
@@ -42,22 +44,29 @@ CREATE TABLE events (
   endSellTime DATE NOT NULL,
 
   # Ticket Price is an integer in cents to prevent floating point errors
-  ticketPrice INT NOT NULL
-
-  FOREIGN KEY (category) REFERENCES categories(name),
+  ticketPrice INT NOT NULL,
+  imagePath VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE orders (
   id INT AUTO_INCREMENT PRIMARY KEY,
   totalPrice INT NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-  FOREIGN KEY (userID) REFERENCES users(id)
 );
 
-CREATE tickets (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  FOREIGN KEY (eventID) REFERENCES events(id),
-  FOREIGN KEY (orderID) REFERENCES orders(id)
+CREATE TABLE tickets (
+  id INT AUTO_INCREMENT PRIMARY KEY
 );
+
+ALTER TABLE events ADD category VARCHAR(255) NOT NULL;
+ALTER TABLE events ADD CONSTRAINT fk_category FOREIGN KEY (category) REFERENCES categories(name);
+
+ALTER TABLE orders ADD userID INT NOT NULL;
+ALTER TABLE orders ADD CONSTRAINT fk_userID FOREIGN KEY (userID) REFERENCES users(id);
+
+ALTER TABLE tickets ADD eventID INT NOT NULL;
+ALTER TABLE tickets ADD orderID INT NOT NULL;
+ALTER TABLE tickets ADD CONSTRAINT fk_eventID FOREIGN KEY (eventID) REFERENCES events(id);
+ALTER TABLE tickets ADD CONSTRAINT fk_orderID FOREIGN KEY (orderID) REFERENCES orders(id);
 
 INSERT INTO users (firstname, lastname, username, email, pwd, role) VALUES ('John', 'Doe', 'admin0', 'johndoe@gmail.com', '$2y$12$WFzkKn9UtpBWS7HYXH8n/e/c0IornFVFDrNRpEXGx4RGR7KuxK5KG', 'admin');

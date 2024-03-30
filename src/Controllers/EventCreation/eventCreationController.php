@@ -13,12 +13,13 @@ class eventCreationController {
     private $endSellTime;
     private $ticketPrice;
     private $category;
-
+    private $imagePath;
 
     
 
     public function __construct($name, $venue, $organizer, $eventDate, $shortDescription,
-     $longDescription, $totalTickets, $availableTickets, $startSellTime, $endSellTime, $ticketPrice, $category) {
+     $longDescription, $totalTickets, $availableTickets, $startSellTime,
+      $endSellTime, $ticketPrice, $category, $imagePath) {
         $this->name = $name;
         $this->venue = $venue;
         $this->organizer = $organizer;
@@ -31,6 +32,7 @@ class eventCreationController {
         $this->endSellTime = $endSellTime;
         $this->ticketPrice = $ticketPrice;
         $this->category = $category;
+        $this->imagePath = $imagePath;
     }
     
     public function sanitizeInput() {
@@ -46,6 +48,7 @@ class eventCreationController {
         $this->endSellTime = htmlspecialchars($this->endSellTime);
         $this->ticketPrice = htmlspecialchars($this->ticketPrice);
         $this->category = htmlspecialchars($this->category);
+        $this->imagePath = htmlspecialchars($this->imagePath);
     }
     
     public function is_input_empty() {
@@ -61,7 +64,8 @@ class eventCreationController {
             empty($this->startSellTime) ||
             empty($this->endSellTime) ||
             empty($this->ticketPrice) ||
-            empty($this->category)
+            empty($this->category) ||
+            empty($this->imagePath)
         );
     }
 
@@ -105,6 +109,7 @@ class eventCreationController {
             'endSellTime' => $this->endSellTime,
             'ticketPrice' => $this->ticketPrice,
             'category' => $this->category,
+            'imagePath' => $this->imagePath,
         ]);
     }
 }

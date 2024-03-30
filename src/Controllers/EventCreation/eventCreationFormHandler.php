@@ -1,6 +1,6 @@
 <?php
 require_once("eventCreationController.php");
-if($_SERVER["REQUEST_METHOD"]=="POST"){
+if($_SERVER["REQUEST_METHOD"] == "POST"){
     $eventController = new eventCreationController(
         $_POST["name"],
         $_POST["venue"],
@@ -14,6 +14,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
         $_POST["endSellTime"],
         $_POST["ticketPrice"],
         $_POST["category"],
+        $_POST["imagePath"],
     );
     $eventController->sanitizeInput();
 
@@ -50,8 +51,9 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
             "endSellTime" => $_POST["endSellTime"],
             "ticketPrice" => $_POST["ticketPrice"],
             "category" => $_POST["category"],
+            "image"=> $_POST["imagePath"],
         ];
-        $_SESSION["event_creation_data"] = $signupData;
+        $_SESSION["event_creation_data"] = $eventData;
 
         header("Location: ../Views/eventCreate.php");
         die();
