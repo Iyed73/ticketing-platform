@@ -43,6 +43,7 @@ class EventReservationModel extends Repo {
         }
     }
 
+    // Users can have only 1 ongoing reservation at a time for a specific event.
     private function isReservationOngoing($eventId, $userId): bool {
         $query = "SELECT COUNT(*) FROM {$this->tableName} WHERE event_id = ? AND user_id = ?";
         $response = $this->db->prepare($query);
@@ -65,7 +66,6 @@ class EventReservationModel extends Repo {
         $response->execute([$newAvailableTickets, $eventId]);
     }
 
-    // Users can have only 1 ongoing reservation at a time.
     public function getReservationIdForUser($userId) {
         $query = "SELECT id FROM {$this->tableName} WHERE user_id = ?";
         $response = $this->db->prepare($query);
@@ -90,6 +90,13 @@ class EventReservationModel extends Repo {
         return $count > 0;
     }
 
+
+    private function deleteReservation($reservationId): void {
+        $query = "DELETE FROM {$this->tableName} WHERE id = ?";
+        $response = $this->db->prepare($query);
+        $response->execute([$reservationId]);
+    }
+
     public function isReservationExpiredWithDelete($reservationId): ?bool {
         try {
             $this->db->beginTransaction();
@@ -99,9 +106,7 @@ class EventReservationModel extends Repo {
             $response->execute([$reservationId]);
             $expirationDate = $response->fetchColumn();
 
-            $query = "DELETE FROM {$this->tableName} WHERE id = ?";
-            $response = $this->db->prepare($query);
-            $response->execute([$reservationId]);
+            $this->deleteReservation($reservationId);
 
             $this->db->commit();
             $currentDateTime = new DateTime();
@@ -118,7 +123,43 @@ class EventReservationModel extends Repo {
         $response->execute([$reservationId]);
         $expirationDate = $response->fetchColumn();
 
-        // Check if the current date is past the expiration date
         return strtotime($expirationDate) < time();
     }
+
+    public function getEventIdForReservation($reservationId): ?int {
+        $query = "SELECT event_id FROM {$this->tableName} WHERE id = ?";
+        $response = $this->db->prepare($query);
+        $response->execute([$reservationId]);
+        $eventId = $response->fetchColumn();
+        return $eventId ? (int)$eventId : null;
+    }
+
+    private function increaseAvailableTickets($eventId, $quantity): void {
+        $query = "UPDATE events SET available_tickets = available_tickets + ? WHERE id = ?";
+        $response = $this->db->prepare($query);
+        $response->execute([$quantity, $eventId]);
+    }
+
+
+    public function cancelReservation($reservationId): bool|string {
+        try {
+            $this->db->beginTransaction();
+
+            $quantity = $this->getReservationQuantity($reservationId);
+
+            $eventId = $this->getEventIdForReservation($reservationId);
+
+            $this->increaseAvailableTickets($eventId, $quantity);
+
+            $this->deleteReservation($reservationId);
+
+            $this->db->commit();
+
+            return true;
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            return $e->getMessage();
+        }
+    }
+
 }
