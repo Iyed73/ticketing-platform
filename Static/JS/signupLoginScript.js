@@ -14,17 +14,21 @@ const loginOpenBtn = document.querySelector("#login-open"),
   pwShowHide = document.querySelectorAll(".pw_hide");
 
 
-  // Event listeners for opening login and signup forms
+// Event listeners for opening login and signup forms
 if (loginOpenBtn) {
   loginOpenBtn.addEventListener("click", () => {
     home.classList.add("show");
     formContainer.classList.remove("active");
+
+    disableBackgroundInteraction();
   });
 }
 if (signupOpenBtn) {
   signupOpenBtn.addEventListener("click", () => {
     home.classList.add("show");
     formContainer.classList.add("active");
+
+    disableBackgroundInteraction();
   });
 }
 
@@ -32,7 +36,8 @@ if (signupOpenBtn) {
 if (formCloseBtn) {
   formCloseBtn.addEventListener("click", () => {
     home.classList.remove("show");
-    window.location.search = "";
+
+    enableBackgroundInteraction();
   });
 }
 
@@ -197,4 +202,24 @@ if (window.location.search == "?signup=failed") {
 //redirect to login form if signup successful
 if (window.location.search == "?signup=success") {
   document.querySelector("#login-open").click();
+}
+
+// Function to disable pointer events on elements beneath the modal
+function disableBackgroundInteraction() {
+  const elementsToEnable = document.querySelectorAll(
+    '*:not(.form_container):not(#navbar-container)'
+  );
+  elementsToDisable.forEach((element) => {
+    element.style.pointerEvents = "none";
+  });
+}
+
+// Function to enable pointer events on elements beneath the modal
+function enableBackgroundInteraction() {
+  const elementsToEnable = document.querySelectorAll(
+    '*:not(.form_container):not(#navbar-container)'
+  );
+  elementsToEnable.forEach((element) => {
+    element.style.pointerEvents = "auto";
+  });
 }
