@@ -2,7 +2,7 @@
 
 //require_once "../Models/Repo.php";
 //require_once "../../Database/dbConnection.php";
-require_once "src/Models/EventRepo.php";
+require_once "../Models/EventRepo.php";
 // $categories = ["Category 1", "Category 2", "Category 3"];
 //$categories = ["Music"];
 
