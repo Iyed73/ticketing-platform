@@ -13,9 +13,13 @@ class PaymentController {
     }
 
     public function handleGetRequest($userId, $reservationId) {
+        if ($this->eventReservationModel->isReservationExpired($reservationId)) {
+            $eventId = $this->eventReservationModel->getEventIdForReservation($reservationId);
+            header("Location: /event?event_id=" . urlencode($eventId));
+        }
         if ($this->eventReservationModel->isValidReservation($userId, $reservationId)) {
             $quantity = $this->eventReservationModel->getReservationQuantity($reservationId);
-            header("Location: payment_page.php?reservation_id=$reservationId&quantity=$quantity");
+            header("Location: ../View/paymentView.php?reservation_id=$reservationId&quantity=$quantity");
             exit();
         } else {
             http_response_code(401);
@@ -25,7 +29,11 @@ class PaymentController {
 
     public function handlePostRequest($userId) {
         $reservationId = $_POST["reservation_id"];
-        $quantity = $_POST["quantity"];
+        if (!$this->eventReservationModel->isValidReservation($userId, $reservationId)) {
+            http_response_code(401);
+            exit;
+        }
+        $quantity = $this->eventReservationModel->getReservationQuantity($reservationId);
 
         $firstNames = $_POST["first_names"];
         $lastNames = $_POST["last_names"];
@@ -34,12 +42,13 @@ class PaymentController {
         $creditCard = $_POST["credit_card"];
 
         if (count($firstNames) !== $quantity || count($lastNames) !== $quantity || count($emails) !== $quantity) {
-            echo "Error: Number of input fields does not match the quantity.";
-            return;
+            header("Location: ../View/paymentView.php?reservation_id=$reservationId&quantity=$quantity");
+            exit();
         }
+        $eventId = $this->eventReservationModel->getEventIdForReservation($reservationId);
 
         if ($this->eventReservationModel->isReservationExpiredWithDelete($reservationId)) {
-            echo "Error: Reservation has expired.";
+            $this->eventReservationModel->increaseAvailableTickets($eventId, $quantity);
             return;
         }
 
@@ -76,7 +85,7 @@ class PaymentController {
 session_start();
 
 if (!isset($_SESSION["user_id"])) {
-    http_response_code(401); // Unauthorized
+    http_response_code(401);
     exit();
 }
 
@@ -87,7 +96,7 @@ $paymentController = new PaymentController();
 if ($_SERVER["REQUEST_METHOD"] === "GET") {
     $reservationId = $_GET["reservation_id"] ?? null;
     if ($reservationId === null) {
-        echo "Invalid reservation ID.";
+        http_response_code(400);
         exit();
     }
     $paymentController->handleGetRequest($userId, $reservationId);

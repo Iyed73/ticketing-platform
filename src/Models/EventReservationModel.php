@@ -2,6 +2,9 @@
 require_once "Repo.php";
 
 class EventReservationModel extends Repo {
+    public int $reservationPeriod = 20;
+
+
     public function __construct() {
         parent::__construct("reservation");
     }
@@ -21,7 +24,7 @@ class EventReservationModel extends Repo {
             }
             $this->updateAvailableTickets($eventId, $availableTickets - $quantity);
 
-            $expirationDate = date('Y-m-d H:i:s', strtotime('+20 minutes'));
+            $expirationDate = date('Y-m-d H:i:s', strtotime("+$this->reservationPeriod minutes"));
 
             $reservationData = array(
                 "user_id" => $userId,
@@ -134,7 +137,7 @@ class EventReservationModel extends Repo {
         return $eventId ? (int)$eventId : null;
     }
 
-    private function increaseAvailableTickets($eventId, $quantity): void {
+    public function increaseAvailableTickets($eventId, $quantity): void {
         $query = "UPDATE events SET available_tickets = available_tickets + ? WHERE id = ?";
         $response = $this->db->prepare($query);
         $response->execute([$quantity, $eventId]);

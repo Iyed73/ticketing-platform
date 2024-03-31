@@ -8,22 +8,20 @@ class EventReservationController {
         $this->model = new EventReservationModel();
     }
 
-    // todo: locations must be updated
     public function handleReservationRequest($eventId, $userId, $quantity) {
         $reservationResult = $this->model->reserveTickets($eventId, $userId, $quantity);
-        $reservationId = $this->model->getReservationIdForUser($userId);
         if ($reservationResult === true) {
             $reservationId = $this->model->getReservationIdForUser($userId);
             if ($reservationId !== null) {
                 session_start();
                 $_SESSION["reservation_id"] = $reservationId;
 
-                header("Location: payment_page.php");
+                header("Location: /payment?reservation_id=" . urlencode($reservationId));
             } else {
-                header("Location: event_page.php?error=". urlencode("Reservation doesn't exist."));
+                header("Location: /event?event_id=" . urlencode($eventId));
             }
         } else {
-            header("Location: event_page.php?error=". urlencode($reservationResult));
+            header("Location: /event?event_id=" . urlencode($eventId));
         }
         exit();
     }

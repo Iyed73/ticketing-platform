@@ -1,6 +1,6 @@
 <div class="container py-5">
     <div style="margin-top: 20vh;"></div>
-    <form method="post" action="../Controllers/CancelController.php" class="text-center mb-5">
+    <form method="post" action="../Controllers/CancelReservationController.php" class="text-center mb-5">
         <button type="submit" name="cancel" class="btn btn-secondary mb-3 text-white">Cancel</button>
     </form>
     <h2>Enter Client Information</h2>

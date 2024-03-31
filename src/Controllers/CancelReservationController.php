@@ -1,7 +1,7 @@
 <?php
 require_once "../Models/EventReservationModel.php";
 
-class CancelController {
+class CancelReservationController {
     private EventReservationModel $eventReservationModel;
 
     public function __construct() {
@@ -15,7 +15,7 @@ class CancelController {
 
         $this->eventReservationModel->cancelReservation($reservationId);
 
-        header("Location: /home.php");
+        header("Location: /home");
     }
 }
 
@@ -29,7 +29,7 @@ if (!isset($_SESSION["user_id"])) {
 
 $userId = $_SESSION["user_id"];
 
-$cancelController = new CancelController();
+$cancelController = new CancelReservationController();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $reservationId = $_POST["reservation_id"] ?? null;
