@@ -14,7 +14,11 @@
 <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
 <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
 
+<link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
+
 
 <link href="Static/CSS/bootstrap.min.css" rel="stylesheet">
 
 <link href="Static/CSS/styles.css" rel="stylesheet">
+
+<link rel="stylesheet" href="Static\CSS\signuploginFormStylesheet.css" />

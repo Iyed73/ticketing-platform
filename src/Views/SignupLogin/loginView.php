@@ -5,7 +5,7 @@ function checkLoginErrors(){
         $errors = $_SESSION["login_errors"];
         echo "<br>";
         foreach ($errors as $error){
-            echo "<p class=error-message>$error</p>";
+            echo "<p>$error</p>";
         }
 
         unset($_SESSION["login_errors"]);

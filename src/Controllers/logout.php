@@ -3,5 +3,5 @@
 session_start();
 session_unset();
 session_destroy();  
-header("Location: ../Views/loginForm.php");
+header("Location: ..\..\index.php?logout=success");
 die();

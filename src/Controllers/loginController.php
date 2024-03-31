@@ -1,35 +1,37 @@
 <?php 
 require_once("../Models/UserRepo.php");
 class loginController {
-    private $username;
+
+    private $email;
     private $pwd;
 
-    public function __construct($username, $pwd) {
-        $this->username = $username;
+    public function __construct($email, $pwd) {
+        $this->email = $email;
         $this->pwd = $pwd;
     }
     
     public function sanitizeInput() {
-        $this->username = htmlspecialchars($this->username);
+        $this->email = htmlspecialchars($this->email);
         $this->pwd = htmlspecialchars($this->pwd);
     }
 
-    public function is_input_empty() {
-        return((empty($this->username))||(empty($this->pwd)));
+    public function isInputEmpty() {
+        return empty($this->email) || empty($this->pwd);
     }
 
-    public function is_user_in_db() {
+    public function isUserInDB() {
         $userTable = new UserRepo();
-        $user = $userTable->findByusername($this->username);
+        $user = $userTable->findByEmail($this->email);
         if($user) {
             return true;
         }
         return false;
     }
 
-    public function is_password_incorrect() {
+
+    public function isPasswordIncorrect() {
         $userTable = new UserRepo();
-        $user = $userTable->findByusername($this->username);
+        $user = $userTable->findByEmail($this->email);
         if(!empty($user)){
             if(password_verify($this->pwd, $user->pwd)) {
                 return false;
@@ -43,7 +45,7 @@ class loginController {
 
     public function getUser(){
         $userTable = new UserRepo();
-        $user = $userTable->findByusername($this->username);
+        $user = $userTable->findByEmail($this->email);
         return $user;
     }
 }

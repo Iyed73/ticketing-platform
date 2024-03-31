@@ -3,7 +3,8 @@ class dbConnection {
     private static $servername = "localhost"; // Change this if your MySQL server is running on a different host
     private static $username = "root"; 
     private static $password = ""; 
-    private static $database = "ticketing_platform"; 
+
+    private static $database = "tickety"; 
     private static $db = null;
 
     private function __construct() {
