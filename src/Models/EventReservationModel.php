@@ -6,6 +6,7 @@ class EventReservationModel extends Repo {
         parent::__construct("reservation");
     }
 
+    // todo: add total price
     public function reserveTickets($eventId, $userId, $quantity): bool|string {
         try {
             $this->db->beginTransaction();
@@ -50,6 +51,7 @@ class EventReservationModel extends Repo {
         return $count > 0;
     }
 
+
     private function getAvailableTickets($eventId) {
         $query = "SELECT available_tickets FROM events WHERE id = ?";
         $response = $this->db->prepare($query);
@@ -70,6 +72,53 @@ class EventReservationModel extends Repo {
         $response->execute([$userId]);
         $reservationId = $response->fetchColumn();
 
-        return $reservationId ? $reservationId : null; // Return reservation ID or null if not found
+        return $reservationId ?: null; // Return reservation ID or null if not found
+    }
+
+    public function getReservationQuantity($reservationId) {
+        $query = "SELECT quantity FROM {$this->tableName} WHERE id = ?";
+        $response = $this->db->prepare($query);
+        $response->execute([$reservationId]);
+        return $response->fetchColumn();
+    }
+
+    public function isValidReservation($userId, $reservationId): bool {
+        $query = "SELECT COUNT(*) FROM {$this->tableName} WHERE id = ? AND user_id = ?";
+        $response = $this->db->prepare($query);
+        $response->execute([$reservationId, $userId]);
+        $count = $response->fetchColumn();
+        return $count > 0;
+    }
+
+    public function isReservationExpiredWithDelete($reservationId): ?bool {
+        try {
+            $this->db->beginTransaction();
+
+            $query = "SELECT expiration_date FROM {$this->tableName} WHERE id = ?";
+            $response = $this->db->prepare($query);
+            $response->execute([$reservationId]);
+            $expirationDate = $response->fetchColumn();
+
+            $query = "DELETE FROM {$this->tableName} WHERE id = ?";
+            $response = $this->db->prepare($query);
+            $response->execute([$reservationId]);
+
+            $this->db->commit();
+            $currentDateTime = new DateTime();
+            return $expirationDate < $currentDateTime;
+        } catch (PDOException $e) {
+            $this->db->rollBack();
+            return null;
+        }
+    }
+
+    public function isReservationExpired($reservationId): bool {
+        $query = "SELECT expiration_date FROM {$this->tableName} WHERE id = ?";
+        $response = $this->db->prepare($query);
+        $response->execute([$reservationId]);
+        $expirationDate = $response->fetchColumn();
+
+        // Check if the current date is past the expiration date
+        return strtotime($expirationDate) < time();
     }
 }
