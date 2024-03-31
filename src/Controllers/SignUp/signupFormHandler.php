@@ -1,5 +1,7 @@
 <?php
 require_once("signupController.php");
+require_once("MailController.php");
+
 if($_SERVER["REQUEST_METHOD"]=="POST"){
     $signupcontroller = new signupController($_POST["firstname"],$_POST["lastname"],$_POST["username"],$_POST["email"],$_POST["password"]);
     $signupcontroller->sanitizeInput();
@@ -41,6 +43,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
     //If there are no errors, create a new user
 
     $signupcontroller->addCustomer();
+    sendMail($_POST["username"],$_POST["email"],"Welcome to Tickety",generateSingUpMessageHtml($_POST["username"]),generateSignUpMessageText($_POST["username"]));
     header("Location: ../Views/signupForm.php?signup=success");
     die();
 }else{
