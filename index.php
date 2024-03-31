@@ -1,3 +1,5 @@
+<?php require_once 'src/Views/eventArray.php' ?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -17,11 +19,7 @@
         <?php include 'src/Views/home/hero.php' ?>
         
 
-        <?php include 'src/Views/eventArray.php' ?>
-
-        
-
-        <?php include 'src/Views/home/eventSection.php'; ?>
+        <?php include 'src/Views/home/eventSection.php' ?>
         
 
         <?php //include 'src/Views/home/featuresSection.php' ?>

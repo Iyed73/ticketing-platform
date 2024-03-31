@@ -1,12 +1,10 @@
 <?php
 
+//require_once "../Models/Repo.php";
+//require_once "../../Database/dbConnection.php";
 require_once "src/Models/EventRepo.php";
-
-//$eventTable = new EventRepo();
-        // some dummy data
-
 // $categories = ["Category 1", "Category 2", "Category 3"];
-$categories = ["Music"];
+//$categories = ["Music"];
 
 
 // $events = [
@@ -72,14 +70,18 @@ $categories = ["Music"];
 //     ]
 // ];
 
-//$events = $eventTable->findAll();
-$events = [];
+//$events = [];
 
+$eventTable = new EventRepo();
+$events = $eventTable->findAll();
 
 $eventsByCategory = [];
+$categories = [];
+
 foreach ($events as $event) {
-    $category = $event['category'];
+    $category = $event->category;
     if (!isset($eventsByCategory[$category])) {
+        $categories[] = $category;
         $eventsByCategory[$category] = [];
     }
     $eventsByCategory[$category][] = $event;

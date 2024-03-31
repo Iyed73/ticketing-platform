@@ -18,9 +18,10 @@ class dbConnection {
     
     public static function getConnection() {
         if (self::$db == null) {
-            new dbConnection();
+            new self(); // Corrected line: create a new instance of self
         }
         return self::$db;
     }
 
 }
+

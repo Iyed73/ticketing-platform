@@ -1,8 +1,5 @@
 <?php 
 require_once "Repo.php";
-
-
-
 class EventRepo extends Repo {
     public function __construct() {
         parent::__construct('events');
