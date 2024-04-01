@@ -45,7 +45,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
                     </div>
                     <div class="collapse navbar-collapse bg-white justify-content-end" id="navbarCollapse">
                          <?php if (!$user_id) : // If user is not logged in ?>
-                            <a href="eventPage.php" class="nav-item nav-link">Event Detail</a>
                             <a href="#" class="nav-item nav-link">Register</a>
                             <a href="#" class="nav-item nav-link">Login</a>
                          <?php else : ?>

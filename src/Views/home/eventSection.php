@@ -33,7 +33,7 @@
                                 <?php foreach ($events as $event): ?>
                                     <?php
                                     // Check if event start selling tickets time is less than current time
-                                    if (strtotime($event->startSellTime) > time()): ?>
+                                    if (strtotime($event->startSellTime) <= time()): ?>
                                         <div class="col-md-6 col-lg-4 col-xl-3">
                                             <div class="rounded position-relative event-item">
                                                 <div class="event-img">
@@ -45,7 +45,8 @@
                                                     <p><?= $event->shortDescription ?></p>
                                                     <div class="d-flex justify-content-between flex-lg-wrap">
                                                         <p class="text-dark fs-5 fw-bold mb-0">$<?= $event->ticketPrice/100 ?></p>
-                                                        <a href="<?php "" ?>" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-eye me-2 text-primary"></i> View Event</a>
+                                                        <?php include 'prefix.php' ?>
+                                                        <a href="<?= "{$prefix}/event?id={$event->id}" ?>" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-eye me-2 text-primary"></i> View Event</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -63,7 +64,7 @@
                             <div class="col-lg-12">
                                 <div class="row g-4">
                                     <?php foreach ($eventsByCategory[$category] as $event): ?>
-                                        <?php if (strtotime($event->startSellTime) > time()): ?>
+                                        <?php if (strtotime($event->startSellTime) <= time()): ?>
                                             <div class="col-md-6 col-lg-4 col-xl-3">
                                                 <div class="rounded position-relative event-item">
                                                     <div class="event-img">
@@ -75,7 +76,7 @@
                                                         <p><?= $event->shortDescription ?></p>
                                                         <div class="d-flex justify-content-between flex-lg-wrap">
                                                             <p class="text-dark fs-5 fw-bold mb-0">$<?= $event->ticketPrice ?></p>
-                                                            <a href="<?php // url_for('eventPage', ['id' => $event->id]) ?>" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-eye me-2 text-primary"></i> View Event</a>
+                                                            <a href="<?= "{$prefix}/event?id={$event->id}" ?>" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-eye me-2 text-primary"></i> View Event</a>
                                                         </div>
                                                     </div>
                                                 </div>
