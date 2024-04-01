@@ -480,6 +480,10 @@
 
 
 /*** Footer Start ***/
+footer{
+    position: relative;
+    bottom: 0;
+}
 .footer .footer-item .btn-link {
     line-height: 35px;
     color: rgba(255, 255, 255, .5);
@@ -493,5 +497,6 @@
 .footer .footer-item p.mb-4 {
     line-height: 35px;
 }
+
 /*** Footer End ***/
 
