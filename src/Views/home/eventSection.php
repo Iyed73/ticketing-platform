@@ -33,7 +33,7 @@
                                 <?php foreach ($events as $event): ?>
                                     <?php
                                     // Check if event start selling tickets time is less than current time
-                                    if (strtotime($event->startSellTime) < time()): ?>
+                                    if (strtotime($event->startSellTime) > time()): ?>
                                         <div class="col-md-6 col-lg-4 col-xl-3">
                                             <div class="rounded position-relative event-item">
                                                 <div class="event-img">
@@ -63,7 +63,7 @@
                             <div class="col-lg-12">
                                 <div class="row g-4">
                                     <?php foreach ($eventsByCategory[$category] as $event): ?>
-                                        <?php if (strtotime($event->startSellTime) < time()): ?>
+                                        <?php if (strtotime($event->startSellTime) > time()): ?>
                                             <div class="col-md-6 col-lg-4 col-xl-3">
                                                 <div class="rounded position-relative event-item">
                                                     <div class="event-img">

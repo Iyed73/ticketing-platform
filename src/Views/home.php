@@ -2,9 +2,9 @@
 require_once "../Controllers/includes/configSession.inc.php";
 
 // Retrieve and unserialize session variables
-$events = unserialize($_SESSION["events"]);
-$categories = unserialize($_SESSION["categories"]);
-$eventsByCategory = unserialize($_SESSION["eventsByCategory"]);
+$events = unserialize($_SESSION["events"]) ?? [];
+$categories = unserialize($_SESSION["categories"]) ?? [];
+$eventsByCategory = unserialize($_SESSION["eventsByCategory"]) ?? [];
 
 ?>
 
