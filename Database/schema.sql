@@ -1,6 +1,9 @@
-CREATE DATABASE Tickety;
+DROP DATABASE IF EXISTS tickety;
 
-USE Tickety;
+
+CREATE DATABASE tickety;
+
+USE tickety;
 
 
 CREATE TABLE form_submissions (
@@ -33,15 +36,14 @@ CREATE TABLE events (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(255) UNIQUE NOT NULL,
   venue VARCHAR(255) NOT NULL,
-  eventDate DATE NOT NULL,
   shortDescription VARCHAR(1000) NOT NULL,
   longDescription VARCHAR(10000) NOT NULL,
   organizer VARCHAR(255) NOT NULL,
   totalTickets INT NOT NULL,
   availableTickets INT NOT NULL,
-  
+
   startSellTime DATE NOT NULL,
-  endSellTime DATE NOT NULL,
+  eventDate DATE NOT NULL,
 
   # Ticket Price is an integer in cents to prevent floating point errors
   ticketPrice INT NOT NULL,
@@ -70,3 +72,19 @@ ALTER TABLE tickets ADD CONSTRAINT fk_eventID FOREIGN KEY (eventID) REFERENCES e
 ALTER TABLE tickets ADD CONSTRAINT fk_orderID FOREIGN KEY (orderID) REFERENCES orders(id);
 
 INSERT INTO users (firstname, lastname, username, email, pwd, role) VALUES ('John', 'Doe', 'admin0', 'johndoe@gmail.com', '$2y$12$WFzkKn9UtpBWS7HYXH8n/e/c0IornFVFDrNRpEXGx4RGR7KuxK5KG', 'admin');
+
+
+INSERT INTO categories (name) VALUES
+('Concerts'),
+('Sports'),
+('Theater');
+
+INSERT INTO events (name, venue, shortDescription, longDescription, organizer, totalTickets, availableTickets, startSellTime, eventDate, ticketPrice, imagePath, category)
+VALUES 
+    ('Rock Concert', 'Arena Stadium', 'Rock concert with famous bands', 'A night of rock music featuring top bands from around the world.', 'Rock Events LLC', 1000, 500, '2024-04-01', '2024-05-15', 2500, 'rock_concert.jpg', 'Concerts'),
+    ('Basketball Game', 'City Arena', 'Exciting basketball game', 'Watch two top teams battle it out on the court in an intense basketball game.', 'City Sports Association', 2000, 1000, '2024-03-25', '2024-04-20', 1500, 'basketball_game.jpg', 'Sports'),
+    ('Shakespeare Play', 'Royal Theater', 'Classic Shakespearean play', 'Experience the timeless tale of love and tragedy in this Shakespearean masterpiece.', 'Royal Theater Company', 500, 300, '2024-05-01', '2024-06-10', 2000, 'shakespeare_play.jpg', 'Theater'),
+    ('Concert', 'Gammarth', 
+    'Experience the electrifying energy of live music at our concert! Immerse in the rhythm, lights, and the unforgettable atmosphere.',
+    'Immerse yourself in the electrifying atmosphere of our live concert. Feel the rhythm pulsate through the crowd as the stage lights dance. Witness the raw energy of the performers, their music resonating in perfect harmony with the audience’s excitement. It’s not just a concert, it’s an unforgettable experience of a lifetime.',
+    'Music Events LLC', 500, 336, '2023-03-09', '2024-03-19', '337', 'Static/Images/event-1.jpg', 'Concerts');
