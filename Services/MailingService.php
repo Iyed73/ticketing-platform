@@ -6,11 +6,11 @@ use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 //Load Composer's autoloader
-require_once 'includes/vendor/autoload.php';
+require_once 'src\Controllers\includes\vendor\autoload.php';
 
 
 
-function sendMail($username, $email, $subject, $messageHtml,$messageText, $attachementPath=null) {
+function sendMail($sendorName,$receiverName, $email, $subject, $messageHtml,$messageText, $attachementPath=null) {
     //Create an instance; passing `true` enables exceptions
     $mail = new PHPMailer(true);
     try {
@@ -24,8 +24,8 @@ function sendMail($username, $email, $subject, $messageHtml,$messageText, $attac
         $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
         //Recipients
-        $mail->setFrom('MS_oVW7p2@trial-0p7kx4xqd1mg9yjr.mlsender.net', 'Tickety');
-        $mail->addAddress($email, $username);                      //Add a recipient
+        $mail->setFrom('MS_oVW7p2@trial-0p7kx4xqd1mg9yjr.mlsender.net', $sendorName);
+        $mail->addAddress($email, $receiverName);                      //Add a recipient
         $mail->addReplyTo('tickety873@gmail.com', 'Tickety');
 
         //Attachments

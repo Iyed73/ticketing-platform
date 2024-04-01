@@ -1,77 +1,80 @@
-<?php
+<!DOCTYPE html>
+<html lang="en">
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+<head>
+    <title>Contact us</title>
+    <?php include 'src\Views\Common\header.php' ?>
+</head>
 
-require 'C:\xampp\htdocs\ticketing-platform\lib\phpmailer\PHPMailer-master\src\Exception.php';
-require 'C:\xampp\htdocs\ticketing-platform\lib\phpmailer\PHPMailer-master\src\PHPMailer.php';
-require 'C:\xampp\htdocs\ticketing-platform\lib\phpmailer\PHPMailer-master\src\SMTP.php';
+<body>
+    <?php include 'src\Views\Common\navbar.php' ?>
 
+    <?php include 'src\Views\Common\modalSearch.php' ?>
 
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $subject = $_POST['subject'];
-    $message = $_POST['message'];
-    $date = date('Y-m-d H:i:s');
-    $status = 'pending';
-
-/*     $emailTo = "euseifchouchane@gmail.com";
- */
-
-    try {
-        require_once "C:\\xampp\htdocs\\ticketing-platform\Database\includes\dbh.inc.php";
-
-
-        $query = "INSERT INTO form_submissions (name, email, subject, message, date, status) VALUES (:name, :email, :subject, :message, :date, :status);";
-        $stmt = $pdo->prepare($query);
-
-        $stmt->bindParam(':name', $name, PDO::PARAM_STR);
-        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-        $stmt->bindParam(':subject', $subject, PDO::PARAM_STR);
-        $stmt->bindParam(':message', $message, PDO::PARAM_STR);
-        $stmt->bindParam(':date', $date, PDO::PARAM_STR);
-        $stmt->bindParam(':status', $status, PDO::PARAM_STR);
     
-        $stmt->execute();
+    <div class="container-fluid page-header py-5 " style="background-color:#293049">
+        <h1 class="text-center text-white display-6">Contact us</h1>
+    </div>
+    
 
-        $pdo = null;
-        $stmt = null;
+    <div class="container-fluid contact py-5">
+        <div class="container py-5">
+            <div class="p-5 bg-light rounded">
+                <div class="row g-4">
 
+                    <div class="col-lg-7">
+                        <? require_once prefix.php ?>
+                        <form action="<?= "{$prefix}/contact"?>" class="contact-form" method="POST">
+                            <input type="text" class="w-100 form-control border-0 py-3 mb-4" name="name" placeholder="Your Name" required>
+                            <input type="text" class="w-100 form-control border-0 py-3 mb-4" name="subject" placeholder="Enter the Subject" required>
+                            <textarea class="w-100 form-control border-0 mb-4" rows="5" cols="10" name="message" placeholder="Your Message" required></textarea>
+                            <?php
+                            if (isset($response)) {
+                                echo "<div class='alert alert-primary' role='alert'>$response</div>";
+                            }
+                            ?>
+                            <button class="w-100 btn form-control border-secondary py-3 bg-white text-primary " type="submit">Submit</button>
+                        </form>
+                    </div>
+                    <div class="col-lg-5">
+                        <div class="d-flex p-4 rounded mb-4 bg-white">
+                            <i class="fas fa-map-marker-alt fa-2x text-primary me-4"></i>
+                            <div>
+                                <h4>Address</h4>
+                                <p class="mb-2">676 Centre Urbain Nord BP, Tunis 1080</p>
+                            </div>
+                        </div>
+                        <div class="d-flex p-4 rounded mb-4 bg-white">
+                            <i class="fas fa-envelope fa-2x text-primary me-4"></i>
+                            <div>
+                                <h4>Mail Us</h4>
+                                <p class="mb-2">tickety@gmail.com</p>
+                            </div>
+                        </div>
+                        <div class="d-flex p-4 rounded bg-white">
+                            <i class="fa fa-phone-alt fa-2x text-primary me-4"></i>
+                            <div>
+                                <h4>Telephone</h4>
+                                <p class="mb-2">(+216) 56 354 698</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-      
+    <?php include 'src\Views\Common\footer.php' ?>
+        
+        
+    <?php include 'src\Views\Common\copyright.php' ?>
+        
 
+    <?php include 'src\Views\Common\backToTopButton.php' ?>
+        
 
-        header("Location: /ticketing-platform/contact.php?mailsend");
-        die("query successful");
-    } catch (PDOException $e) {
-        die("query failed: " . $e->getMessage());
-    }
+    <?php include 'src\Views\Common\scripts.php' ?>
 
-} else {
-    header("Location: ../contact.php?mailsend");
-}
+</body>
 
-  /* $mail = new PHPMailer(true);
-
-        $mail->isSMTP();
-        $mail->Host = 'smtp.mailersend.net';
-        $mail->SMTPAuth = true;
-        $mail->Username = 'MS_T2fsYd@trial-3vz9dlej3jn4kj50.mlsender.net';
-        $mail->Password = 'Pbe91MWt8495UWNk';
-        $mail->SMTPSecure = 'tls';
-        $mail->Port = 587;
-
-        $mail->setFrom($email);
-        $mail->addAddress($emailTo);
-
-        $mail->isHTML(true);
-
-        $mail->Subject = $subject;
-        $mail->Body = $message;
-
-        $mail->send(); */
-        /* catch(Exception $e) {
-        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-    } */
+</html>

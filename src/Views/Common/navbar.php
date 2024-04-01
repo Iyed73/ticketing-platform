@@ -1,5 +1,5 @@
 <?php
-
+include 'prefix.php';
 if (!isset($_SESSION['currency'])) {
     $_SESSION['currency'] = 'EUR';
 }
@@ -25,8 +25,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
                     </button>
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white ms-4 me-2" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                        <a href="index.php" class="nav-item nav-link active">Home</a>
-                        <a href="contact.php" class="nav-item nav-link ">Contact</a>
+                        <a href="<?= "{$prefix}/home"?>" class="nav-item nav-link active">Home</a>
+                        <a href="<?= "{$prefix}/contact" ?>" class="nav-item nav-link ">Contact</a>
                         <!-- todo: implement currency feature -->
                         <form id="currencyForm" method="post" action="setCurrency.php" class="me-3 d-inline-block">
                             <select class="currency-select" name="currency" id="currency" onchange="submitCurrencyForm()">
