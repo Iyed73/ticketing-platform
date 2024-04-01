@@ -21,9 +21,7 @@
                             <p><?php echo $event->shortDescription; ?></p>
                             <div class="d-flex justify-content-between flex-lg-wrap">
                                 <p class="text-dark fs-5 fw-bold mb-0">$<?php echo $event->ticketPrice; ?> </p>
-                                <?php 
-                                    require_once 'prefix.php';
-                                ?>
+                                <?php include 'prefix.php' ?>
                                 <a href="<?= "{$prefix}/event?id={$event->id}" ?>" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-eye me-2 text-primary"></i> View Event</a>
                             </div>
                         </div>

@@ -1,29 +1,30 @@
 <?php 
-require_once "../Controllers/includes/configSession.inc.php";
+require_once "src/Controllers/includes/configSession.inc.php";
 
 // Retrieve and unserialize session variables
 $event = unserialize($_SESSION["event"]) ?? [];
-
+$pathToComponents = "src/Views/";
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
-
-
     <head>
-        <title><?= $event->name ?> </title>
-        <?php include 'Common/header.php' ?>
+        <title><?= $event->name ?></title>
+        <?php require_once "{$pathToComponents}Common/header.php"; ?>
     </head>
 
     <body>
-        <?php include 'Common/loadingSpinner.php' ?>
+        <?php 
+        
+            require_once "{$pathToComponents}Common/loadingSpinner.php";
 
 
-        <?php include 'Common/navbar.php' ?>
-
-
-        <?php include 'Common/modalSearch.php' ?>
+            require_once "{$pathToComponents}Common/navbar.php";
+            
+            
+            require_once "{$pathToComponents}Common/modalSearch.php";
+            
+        ?>
 
         <!-- needs a workaround :( -->
         <br />
@@ -86,21 +87,20 @@ $event = unserialize($_SESSION["event"]) ?? [];
                     </div>
                 </div>
                 
-                <?php include 'EventPage/eventPageCarousel.php'; ?>
+                <?php require_once "{$pathToComponents}EventPage/eventPageCarousel.php"; ?>
             </div>
         </div>
     
 
-        <?php include 'Common/footer.php' ?>
+        <?php 
+            require_once "{$pathToComponents}Common/footer.php";
         
-        
-        <?php include 'Common/copyright.php' ?>
-        
+            require_once "{$pathToComponents}Common/copyright.php"; 
 
-        <?php include 'Common/backToTopButton.php' ?>
-        
+            require_once "{$pathToComponents}Common/backToTopButton.php";
 
-        <?php include 'Common/scripts.php' ?>
+            require_once "{$pathToComponents}Common/scripts.php";
+        ?>
     </body>
 
 </html>

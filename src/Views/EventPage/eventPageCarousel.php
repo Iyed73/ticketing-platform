@@ -2,7 +2,7 @@
 <div class="owl-carousel vegetable-carousel justify-content-center">
     <?php
 
-    require_once "../Controllers/includes/configSession.inc.php";
+    require_once "src/Controllers/includes/configSession.inc.php";
 
     // Retrieve and unserialize session variables
     $currentCategoryEvents = unserialize($_SESSION["currentCategoryEvents"]) ?? [];
@@ -25,7 +25,7 @@
                     <div class="d-flex justify-content-between flex-lg-wrap">
                         <p class="text-dark fs-5 fw-bold mb-0">$<?= $event->ticketPrice/100; ?></p>
                         <?php 
-                            require_once 'prefix.php';
+                            include 'prefix.php';
                         ?>
                         <a href="<?= "{$prefix}/event?id={$event->id}" ?>" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-eye me-2 text-primary"></i> View Event</a>
                     </div>

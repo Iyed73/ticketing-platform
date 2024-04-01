@@ -11,6 +11,6 @@ if (array_key_exists($uri, $routes)) {
     // if url is: "/event?id=4"--> $_GET['id'] will contain '4'
     require_once $routes[$uri];
 } else {
-    header("Location: {$prefix}/home");
+    header("Location: {$prefix}/");
     exit;
 }
