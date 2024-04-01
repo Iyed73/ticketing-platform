@@ -1,5 +1,5 @@
 <?php
-require_once("../Models/UserRepo.php");
+require_once("../../Models/UserRepo.php");
 class SignupController {
     private $firstName;
     private $lastName;

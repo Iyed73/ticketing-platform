@@ -1,7 +1,5 @@
 <?php
 require_once "src\Controllers\includes\configSession.inc.php";
-require_once "src\Views\SignupLogin\loginView.php";
-require_once "src\Views\SignupLogin\signupView.php";
 ?>
 <?php
 session_start();
@@ -68,7 +66,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
                     <button class="button" id="signup-open">Signup</button>
 
                 <?php else: ?>
-                    <form action="src\Controllers\logout.php" method="post">
+                    <form action="src\Controllers\signupLoginControllers\logout.php" method="post">
                         <button class="button" id="logout-btn">Logout</button>
                     </form>
                     <a href="#" class="my-auto">
@@ -79,4 +77,4 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
         </nav>
     </div>
 </div>
-<?php include 'src\Views\SignupLogin\signupLogin.php' ?>
+<?php include 'src\Views\SignupLogin\signupLoginView.php' ?>

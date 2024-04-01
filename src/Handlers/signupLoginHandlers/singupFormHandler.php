@@ -1,6 +1,7 @@
 <?php
 
-require_once ("signupController.php");
+require_once "..\..\Controllers\signupLoginControllers\signupController.php";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $signupcontroller = new signupController($_POST["firstname"], $_POST["lastname"], $_POST["email"], $_POST["password"]);
     $signupcontroller->sanitizeInput();
@@ -19,8 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     //other error handling can be added here
 
-
-    require_once ("includes/configSession.inc.php");
+    require_once ("C:\\xampp\htdocs\\ticketing-platform\src\Controllers\includes\configSession.inc.php");
 
     if ($errors) {
         $_SESSION["signup_errors"] = $errors;
@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION["signup_data"] = $signupData;
 
 
-        header("Location: ..\..\index.php?signup=failed");
+        header("Location: ..\..\..\index.php?signup=failed");
         die();
     }
 
@@ -41,9 +41,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $signupcontroller->addCustomer();
 
-    header("Location: ..\..\index.php?signup=success");
+    header("Location: ..\..\..\index.php?signup=success");
     die();
 } else {
-    header("Location: ..\..\index.php?notpost");
+    header("Location: ..\..\..\index.php?notpost");
     die();
 }

@@ -25,7 +25,7 @@
                     <div class="row g-4">
 
                         <div class="col-lg-7">
-                            <form action="src\Views\contactPage\contactForm.php" class="contact-form" method="POST">
+                            <form action="src\Handlers\contactFormHandlers\contactFormHandler.php" class="contact-form" method="POST">
                                 <input type="text" class="w-100 form-control border-0 py-3 mb-4" name="name"
                                     placeholder="Your Name" required>
                                 <input type="email" class="w-100 form-control border-0 py-3 mb-4" name="email"

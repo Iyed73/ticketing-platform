@@ -1,19 +1,20 @@
 
 <div class="form_container">
 
+    <!-- closing button for the form -->
     <i class="uil uil-times form_close"></i>
-    <!-- Login From -->
 
+    <!-- Login From -->
     <div class="form login_form">
-        <form id="loginForm" action="src\Controllers\loginFormHandler.php" method="post">
+        <form id="loginForm" action="src\Handlers\signupLoginHandlers\loginFormHandler.php" method="post">
             <h2>Login</h2>
 
+            <!-- displays error messages if there are any -->
             <?php if (isset($_SESSION["login_errors"])): ?>
                 <div class="error_box">
                     <?php checkLoginErrors(); ?>
                 </div>
-            <?php endif;
-            ?>
+            <?php endif;?>
 
 
             <div class="input_box">
@@ -45,23 +46,24 @@
             <div class="login_signup">Don't have an account? <a href="#" id="signup">Signup</a></div>
         </form>
 
-        <!-- <?php checkLoginSuccess(); ?> -->
     </div>
 
-    <!-- Signup From -->
 
+    <!-- Signup From -->
     <div class="form signup_form">
-        <form id="signupForm" action="src\Controllers\signupFormHandler.php" method="post">
+        <form id="signupForm" action="src\Handlers\signupLoginHandlers\singupFormHandler.php" method="post">
             <h2>Signup</h2>
 
+            <!-- displays error messages if there are any -->
             <?php if (isset($_SESSION["signup_errors"])): ?>
                 <div class="error_box">
                     <?php checkSignUpErrors(); ?>
                 </div>
-            <?php endif;
-            ?>
+            <?php endif;?>
+
 
             <div class="input_box">
+                <!-- autofill the input field with the previous value if there is one -->
                 <?php if (isset($_SESSION["signup_data"]["firstname"])) {
                     echo '<input id="first-name-signup" name="firstname" type="firstname" placeholder="Enter your firstname" value="' . $_SESSION["signup_data"]["firstname"] . '"/>';
 
@@ -111,9 +113,38 @@
             </div>
             <?php unset($_SESSION["signup_data"]); ?>
         </form>
-        <!-- <?php checkSignupSuccess(); ?> -->
     </div>
 </div>
 
 
 <script src="Static\JS\signupLoginScript.js"></script>
+
+
+<!-- functions that checks if there are any signup or login errors in the session and displays them-->
+<?php
+function checkLoginErrors(){
+    if(isset($_SESSION["login_errors"])){
+        $errors = $_SESSION["login_errors"];
+        echo "<br>";
+        foreach ($errors as $error){
+            echo "<p>$error</p>";
+        }
+
+        unset($_SESSION["login_errors"]);
+    }
+}
+?>
+
+<?php
+function checkSignupErrors(){
+    if(isset($_SESSION["signup_errors"])){
+        $errors = $_SESSION["signup_errors"];
+        echo "<br>";
+        foreach ($errors as $error){
+            echo "<p class=error-message>$error</p>";
+        }
+
+        unset($_SESSION["signup_errors"]);
+    }
+}
+?>
