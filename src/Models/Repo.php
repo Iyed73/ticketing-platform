@@ -16,7 +16,8 @@ abstract class Repo {
     public function findById($id) {
         $req = "SELECT * FROM {$this->tableName} where id = ?";
         $response = $this->db->prepare($req);
-        return $response->execute([$id]);
+        $response->execute([$id]);
+        return $response->fetch(PDO::FETCH_OBJ);
     }
 
     public function insert(array $data) {

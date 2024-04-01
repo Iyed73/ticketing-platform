@@ -1,34 +1,29 @@
+<?php 
+require_once "../Controllers/includes/configSession.inc.php";
+
+// Retrieve and unserialize session variables
+$event = unserialize($_SESSION["event"]) ?? [];
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
-    <?php 
-        //dummy event data
-
-        $event = [
-            "name"=> "Concert",
-            "category"=> "Music",
-            "ticketPrice" => 337,
-            "shortDescription" => "Experience the electrifying energy of live music at our concert! Immerse in the rhythm, lights, and the unforgettable atmosphere.",
-            "longDescription"=> "Immerse yourself in the electrifying atmosphere of our live concert. Feel the rhythm pulsate through the crowd as the stage lights dance. Witness the raw energy of the performers, their music resonating in perfect harmony with the audience’s excitement. It’s not just a concert, it’s an unforgettable experience of a lifetime.",
-            "image"=> "Static/Images/event-1.jpg",
-            ]
-
-    ?>
 
 
     <head>
-        <title><?php echo $event['name'] ?> </title>
-        <?php include 'src/Views/header.php' ?>
+        <title><?php echo $event->name ?> </title>
+        <?php include 'Common/header.php' ?>
     </head>
 
     <body>
-        <?php include 'src/Views/loadingSpinner.php' ?>
+        <?php include 'Common/loadingSpinner.php' ?>
 
 
-        <?php include 'src/Views/navbar.php' ?>
+        <?php include 'Common/navbar.php' ?>
 
 
-        <?php include 'src/Views/modalSearch.php' ?>
+        <?php include 'Common/modalSearch.php' ?>
 
         <!-- needs a workaround :( -->
         <br />
@@ -43,15 +38,15 @@
                             <div class="col-lg-6">
                                 <div class="border rounded">
                                     <a href="#">
-                                        <img src="<?php echo $event["image"] ?>" class="img-fluid rounded" alt="Image">
+                                        <img src="<?php echo $event->imagePath?>" class="img-fluid rounded" alt="Image">
                                     </a>
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                                <h4 class="fw-bold mb-3"><?php echo $event['name'] ?></h4>
-                                <p class="mb-3"><?php echo $event['category'] ?></p>
-                                <h5 class="fw-bold mb-3"><?php echo $event['ticketPrice']/100 ?> $</h5>
-                                <p class="mb-4"><?php echo $event['shortDescription'] ?></p>
+                                <h4 class="fw-bold mb-3"><?php echo $event->name ?></h4>
+                                <p class="mb-3"><?php echo $event->category ?></p>
+                                <h5 class="fw-bold mb-3"><?php echo $event->ticketPrice/100 ?> $</h5>
+                                <p class="mb-4"><?php echo $event->shortDescription ?></p>
                                 <div class="input-group quantity mb-5" style="width: 100px;">
                                     <div class="input-group-btn">
                                         <button class="btn btn-sm btn-minus rounded-circle bg-light border" >
@@ -78,7 +73,7 @@
                                 <div class="tab-content mb-5">
                                     <div class="tab-pane active" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
                                         <p>
-                                            <?php echo $event["longDescription"] ?>
+                                            <?php echo $event->longDescription ?>
                                         </p>
                                             
                                     </div>
@@ -88,21 +83,21 @@
                     </div>
                 </div>
                 
-                <?php include 'src/Views/EventPage/eventPageCarousel.php' ?>
+                <?php include 'EventPage/eventPageCarousel.php'; ?>
             </div>
         </div>
     
 
-        <?php include 'src/Views/footer.php' ?>
+        <?php include 'Common/footer.php' ?>
         
         
-        <?php include 'src/Views/copyright.php' ?>
-        
-
-        <?php include 'src/Views/backToTopButton.php' ?>
+        <?php include 'Common/copyright.php' ?>
         
 
-        <?php include 'src/Views/scripts.php' ?>
+        <?php include 'Common/backToTopButton.php' ?>
+        
+
+        <?php include 'Common/scripts.php' ?>
     </body>
 
 </html>
