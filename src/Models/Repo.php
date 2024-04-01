@@ -1,5 +1,5 @@
 <?php 
-require_once "../../Database/dbConnection.php";
+require_once "Database\dbConnection.php";
 abstract class Repo {
     protected $db;
     public function __construct(protected $tableName) {
@@ -9,13 +9,15 @@ abstract class Repo {
     public function findAll() {
         $req = "SELECT * FROM {$this->tableName}";
         $response = $this->db->query($req);
+        $response->execute();
         return  $response->fetchAll(PDO::FETCH_OBJ);
     }
 
     public function findById($id) {
         $req = "SELECT * FROM {$this->tableName} where id = ?";
         $response = $this->db->prepare($req);
-        return $response->execute([$id]);
+        $response->execute([$id]);
+        return $response->fetch(PDO::FETCH_OBJ);
     }
 
     public function insert(array $data) {

@@ -1,5 +1,5 @@
 <?php 
-require_once "Repo.php";
+require_once "src\Models\Repo.php";
 class EventRepo extends Repo {
     public function __construct() {
         parent::__construct('events');
@@ -21,13 +21,7 @@ class EventRepo extends Repo {
         return $response->fetchAll(PDO::FETCH_OBJ);
     }
     
-    public function getEventList() {
-        $req = "SELECT name FROM {$this->tableName}";
-        $response = $this->db->prepare($req);
-        $response->execute();
-        return $response->fetchAll(PDO::FETCH_OBJ);
-    }
-
+    
     public function deleteByName($eventName) {
         $req = "DELETE FROM {$this->tableName} WHERE name = :name";
         $response = $this->db->prepare($req);

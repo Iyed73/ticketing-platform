@@ -3,7 +3,7 @@ class dbConnection {
     private static $servername = "localhost"; // Change this if your MySQL server is running on a different host
     private static $username = "root"; 
     private static $password = ""; 
-    private static $database = "ticketing_platform"; 
+    private static $database = "tickety"; 
     private static $db = null;
 
     private function __construct() {
@@ -18,9 +18,10 @@ class dbConnection {
     
     public static function getConnection() {
         if (self::$db == null) {
-            new dbConnection();
+            new self(); // Corrected line: create a new instance of self
         }
         return self::$db;
     }
 
 }
+
