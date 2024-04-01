@@ -12,7 +12,7 @@ $event = unserialize($_SESSION["event"]) ?? [];
 
 
     <head>
-        <title><?php echo $event->name ?> </title>
+        <title><?= $event->name ?> </title>
         <?php include 'Common/header.php' ?>
     </head>
 
@@ -38,15 +38,17 @@ $event = unserialize($_SESSION["event"]) ?? [];
                             <div class="col-lg-6">
                                 <div class="border rounded">
                                     <a href="#">
-                                        <img src="<?php echo $event->imagePath?>" class="img-fluid rounded" alt="Image">
+                                        <img src="<?= $event->imagePath?>" class="img-fluid rounded" alt="Image">
                                     </a>
                                 </div>
                             </div>
                             <div class="col-lg-6">
-                                <h4 class="fw-bold mb-3"><?php echo $event->name ?></h4>
-                                <p class="mb-3"><?php echo $event->category ?></p>
-                                <h5 class="fw-bold mb-3"><?php echo $event->ticketPrice/100 ?> $</h5>
-                                <p class="mb-4"><?php echo $event->shortDescription ?></p>
+                                <h1 class="fw-bold mb-3"><?= $event->name ?></h1>
+                                <h4 class="mb-3 text-secondary">By <?= $event->organizer ?></h4>
+                                <p class="fs-5 fw-bold mb-4 text-primary">At <?= $event->venue ?></p>
+                                <p class="fs-4 fw-bold mb-4 text-primary"><?= $event->eventDate ?></p>
+                                <p class="fs-3 fw-bold mb-3 text-primary">$<?= $event->ticketPrice/100 ?></p>
+                                <p class="mb-4"><?= $event->shortDescription ?></p>
                                 <div class="input-group quantity mb-5" style="width: 100px;">
                                     <div class="input-group-btn">
                                         <button class="btn btn-sm btn-minus rounded-circle bg-light border" >
@@ -60,6 +62,7 @@ $event = unserialize($_SESSION["event"]) ?? [];
                                         </button>
                                     </div>
                                 </div>
+                                <p class="fs-4 fw-bold mb-3 text-danger">Remaining Tickets: <?= $event->availableTickets ?></p>
                                 <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Buy Tickets </a>
                             </div>
                             <div class="col-lg-12">
@@ -73,7 +76,7 @@ $event = unserialize($_SESSION["event"]) ?? [];
                                 <div class="tab-content mb-5">
                                     <div class="tab-pane active" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
                                         <p>
-                                            <?php echo $event->longDescription ?>
+                                            <?= $event->longDescription ?>
                                         </p>
                                             
                                     </div>

@@ -17,12 +17,13 @@
                 <div class="event-img">
                     <img src="<?= $event->imagePath ?>" class="img-fluid w-100 rounded-top" alt="">
                 </div>
-                <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;"><?php echo $event->category; ?></div>
+                <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;"><?php echo $event->category; ?> </div>
                 <div class="p-4 rounded-bottom">
                     <h4><?php echo $event->name; ?></h4>
+                    <p class="text-dark fs-6 fw-bold mb-2"> <?= $event->eventDate; ?></p>
                     <p><?php echo $event->shortDescription; ?></p>
                     <div class="d-flex justify-content-between flex-lg-wrap">
-                        <p class="text-dark fs-5 fw-bold mb-0">$ <?php echo $event->ticketPrice/100; ?></p>
+                        <p class="text-dark fs-5 fw-bold mb-0">$<?= $event->ticketPrice/100; ?></p>
                         <?php 
                             require_once 'prefix.php';
                         ?>
