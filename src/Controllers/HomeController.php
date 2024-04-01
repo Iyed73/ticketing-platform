@@ -1,6 +1,6 @@
 <?php
-require_once "../Models/EventRepo.php";
-require_once "../Models/CategoryRepo.php";
+require_once "src\Models\EventRepo.php";
+require_once "src\Models\CategoryRepo.php";
 
 class HomeController {
     public $events;
@@ -45,4 +45,4 @@ class HomeController {
 $homeController = new HomeController();
 $homeController->handleRequest();
 
-?>
+

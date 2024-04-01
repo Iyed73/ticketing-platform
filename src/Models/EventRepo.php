@@ -1,5 +1,5 @@
 <?php 
-require_once "Repo.php";
+require_once "src\Models\Repo.php";
 class EventRepo extends Repo {
     public function __construct() {
         parent::__construct('events');
