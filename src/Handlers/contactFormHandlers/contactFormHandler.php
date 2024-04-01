@@ -1,6 +1,7 @@
 <?php
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Get form data
     $name = $_POST['name'];
     $email = $_POST['email'];
     $subject = $_POST['subject'];
@@ -8,12 +9,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $date = date('Y-m-d H:i:s');
     $status = 'pending';
 
-
     try {
         require_once "..\..\Models\FormSubmissionsRepo.php";
-
+        
         $formSubmissionsRepo = new FormSubmissionsRepo();
-        $formSubmissionsRepo->insertFormSubmission($email, $subject, $message, $status, $date);
+        $formSubmissionsRepo->insertFormSubmission($name,$email, $subject, $message, $date);
 
         header("Location: /ticketing-platform/contact.php?mailsend");
         die("query successful");

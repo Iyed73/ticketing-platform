@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // shows the delete button when at least one checkbox is checked
   var checkboxes = document.querySelectorAll(".custom-checkbox");
-  const deleteAllSelectedButton = document.querySelector(
+  var deleteAllSelectedButton = document.querySelector(
     ".deleteAllSelectedButton"
   );
 
@@ -42,62 +42,42 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
+
+  // Delete button for each submission
+  var deleteButtons = document.querySelectorAll(".delete");
+  deleteButtons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      var submissionId = this.getAttribute("data-id");
+      var confirmation = confirm(
+        "Are you sure you want to delete this submission?"
+      );
+      if (confirmation) {
+        // Redirect to delete_submission.php with submission ID
+        window.location.href =
+          "src/Handlers/delete_submission.php?id=" + submissionId;
+      }
+    });
+  });
+
+  // Delete button for all selected submissions
+
+  deleteAllSelectedButton.addEventListener("click", function () {
+    const selectedCheckboxes = document.querySelectorAll(
+      ".custom-checkbox:checked"
+    );
+    const selectedSubmissionIds = Array.from(selectedCheckboxes).map(function (
+      checkbox
+    ) {
+      return checkbox.getAttribute("data-id");
+    });
+    const confirmation = confirm(
+      "Are you sure you want to delete the selected submissions?"
+    );
+    if (confirmation) {
+      // Redirect to delete_submission.php with submission IDs
+      window.location.href =
+        "src/Handlers/delete_submission.php?id=" +
+        selectedSubmissionIds.join(",");
+    }
+  });
 });
-
-/* function addSubmission() {
-  var tableBody = document.querySelector("#dataTable tbody");
-  var newRow = document.createElement("tr");
-
-  // Add cells to the row
-  newRow.innerHTML = `
-            <td>
-                <div class="form-check">
-                    <input class="form-check-input custom-checkbox" type="checkbox" value="">
-                    <label class="form-check-label"></label>
-                </div>
-            </td>
-            <td>New ID</td>
-            <td>New Email</td>
-            <td>New Subject</td>
-            <td>New Date</td>
-            <td>New Time</td>
-            <td>New Status</td>
-            <td>
-                <a href="#submissionDetailsModal" class="details" data-toggle="modal">
-                    <i class="uil-file-contract"></i>
-                </a>
-            </td>
-            <td>
-                <a href="#deleteSubmissionModal" class="delete" data-toggle="modal">
-                    <i class="uil-trash"></i>
-                </a>
-            </td>
-        `;
-
-  tableBody.appendChild(newRow);
-}
-// Function to fetch latest data from server and update HTML table
-function updateTable() {
-  fetch('fetch_latest_rows.php')
-      .then(response => response.json())
-      .then(data => {
-          const tableBody = document.getElementById('tableBody');
-          tableBody.innerHTML = ''; // Clear existing rows
-          data.forEach(row => {
-              const newRow = `<tr><td>${row.id}</td><td>${row.email}</td><td>${row.subject}</td><td>${row.message}</td><td>${row.status}</td><td>${row.date}</td></tr>`;
-              tableBody.innerHTML += newRow;
-          });
-      })
-      .catch(error => console.error('Error fetching data:', error));
-}
-
-// Call the updateTable function initially to populate the table
-updateTable();
-
-// Set up a timer to periodically fetch updates
-setInterval(updateTable, 5000); // Fetch updates every 5 seconds (adjust as needed) */
-
-
-
-
-

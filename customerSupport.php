@@ -1,3 +1,6 @@
+<?php
+    require_once "Database\dbConnection.php"; 
+    ?>
 <!DOCTYPE html>
 <html lang="en">
 

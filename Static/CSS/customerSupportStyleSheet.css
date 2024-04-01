@@ -212,3 +212,6 @@ table.table .avatar {
 .info{
 	color:black;
 }
+.delete i:hover{
+	cursor:pointer;
+}
