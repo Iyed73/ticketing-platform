@@ -3,6 +3,7 @@ require_once "src/Controllers/includes/configSession.inc.php";
 
 // Retrieve and unserialize session variables
 $event = unserialize($_SESSION["event"]) ?? [];
+$currentCategoryEvents = unserialize($_SESSION["currentCategoryEvents"]) ?? [];
 $pathToComponents = "src/Views/";
 ?>
 
@@ -87,7 +88,13 @@ $pathToComponents = "src/Views/";
                     </div>
                 </div>
                 
-                <?php require_once "{$pathToComponents}EventPage/eventPageCarousel.php"; ?>
+
+                
+                <?php 
+                    if(count($currentCategoryEvents) > 0) {
+                        require_once "{$pathToComponents}EventPage/eventPageCarousel.php"; 
+                    } 
+                ?>
             </div>
         </div>
     

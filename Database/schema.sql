@@ -87,4 +87,4 @@ VALUES
     ('Concert', 'Gammarth', 
     'Experience the electrifying energy of live music at our concert! Immerse in the rhythm, lights, and the unforgettable atmosphere.',
     'Immerse yourself in the electrifying atmosphere of our live concert. Feel the rhythm pulsate through the crowd as the stage lights dance. Witness the raw energy of the performers, their music resonating in perfect harmony with the audience’s excitement. It’s not just a concert, it’s an unforgettable experience of a lifetime.',
-    'Music Events LLC', 500, 336, '2023-03-09', '2024-03-19', '337', 'Static/Images/event-1.jpg', 'Concerts');
+    'Music Events LLC', 500, 336, '2023-03-09', '2024-05-09', '337', 'Static/Images/event-1.jpg', 'Concerts');

@@ -18,7 +18,7 @@ class EventPageController {
 
         $this->event = $this->eventTable->findById($_GET['id']);
 
-        $this->currentCategoryEvents = $this->eventTable->getEventsByCategory($this->event->category);
+        $this->currentCategoryEvents = $this->eventTable->getSimilarEvents($this->event->category, $this->event->id, 7);
     }
     
     public function handleRequest(){

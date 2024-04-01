@@ -13,10 +13,11 @@ class EventRepo extends Repo {
         return $response->fetch(PDO::FETCH_OBJ);
     }
 
-    public function getEventsByCategory($eventCategory, $amount = 1) {
-        $req = "SELECT * FROM {$this->tableName} where category = :category ORDER BY RAND() LIMIT {$amount}";
+    public function getSimilarEvents($eventCategory, $currentEventId, $amount = 1,) {
+        $req = "SELECT * FROM {$this->tableName} where category = :category AND id != :id ORDER BY RAND() LIMIT {$amount}";
         $response = $this->db->prepare($req);
         $response->bindParam(':category', $eventCategory);
+        $response->bindParam(':id', $currentEventId);
         $response->execute();
         return $response->fetchAll(PDO::FETCH_OBJ);
     }

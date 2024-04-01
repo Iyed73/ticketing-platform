@@ -48,6 +48,9 @@
                                                 <h4>
                                                     <?= $event->name ?>
                                                 </h4>
+                                                <p class="text-dark fs-6 fw-bold mb-2">
+                                                    <?= $event->eventDate; ?>
+                                                </p>
                                                 <p>
                                                     <?= $event->shortDescription ?>
                                                 </p>
@@ -94,6 +97,9 @@
                                                     <h4>
                                                         <?= $event->name ?>
                                                     </h4>
+                                                    <p class="text-dark fs-6 fw-bold mb-2">
+                                                        <?= $event->eventDate; ?>
+                                                    </p>
                                                     <p>
                                                         <?= $event->shortDescription ?>
                                                     </p>
