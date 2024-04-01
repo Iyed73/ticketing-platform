@@ -1,8 +1,12 @@
 <?php
+include 'prefix.php';
 
 
 $routes = [
-    '/home' => 'Controllers/HomeController.php',
-    '/login' => 'Controller/LoginController.php',
-    '/register' => 'Controller/RegisterController.php',
+    "{$prefix}/" => 'src/Controllers/HomeController.php',
+    "{$prefix}/home" => 'src/Controllers/HomeController.php',
+    "{$prefix}/login" => 'src/Controller/LoginController.php',
+    "{$prefix}/register" => 'src/Controller/RegisterController.php',
+    "{$prefix}/event" => 'src/Controllers/EventPageController.php',
 ];
+
