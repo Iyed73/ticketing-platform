@@ -4,8 +4,11 @@ include_once "src/routes/routes.php";
 
 $uri = $_SERVER['REQUEST_URI'];
 
-if ($uri === '/') {
-    header('Location: /home');
+
+
+
+if ($uri === "{$prefix}/") {
+    header("Location: {$prefix}/home");
     exit;
 }
 
