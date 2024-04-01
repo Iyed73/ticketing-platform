@@ -1,4 +1,4 @@
-CREATE TABLE users (
+CREATE TABLE users ( 
     id INT AUTO_INCREMENT PRIMARY KEY,
     firstname VARCHAR(255) NOT NULL,
     lastname VARCHAR(255) NOT NULL,
@@ -8,6 +8,34 @@ CREATE TABLE users (
     role ENUM('admin', 'customer') DEFAULT 'customer',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE categories (
+  name VARCHAR(255) NOT NULL PRIMARY KEY
+);
+
+CREATE TABLE events (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) UNIQUE NOT NULL,
+  venue VARCHAR(255) NOT NULL,
+  eventDate DATE NOT NULL,
+  shortDescription VARCHAR(1000) NOT NULL,
+  longDescription VARCHAR(10000) NOT NULL,
+  organizer VARCHAR(255) NOT NULL,
+  totalTickets INT NOT NULL,
+  availableTickets INT NOT NULL,
+
+  startSellTime DATE NOT NULL,
+  endSellTime DATE NOT NULL,
+
+  # Ticket Price is an integer in cents to prevent floating point errors
+  ticketPrice INT NOT NULL,
+  imagePath VARCHAR(255) NOT NULL
+);
+
+
+ALTER TABLE events ADD category VARCHAR(255) NOT NULL;
+ALTER TABLE events ADD CONSTRAINT fk_category FOREIGN KEY (category) REFERENCES categories(name);
+
 
 INSERT INTO users (firstname, lastname, username, email, pwd, role) VALUES ('John', 'Doe', 'admin0', 'johndoe@gmail.com', '$2y$12$WFzkKn9UtpBWS7HYXH8n/e/c0IornFVFDrNRpEXGx4RGR7KuxK5KG', 'admin');
 
