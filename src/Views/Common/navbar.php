@@ -19,13 +19,13 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
             </div>
             <div class="container px-0">
                 <nav class="navbar navbar-light bg-white navbar-expand-xl">
-                    <a href="index.php" class="navbar-brand"><h1 class="text-primary display-6">Tickety</h1></a>
+                    <a href="home" class="navbar-brand"><h1 class="text-primary display-6">Tickety</h1></a>
                     <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                         <span class="fa fa-bars text-primary"></span>
                     </button>
                     <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                         <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white ms-4 me-2" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                        <a href="index.php" class="nav-item nav-link active">Home</a>
+                        <a href="home" class="nav-item nav-link active">Home</a>
                         <a href="contact.php" class="nav-item nav-link ">Contact</a>
                         <!-- todo: implement currency feature -->
                         <form id="currencyForm" method="post" action="setCurrency.php" class="me-3 d-inline-block">
@@ -36,7 +36,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
                             </select>
                         </form>
                         <?php if ($role === "customer") : // If user is logged in as a customer ?>
-                            <a href="#" class="nav-item nav-link">Manage Tickets</a>
+                            <a href="view-tickets" class="nav-item nav-link">Manage Tickets</a>
                             <a href="#" class="nav-item nav-link">Customer Support</a>
                         <?php elseif ($role === "admin") : // If user is logged in as an admin?>
                             <a href="#" class="nav-item nav-link">Dashboard</a>
