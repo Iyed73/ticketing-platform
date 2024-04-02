@@ -41,13 +41,14 @@ CREATE TABLE events (
   organizer VARCHAR(255) NOT NULL,
   totalTickets INT NOT NULL,
   availableTickets INT NOT NULL,
-
+  
   startSellTime DATE NOT NULL,
   eventDate DATE NOT NULL,
 
   # Ticket Price is an integer in cents to prevent floating point errors
   ticketPrice INT NOT NULL,
-  imagePath VARCHAR(255) NOT NULL
+  imagePath VARCHAR(255) NOT NULL,
+  FULLTEXT KEY(shortDescription, longDescription, name, venue, organizer)
 );
 
 CREATE TABLE orders (
