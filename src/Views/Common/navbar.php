@@ -1,4 +1,7 @@
 <?php
+require_once "src\Controllers\includes\configSession.inc.php";
+
+session_start();
 
 if (!isset($_SESSION['currency'])) {
     $_SESSION['currency'] = 'EUR';
@@ -8,7 +11,7 @@ $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
 ?>
 
-<div class="container-fluid fixed-top">
+<div class="container-fluid fixed-top" id="navbar-container">
     <div class="container topbar bg-primary d-none d-lg-block">
         <div class="d-flex justify-content-between">
             <div class="top-info ps-2">
@@ -39,29 +42,33 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
                 <form id="currencyForm" method="post" action="setCurrency.php" class="me-3 d-inline-block">
                     <select class="currency-select" name="currency" id="currency" onchange="submitCurrencyForm()">
                         <option value="EUR" <?php if ($_SESSION['currency'] == 'EUR')
-                            echo 'selected'; ?>>Euro (€)
+                            echo 'selected'; ?> >Euro (€)
                         </option>
                         <option value="USD" <?php if ($_SESSION['currency'] == 'USD')
-                            echo 'selected'; ?>>USD ($)</option>
-                        <option value="GBP" <?php if ($_SESSION['currency'] == 'GBP')
-                            echo 'selected'; ?>>Pound (£)
+                            echo 'selected'; ?> >USD ($)
                         </option>
+                        <option value="GBP" <?php if ($_SESSION['currency'] == 'GBP')
+                            echo 'selected'; ?> >Pound
+                            (£)</option>
                     </select>
                 </form>
-                <?php if ($role === "customer"): // If user is logged in as a customer  ?>
+                <?php if ($role === "customer"): // If user is logged in as a customer     ?>
                     <a href="#" class="nav-item nav-link">Manage Tickets</a>
                     <a href="#" class="nav-item nav-link">Customer Support</a>
-                <?php elseif ($role === "admin"): // If user is logged in as an admin ?>
+                <?php elseif ($role === "admin"): // If user is logged in as an admin    ?>
                     <a href="#" class="nav-item nav-link">Dashboard</a>
                 <?php endif; ?>
 
             </div>
             <div class="collapse navbar-collapse bg-white justify-content-end" id="navbarCollapse">
-                <?php if (!$user_id): // If user is not logged in  ?>
-                    <a href="#" class="nav-item nav-link">Register</a>
-                    <a href="#" class="nav-item nav-link">Login</a>
+                <?php if (!$user_id): // If user is not logged in   ?>
+                    <button class="button" id="login-open">Login</button>
+                    <button class="button" id="signup-open">Signup</button>
+
                 <?php else: ?>
-                    <a href="#" class="nav-item nav-link">Logout</a>
+                    <form action="src\Controllers\signupLoginControllers\logout.php" method="post">
+                        <button class="button" id="logout-btn">Logout</button>
+                    </form>
                     <a href="#" class="my-auto">
                         <i class="fas fa-user fa-2x"></i>
                     </a>
@@ -70,3 +77,5 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
         </nav>
     </div>
 </div>
+
+<?php include 'src\Views\SignupLogin\signupLoginView.php' ?>

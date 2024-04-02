@@ -37,8 +37,8 @@ class HomeController {
         $_SESSION["events"] = serialize($this->events);
         $_SESSION["categories"] = serialize($this->categories);
         $_SESSION["eventsByCategory"] = serialize($this->eventsByCategory);
-        //require_once "src/Views/prefix.php";
-        //header("Location: {$prefix}/Home");
+        
+        
         require_once "src/Views/home.php";
         die();
     }
