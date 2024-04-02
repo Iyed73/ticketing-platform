@@ -11,11 +11,11 @@
 
     <?php include 'src/Views/modalSearch.php' ?>
 
-    
+
     <div class="container-fluid page-header py-5 " style="background-color:#293049">
         <h1 class="text-center text-white display-6">Contact</h1>
     </div>
-    
+
 
     <div class="container-fluid contact py-5">
         <div class="container py-5">
@@ -24,11 +24,16 @@
 
                     <div class="col-lg-7">
                         <form action="src\Views\contactPage\contactForm.php" class="contact-form" method="POST">
-                            <input type="text" class="w-100 form-control border-0 py-3 mb-4" name="name" placeholder="Your Name" required>
-                            <input type="email" class="w-100 form-control border-0 py-3 mb-4" name="email" placeholder="Enter Your Email" required>
-                            <input type="text" class="w-100 form-control border-0 py-3 mb-4" name="subject" placeholder="Enter the Subject" required>
-                            <textarea class="w-100 form-control border-0 mb-4" rows="5" cols="10" name="message" placeholder="Your Message" required></textarea>
-                            <button class="w-100 btn form-control border-secondary py-3 bg-white text-primary " type="submit">Submit</button>
+                            <input type="text" class="w-100 form-control border-0 py-3 mb-4" name="name"
+                                placeholder="Your Name" required>
+                            <input type="email" class="w-100 form-control border-0 py-3 mb-4" name="email"
+                                placeholder="Enter Your Email" required>
+                            <input type="text" class="w-100 form-control border-0 py-3 mb-4" name="subject"
+                                placeholder="Enter the Subject" required>
+                            <textarea class="w-100 form-control border-0 mb-4" rows="5" cols="10" name="message"
+                                placeholder="Your Message" required></textarea>
+                            <button class="w-100 btn form-control border-secondary py-3 bg-white text-primary "
+                                type="submit">Submit</button>
                         </form>
                     </div>
                     <div class="col-lg-5">
@@ -60,13 +65,13 @@
     </div>
 
     <?php include 'src/Views/footer.php' ?>
-        
-        
+
+
     <?php include 'src/Views/copyright.php' ?>
-        
+
 
     <?php include 'src/Views/backToTopButton.php' ?>
-        
+
 
     <?php include 'src/Views/scripts.php' ?>
 

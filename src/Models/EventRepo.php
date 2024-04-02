@@ -23,6 +23,16 @@ class EventRepo extends Repo {
     }
     
     
+    public function getResults($searchDescription) {
+        $req = "SELECT * FROM {$this->tableName} 
+        WHERE MATCH (shortDescription, longDescription, name, venue, organizer)
+        AGAINST (:searchTerm IN NATURAL LANGUAGE MODE);";
+        $response = $this->db->prepare($req);
+        $response->bindParam(':searchTerm', $searchDescription);
+        $response->execute();
+        return $response->fetchAll(PDO::FETCH_OBJ);
+    }
+
     public function deleteByName($eventName) {
         $req = "DELETE FROM {$this->tableName} WHERE name = :name";
         $response = $this->db->prepare($req);

@@ -209,7 +209,7 @@ a {
   text-decoration: none;
 }
 a:hover {
-  color: #679d06;
+  color: #f75c7d;
 }
 a:not([href]):not([class]),
 a:not([href]):not([class]):hover {
@@ -1846,7 +1846,7 @@ progress {
 .form-control:focus {
   color: #747d88;
   background-color: #fff;
-  border-color: #c0e284;
+  border-color: #f75c7d;
   outline: 0;
   box-shadow: 0 0 0 0.25rem rgba(247, 92, 125, 0.25);
 }
@@ -3638,7 +3638,7 @@ fieldset:disabled .btn {
 }
 .nav-link:hover,
 .nav-link:focus {
-  color: #679d06;
+  color: var(--bs-secondary);
 }
 .nav-link.disabled {
   color: #6c757d;
@@ -4879,7 +4879,7 @@ fieldset:disabled .btn {
 }
 .btn-close:focus {
   outline: 0;
-  box-shadow: 0 0 0 0.25rem rgba(129, 196, 8, 0.25);
+  box-shadow: 0 0 0 0.25rem rgba(247, 92, 125, .25);
   opacity: 1;
 }
 .btn-close:disabled,
