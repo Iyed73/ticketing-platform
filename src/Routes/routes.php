@@ -8,5 +8,9 @@ $routes = [
     "{$prefix}/login" => 'src/Controller/LoginController.php',
     "{$prefix}/register" => 'src/Controller/RegisterController.php',
     "{$prefix}/event" => 'src/Controllers/EventPageController.php',
+    "{$prefix}/reserve" => 'src/Controllers/EventReservationController.php',
+    "{$prefix}/payment" => 'src/Controllers/PaymentController.php',
+    "{$prefix}/cancel" => 'src/Controllers/CancelReservationController.php',
+    "{$prefix}/view-tickets" => 'src/Controllers/TicketsPageController.php',
 ];
 
