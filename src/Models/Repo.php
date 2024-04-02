@@ -20,6 +20,18 @@ abstract class Repo {
         return $response->fetch(PDO::FETCH_OBJ);
     }
 
+    public function insert(array $data) {
+        $keys = array_keys($data);
+        $keysString = implode(', ', $keys);
+        $params = array_fill(0, count($keys),'?');
+        $paramsString = implode(', ', $params);
+
+        $request = "INSERT INTO `{$this->tableName}` ($keysString) VALUES ($paramsString)";
+        $response = $this->db->prepare($request);
+
+        return $response->execute(array_values($data));
+    }
+
     public function edit(array $data, $eventId) {
         $sets = [];
         foreach ($data as $key => $value) {

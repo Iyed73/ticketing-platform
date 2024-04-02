@@ -1,5 +1,6 @@
 <?php
 require_once ("src/Models/UserRepo.php");
+require_once ("src/Models/EventRepo.php");
 include("prefix.php");
 
 class eventAdditionController{
@@ -64,7 +65,8 @@ class eventAdditionController{
             'organizer' => $this -> organizer,
             'totalTickets' => $this -> totalTickets,
             'availableTickets' => $this -> availableTickets,
-            'ticketPrice' => $this -> ticketPrice
+            'ticketPrice' => $this -> ticketPrice,
+            'category' => "Theater",
         ]);
     }
 
@@ -115,7 +117,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 }
 
 else{
-    require_once "src/Views/Dashboard/eventAdditionView.php";
+    require_once "src/Views/Dashboard/eventAdditionForm.php";
    /* header("Location: src/Views/Dashboard/eventAdditionView.php");*/
-    die();
 }
