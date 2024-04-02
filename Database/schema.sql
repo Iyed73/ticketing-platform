@@ -6,19 +6,16 @@ USE Tickety;
 CREATE TABLE form_submissions (
   id INT AUTO_INCREMENT,
   name VARCHAR(255),
-  email VARCHAR(255),
   subject VARCHAR(255),
   message TEXT,
-  dateSubmission DATETIME,
-  status ENUM('pending', 'resolved', 'dismissed'),
+  date DATETIME,
   PRIMARY KEY (id)
 );
 
-CREATE TABLE users ( 
+=CREATE TABLE users ( 
     id INT AUTO_INCREMENT PRIMARY KEY,
     firstname VARCHAR(255) NOT NULL,
     lastname VARCHAR(255) NOT NULL,
-    username VARCHAR(255) UNIQUE NOT NULL,
     email VARCHAR(255) NOT NULL,
     pwd VARCHAR(255) NOT NULL,
     role ENUM('admin', 'customer') DEFAULT 'customer',
@@ -28,6 +25,7 @@ CREATE TABLE users (
 CREATE TABLE categories (
   name VARCHAR(255) NOT NULL PRIMARY KEY
 );
+
 
 CREATE TABLE events (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -69,4 +67,5 @@ ALTER TABLE tickets ADD orderID INT NOT NULL;
 ALTER TABLE tickets ADD CONSTRAINT fk_eventID FOREIGN KEY (eventID) REFERENCES events(id);
 ALTER TABLE tickets ADD CONSTRAINT fk_orderID FOREIGN KEY (orderID) REFERENCES orders(id);
 
-INSERT INTO users (firstname, lastname, username, email, pwd, role) VALUES ('John', 'Doe', 'admin0', 'johndoe@gmail.com', '$2y$12$WFzkKn9UtpBWS7HYXH8n/e/c0IornFVFDrNRpEXGx4RGR7KuxK5KG', 'admin');
+INSERT INTO users (firstname, lastname, email, pwd, role) VALUES ('John', 'Doe', 'johndoe@gmail.com', '$2y$12$WFzkKn9UtpBWS7HYXH8n/e/c0IornFVFDrNRpEXGx4RGR7KuxK5KG', 'admin');
+

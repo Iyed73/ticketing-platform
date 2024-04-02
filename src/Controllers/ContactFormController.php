@@ -41,7 +41,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $name = $_POST["name"];
     $subject = $_POST["subject"];
     $message = $_POST["message"];
+    $date = date('Y-m-d H:i:s');
+
     $controller = new ContactFormController($name, $subject, $message);
-    $response = $controller->handleRequest();
+    /* $response = $controller->handleRequest(); */
+    
+    try {
+        require_once "src\Models\FormSubmissionsRepo.php";
+        
+        $formSubmissionsRepo = new FormSubmissionsRepo();
+        $formSubmissionsRepo->insertFormSubmission($name, $subject, $message, $date);
+
+        header("Location: /ticketing-platform/contact?mailsend");
+        die("query successful");
+    } catch (PDOException $e) {
+        die("query failed: " . $e->getMessage());
+    }
 }
-require_once "src\Views\contactPage\contactForm.php";
+
+require_once "src\Views\contactForm.php";
