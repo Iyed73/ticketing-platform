@@ -1,7 +1,9 @@
 <?php
 
 require_once "src\Models\FormSubmissionsRepo.php";
+require_once "src\Controllers\includes\configSession.inc.php";
 
+$role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
 class CustomerSupportController {
 
     public $contactForms;
@@ -23,7 +25,10 @@ class CustomerSupportController {
         die();
     }
 }
-
+if ($role != 'admin') {
+    header("Location: /ticketing-platform/home");
+    exit;
+}
 $customerSupportController = new CustomerSupportController();
 $customerSupportController->handleRequest();
 

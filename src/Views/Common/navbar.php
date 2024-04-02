@@ -37,7 +37,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
                     data-bs-toggle="modal" data-bs-target="#searchModal"><i
                         class="fas fa-search text-primary"></i></button>
                 <a href="<?= "{$prefix}/home" ?>" class="nav-item nav-link active">Home</a>
-                <a href="<?= "{$prefix}/contact" ?>" class="nav-item nav-link ">Contact</a>
+                <?php if ($role === "customer" || !$user_id): // Don't show if user is admin     ?>
+                    <a href="<?= "{$prefix}/contact" ?>" class="nav-item nav-link ">Contact</a>
+                <?php endif; ?>
 
                 <form id="currencyForm" method="post" action="setCurrency.php" class="me-3 d-inline-block">
                     <select class="currency-select" name="currency" id="currency" onchange="submitCurrencyForm()">
@@ -54,9 +56,9 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
                 </form>
                 <?php if ($role === "customer"): // If user is logged in as a customer     ?>
                     <a href="#" class="nav-item nav-link">Manage Tickets</a>
-                    <a href="<?= "{$prefix}/customerSupport"?>" class="nav-item nav-link">Customer Support</a>
                 <?php elseif ($role === "admin"): // If user is logged in as an admin    ?>
                     <a href="#" class="nav-item nav-link">Dashboard</a>
+                    <a href="<?= "{$prefix}/customerSupport" ?>" class="nav-item nav-link">Customer Support</a>
                 <?php endif; ?>
 
             </div>
