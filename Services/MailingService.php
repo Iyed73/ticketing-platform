@@ -56,3 +56,4 @@ function generateSignUpMessageText($username){
 }
 
 //add other message generation functions here
+
