@@ -1,27 +1,41 @@
 <?php
-require_once("../Models/EventReservationModel.php");
+require_once("src/Models/EventReservationModel.php");
+require_once("src/Models/EventRepo.php");
+
 
 class EventReservationController {
-    private EventReservationModel $model;
+    private EventReservationModel $eventReservationModel;
+    private EventRepo $eventModel;
+
 
     public function __construct() {
-        $this->model = new EventReservationModel();
+        $this->eventReservationModel = new EventReservationModel();
+        $this->eventModel = new EventRepo();
     }
 
     public function handleReservationRequest($eventId, $userId, $quantity) {
-        $reservationResult = $this->model->reserveTickets($eventId, $userId, $quantity);
-        if ($reservationResult === true) {
-            $reservationId = $this->model->getReservationIdForUser($userId);
-            if ($reservationId !== null) {
-                session_start();
-                $_SESSION["reservation_id"] = $reservationId;
+        if (!$this->eventModel->isEventOnSellTime($eventId)) {
+            $_SESSION["error"] = "Tickets are not on sale yet.";
+            header("Location: event?id=" . urlencode($eventId));
+            exit();
+        }
 
-                header("Location: /payment?reservation_id=" . urlencode($reservationId));
+        $reservationResult = $this->eventReservationModel->reserveTickets($eventId, $userId, $quantity);
+        if ($reservationResult === true) {
+            $reservationId = $this->eventReservationModel->getReservationId($eventId, $userId);
+            if ($reservationId !== null) {
+                $_SESSION["reservation_id"] = $reservationId;
+                header("Location: payment?reservation_id=" . urlencode($reservationId));
             } else {
-                header("Location: /event?event_id=" . urlencode($eventId));
+                http_response_code(402);
+                exit();
+
+                header("Location: event?id=" . urlencode($eventId));
             }
         } else {
-            header("Location: /event?event_id=" . urlencode($eventId));
+
+            $_SESSION["error"] = $reservationResult;
+            header("Location: event?id=" . urlencode($eventId));
         }
         exit();
     }

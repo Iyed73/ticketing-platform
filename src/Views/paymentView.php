@@ -1,32 +1,30 @@
+<?php
+$pathToComponents = "src/Views/";
+include 'prefix.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <?php include 'header.php' ?>
-        <link href="../../lib/lightbox/css/lightbox.min.css" rel="stylesheet">
-        <link href="../../lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-
-
-        <link href="../../Static/CSS/bootstrap.min.css" rel="stylesheet">
-
-        <link href="../../Static/CSS/styles.css" rel="stylesheet">    </head>
+        <?php require_once "{$pathToComponents}Common/header.php"; ?>
     </head>
 
     <body>
 
+        <?php include "{$pathToComponents}Common/loadingSpinner.php" ?>
 
-        <?php include 'navbar.php' ?>
+        <?php include "{$pathToComponents}Common/navbar.php" ?>
 
-        <?php include 'modalSearch.php' ?>
+        <?php include "{$pathToComponents}Common/modalSearch.php" ?>
 
         <?php include 'paymentForm.php' ?>
 
-        <?php include 'footer.php' ?>
+        <?php include "{$pathToComponents}Common/footer.php" ?>
 
 
-        <?php include 'copyright.php' ?>
+        <?php include "{$pathToComponents}Common/copyright.php" ?>
 
 
-        <?php include 'scripts.php'?>
+        <?php include "{$pathToComponents}Common/scripts.php"?>
     </body>
 
 </html>

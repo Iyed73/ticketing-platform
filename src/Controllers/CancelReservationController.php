@@ -1,5 +1,6 @@
 <?php
-require_once "../Models/EventReservationModel.php";
+require_once "src/Models/EventReservationModel.php";
+
 
 class CancelReservationController {
     private EventReservationModel $eventReservationModel;
@@ -14,8 +15,7 @@ class CancelReservationController {
         }
 
         $this->eventReservationModel->cancelReservation($reservationId);
-
-        header("Location: /home");
+        header("Location: home");
     }
 }
 

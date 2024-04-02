@@ -1,14 +1,22 @@
+<?php
+$reservation_id = $_GET["reservation_id"] ?? '';
+
+$error = $_SESSION["error"] ?? null;
+unset($_SESSION["error"]);
+?>
 <div class="container py-5">
     <div style="margin-top: 20vh;"></div>
-    <form method="post" action="../Controllers/CancelReservationController.php" class="text-center mb-5">
+    <?php if ($error): ?>
+        <div class="alert alert-danger text-center mb-5" role="alert">
+            <?php echo $error; ?>
+        </div>
+    <?php endif; ?>
+    <form method="post" action="cancel"  class="text-center mb-5">
+        <input type="hidden" name="reservation_id" value="<?php echo $reservation_id; ?>">
         <button type="submit" name="cancel" class="btn btn-secondary mb-3 text-white">Cancel</button>
     </form>
     <h2>Enter Client Information</h2>
-    <form method="post" action="../Controllers/PaymentController.php">
-        <?php
-        $quantity = $_GET["quantity"] ?? 1;
-        $reservation_id = $_GET["reservation_id"] ?? '';
-        ?>
+    <form method="post" action="payment">
         <input type="hidden" name="reservation_id" value="<?php echo $reservation_id; ?>">
         <?php
         for ($i = 1; $i <= $quantity; $i++) {

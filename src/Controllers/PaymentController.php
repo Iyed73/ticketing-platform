@@ -1,6 +1,6 @@
 <?php
-require_once "../Models/EventReservationModel.php";
-require_once "../Models/TicketManagementModel.php";
+require_once "src/Models/EventReservationModel.php";
+require_once "src/Models/TicketManagementModel.php";
 
 class PaymentController {
 
@@ -15,16 +15,16 @@ class PaymentController {
     public function handleGetRequest($userId, $reservationId) {
         if ($this->eventReservationModel->isReservationExpired($reservationId)) {
             $eventId = $this->eventReservationModel->getEventIdForReservation($reservationId);
-            header("Location: /event?event_id=" . urlencode($eventId));
+            $this->eventReservationModel->cancelReservation($reservationId);
+            header("Location: event?id=" . urlencode($eventId));
         }
-        if ($this->eventReservationModel->isValidReservation($userId, $reservationId)) {
+        else if ($this->eventReservationModel->isValidReservation($userId, $reservationId)) {
             $quantity = $this->eventReservationModel->getReservationQuantity($reservationId);
-            header("Location: ../View/paymentView.php?reservation_id=$reservationId&quantity=$quantity");
-            exit();
+            require_once "src/Views/paymentView.php";
         } else {
             http_response_code(401);
-            exit();
         }
+        exit();
     }
 
     public function handlePostRequest($userId) {
@@ -42,41 +42,44 @@ class PaymentController {
         $creditCard = $_POST["credit_card"];
 
         if (count($firstNames) !== $quantity || count($lastNames) !== $quantity || count($emails) !== $quantity) {
-            header("Location: ../View/paymentView.php?reservation_id=$reservationId&quantity=$quantity");
+            $_SESSION["error"] = "An error occurred, please try again";
+            header("Location: payment?reservation_id=$reservationId&quantity=$quantity");
             exit();
         }
         $eventId = $this->eventReservationModel->getEventIdForReservation($reservationId);
 
         if ($this->eventReservationModel->isReservationExpiredWithDelete($reservationId)) {
             $this->eventReservationModel->increaseAvailableTickets($eventId, $quantity);
-            return;
+            $_SESSION["error"] = "Failed to complete payment before expiration time";
+            header("Location: event?id=$eventId");
         }
 
         if ($this->processPayment($creditCard)) {
-            echo "Payment processed successfully!";
-             $buyerId = $userId;
+            $buyerId = $userId;
             for ($i = 0; $i < $quantity; $i++) {
-                $eventId = $reservationId;
                 $firstName = $firstNames[$i];
                 $lastName = $lastNames[$i];
                 $email = $emails[$i];
 
                 $ticketResult = $this->ticketModel->createTicket($buyerId, $eventId, $firstName, $lastName, $email);
 
-                if ($ticketResult !== true) {
-                    echo "Error creating ticket: $ticketResult";
-                }
+//                if ($ticketResult !== true) {
+//                    echo "Error creating ticket: $ticketResult";
+//                }
             }
+            header("Location: view-tickets");
 
 
         } else {
-            echo "Error: Payment processing failed.";
+            $_SESSION["error"] = "Couldn't process payment";
+            header("Location: event?id=$eventId");
         }
     }
 
     private function processPayment($creditCard): bool {
         // If payment is successful, return true;
         // always true in our case since we are not simulating a real payment system
+        sleep(2); // todo: add loading spinner
         return true; // Placeholder for successful payment
     }
 
