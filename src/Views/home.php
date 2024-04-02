@@ -28,13 +28,37 @@ $pathToComponents = 'src/Views/';
 
         require_once "{$pathToComponents}Home/hero.php";
 
-        require_once "{$pathToComponents}Home/eventSection.php";
+        function hasUpcomingEvents($events)
+        {
+            foreach ($events as $event) {
+                if (strtotime($event->startSellTime) > time()) {
+                    return true;
+                }
+            }
+            return false;
+        }
 
+        function hasCurrentEvents($events)
+        {
+            foreach ($events as $event) {
+                if (strtotime($event->startSellTime) <= time() && strtotime($event->eventDate) >= time()) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        if (hasUpcomingEvents($events)) {
+            $upcomingEvents = array_filter($events, function ($event) {
+                return strtotime($event->startSellTime) > time();
+            });
+            require_once "{$pathToComponents}Home/eventSection.php";
+        }
 
         //If a category has no current events, do not display it
         foreach ($categories as $category) {
-            if (isset($eventsByCategory[$category])) {
-                require_once "{$pathToComponents}Home/eventCarousel.php";
+            if (isset($eventsByCategory[$category]) && hasCurrentEvents($eventsByCategory[$category])) {
+                require "{$pathToComponents}Home/eventCarousel.php";
             }
         }
 

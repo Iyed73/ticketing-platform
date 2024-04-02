@@ -3,6 +3,7 @@ require_once "src/Controllers/includes/configSession.inc.php";
 
 // Retrieve and unserialize session variables
 $event = unserialize($_SESSION["event"]) ?? [];
+$currentCategoryEvents = unserialize($_SESSION["currentCategoryEvents"]) ?? [];
 $pathToComponents = "src/Views/";
 ?>
 
@@ -30,10 +31,6 @@ $pathToComponents = "src/Views/";
 
         ?>
 
-        <!-- needs a workaround :( -->
-        <br />
-        <br />
-        <br />
 
         <div class="container-fluid py-5 mt-5">
             <div class="container py-5">
@@ -112,6 +109,14 @@ $pathToComponents = "src/Views/";
 
                 <?php require_once "{$pathToComponents}EventPage/eventPageCarousel.php"; ?>
             </div>
+
+
+
+            <?php
+            if (count($currentCategoryEvents) > 0) {
+                require_once "{$pathToComponents}EventPage/eventPageCarousel.php";
+            }
+            ?>
         </div>
 
 

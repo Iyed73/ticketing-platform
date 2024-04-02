@@ -1,7 +1,7 @@
 <?php
 require_once("src\Models\UserRepo.php");
-include("prefix.php");
 require_once("Services\MailingService.php");
+include 'prefix.php';
 class SignupController {
     private $firstName;
     private $lastName;
@@ -85,15 +85,15 @@ class SignupController {
                 "email" => $this->email
             ];
             $_SESSION["signup_data"] = $signupData;
-            //header("Location: {$prefix}/home?signup=failed");
-            header("Location: /ticketing-platform/home?signup=failed");
+            include 'prefix.php';
+            header("Location: {$prefix}/home?signup=failed");
             die();
         }
         //If there are no errors, create a new user
         $this->addCustomer();
         sendMail("Tickety",$this->firstName,$this->email,"Welcome to Tickety",generateSingUpMessageHtml($this->firstName),generateSignUpMessageText($this->firstName));
-        //header("Location: {$prefix}/home?signup=success");
-        header("Location: /ticketing-platform/home?signup=success");
+        include 'prefix.php';
+        header("Location: {$prefix}/home?signup=success");
         die();
     } 
 }
@@ -102,7 +102,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $signupcontroller = new signupController($_POST["firstname"], $_POST["lastname"], $_POST["email"], $_POST["password"]);
     $signupcontroller->handleSignupForm();
 } else {
-    //header("Location: {$prefix}/home?notpost");
-    header("Location: /ticketing-platform/home?notpost");
+    header("Location: {$prefix}/home?notpost");
     die();
 }

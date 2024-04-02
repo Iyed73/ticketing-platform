@@ -26,7 +26,8 @@ class CustomerSupportController {
     }
 }
 if ($role != 'admin') {
-    header("Location: /ticketing-platform/home");
+    include 'prefix.php';
+    header("Location: {$prefix}/home");
     exit;
 }
 $customerSupportController = new CustomerSupportController();

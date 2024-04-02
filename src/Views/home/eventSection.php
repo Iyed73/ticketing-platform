@@ -13,14 +13,17 @@
                             </a>
                         </li>
                         <?php foreach ($categories as $index => $category): ?>
-                            <li class="nav-item">
-                                <!--  -->
-                                <a class="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-<?php
-                                // index + 2 in order to make tab starting from 2 -> number of categories + 1 since tab-1 reserved for all events
-                                echo $index + 2; ?>">
-                                    <span class="text-dark" style="width: 130px;"><?php echo $category; ?></span>
-                                </a>
-                            </li>
+                            <?php if (hasUpcomingEvents($eventsByCategory[$category])): ?>
+                                <li class="nav-item">
+                                    <a class="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-<?=
+                                        // index + 2 in order to make tab starting from 2 -> number of categories + 1 since tab-1 reserved for all events
+                                        $index + 2 ?>">
+                                        <span class="text-dark" style="width: 130px;">
+                                            <?= $category; ?>
+                                        </span>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
                         <?php endforeach; ?>
                     </ul>
                 </div>
@@ -30,28 +33,39 @@
                     <div class="row g-4">
                         <div class="col-lg-12">
                             <div class="row g-4">
-                                <?php foreach ($events as $event): ?>
-                                    <?php
-                                    // Check if event start selling tickets time is less than current time
-                                    if (strtotime($event->startSellTime) <= time()): ?>
-                                        <div class="col-md-6 col-lg-4 col-xl-3">
-                                            <div class="rounded position-relative event-item">
-                                                <div class="event-img">
-                                                    <img src="<?= $event->imagePath ?>" class="img-fluid w-100 rounded-top" alt="">
-                                                </div>
-                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;"><?= $event->category ?></div>
-                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                    <h4><?= $event->name ?></h4>
-                                                    <p><?= $event->shortDescription ?></p>
-                                                    <div class="d-flex justify-content-between flex-lg-wrap">
-                                                        <p class="text-dark fs-5 fw-bold mb-0">$<?= $event->ticketPrice/100 ?></p>
-                                                        <?php include 'prefix.php' ?>
-                                                        <a href="<?= "{$prefix}/event?id={$event->id}" ?>" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-eye me-2 text-primary"></i> View Event</a>
-                                                    </div>
+                                <?php foreach ($upcomingEvents as $event): ?>
+                                    <div class="col-md-6 col-lg-4 col-xl-3">
+                                        <div class="rounded position-relative event-item">
+                                            <div class="event-img">
+                                                <img src="<?= $event->imagePath ?>" class="img-fluid w-100 rounded-top"
+                                                    alt="">
+                                            </div>
+                                            <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
+                                                style="top: 10px; left: 10px;">
+                                                <?= $event->category ?>
+                                            </div>
+                                            <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                                <h4>
+                                                    <?= $event->name ?>
+                                                </h4>
+                                                <p class="text-dark fs-6 fw-bold mb-2">
+                                                    <?= $event->eventDate; ?>
+                                                </p>
+                                                <p>
+                                                    <?= $event->shortDescription ?>
+                                                </p>
+                                                <div class="d-flex justify-content-between flex-lg-wrap">
+                                                    <p class="text-dark fs-5 fw-bold mb-0">$
+                                                        <?= $event->ticketPrice / 100 ?>
+                                                    </p>
+                                                    <?php include 'prefix.php' ?>
+                                                    <a href="<?= "{$prefix}/event?id={$event->id}" ?>"
+                                                        class="btn border border-secondary rounded-pill px-3 text-primary"><i
+                                                            class="fa fa-eye me-2 text-primary"></i> View Event</a>
                                                 </div>
                                             </div>
                                         </div>
-                                    <?php endif; ?>
+                                    </div>
                                 <?php endforeach; ?>
 
                             </div>
@@ -59,29 +73,47 @@
                     </div>
                 </div>
                 <?php foreach ($categories as $index => $category): ?>
-                    <div id="tab-<?php echo $index + 2; ?>" class="tab-pane fade show p-0">
+                    <div id="tab-<?= $index + 2 ?>" class="tab-pane fade show p-0">
                         <div class="row g-4">
                             <div class="col-lg-12">
                                 <div class="row g-4">
-                                    <?php foreach ($eventsByCategory[$category] as $event): ?>
-                                        <?php if (strtotime($event->startSellTime) <= time()): ?>
-                                            <div class="col-md-6 col-lg-4 col-xl-3">
-                                                <div class="rounded position-relative event-item">
-                                                    <div class="event-img">
-                                                        <img src="<?= $event->imagePath ?>" class="img-fluid w-100 rounded-top" alt="">
-                                                    </div>
-                                                    <div class="text-white bg-secondary px-3 py-1 rounded position-absolute" style="top: 10px; left: 10px;"><?= $category ?></div>
-                                                    <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                        <h4><?= $event->name ?></h4>
-                                                        <p><?= $event->shortDescription ?></p>
-                                                        <div class="d-flex justify-content-between flex-lg-wrap">
-                                                            <p class="text-dark fs-5 fw-bold mb-0">$<?= $event->ticketPrice ?></p>
-                                                            <a href="<?= "{$prefix}/event?id={$event->id}" ?>" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-eye me-2 text-primary"></i> View Event</a>
-                                                        </div>
+                                    <?php
+                                    $currentCategoryUpcomingEvents = array_filter($eventsByCategory[$category], function ($event) {
+                                        return strtotime($event->startSellTime) > time();
+                                    });
+                                    ?>
+                                    <?php foreach ($currentCategoryUpcomingEvents as $event): ?>
+                                        <div class="col-md-6 col-lg-4 col-xl-3">
+                                            <div class="rounded position-relative event-item">
+                                                <div class="event-img">
+                                                    <img src="<?= $event->imagePath ?>" class="img-fluid w-100 rounded-top"
+                                                        alt="">
+                                                </div>
+                                                <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
+                                                    style="top: 10px; left: 10px;">
+                                                    <?= $category ?>
+                                                </div>
+                                                <div class="p-4 border border-secondary border-top-0 rounded-bottom">
+                                                    <h4>
+                                                        <?= $event->name ?>
+                                                    </h4>
+                                                    <p class="text-dark fs-6 fw-bold mb-2">
+                                                        <?= $event->eventDate; ?>
+                                                    </p>
+                                                    <p>
+                                                        <?= $event->shortDescription ?>
+                                                    </p>
+                                                    <div class="d-flex justify-content-between flex-lg-wrap">
+                                                        <p class="text-dark fs-5 fw-bold mb-0">$
+                                                            <?= $event->ticketPrice / 100 ?>
+                                                        </p>
+                                                        <a href="<?= "{$prefix}/event?id={$event->id}" ?>"
+                                                            class="btn border border-secondary rounded-pill px-3 text-primary"><i
+                                                                class="fa fa-eye me-2 text-primary"></i> View Event</a>
                                                     </div>
                                                 </div>
                                             </div>
-                                        <?php endif; ?>
+                                        </div>
                                     <?php endforeach; ?>
                                 </div>
                             </div>

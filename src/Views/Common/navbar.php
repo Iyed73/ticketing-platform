@@ -1,5 +1,4 @@
 <?php
-include 'prefix.php';
 require_once "src\Controllers\includes\configSession.inc.php";
 
 session_start();
@@ -25,7 +24,8 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
     </div>
     <div class="container px-0">
         <nav class="navbar navbar-light bg-white navbar-expand-xl">
-            <a href="index.php" class="navbar-brand">
+            <?php include 'prefix.php' ?>
+            <a href=<?= "{$prefix}/" ?> class="navbar-brand">
                 <h1 class="text-primary display-6">Tickety</h1>
             </a>
             <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
@@ -44,13 +44,13 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
                 <form id="currencyForm" method="post" action="setCurrency.php" class="me-3 d-inline-block">
                     <select class="currency-select" name="currency" id="currency" onchange="submitCurrencyForm()">
                         <option value="EUR" <?php if ($_SESSION['currency'] == 'EUR')
-                            echo 'selected'; ?>>Euro (€)
+                            echo 'selected'; ?> >Euro (€)
                         </option>
                         <option value="USD" <?php if ($_SESSION['currency'] == 'USD')
-                            echo 'selected'; ?>>USD ($)
+                            echo 'selected'; ?> >USD ($)
                         </option>
                         <option value="GBP" <?php if ($_SESSION['currency'] == 'GBP')
-                            echo 'selected'; ?>>Pound
+                            echo 'selected'; ?> >Pound
                             (£)</option>
                     </select>
                 </form>
@@ -64,7 +64,6 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
             </div>
             <div class="collapse navbar-collapse bg-white justify-content-end" id="navbarCollapse">
                 <?php if (!$user_id): // If user is not logged in   ?>
-                    <a href="eventPage.php" class="nav-item nav-link">Event Detail</a>
                     <button class="button" id="login-open">Login</button>
                     <button class="button" id="signup-open">Signup</button>
 

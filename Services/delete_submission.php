@@ -1,4 +1,5 @@
 <?php
+include '../prefix.php';
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
 
     $submissionId = $_GET['id'];
@@ -16,9 +17,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
     }
 
     // Redirect back to the form submissions page
-    header('Location:  /ticketing-platform/customerSupport?submissionDeleted');
+    header("Location:  {$prefix}/customerSupport?submissionDeleted");
     exit();
 } else {
-    header('Location:  /ticketing-platform/customerSupport?invalidSubmissionId');
+    header("Location:  {$prefix}/customerSupport?invalidSubmissionId");
     exit();
 }

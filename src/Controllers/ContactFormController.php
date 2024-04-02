@@ -63,7 +63,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $response = $contactFormController->handleRequest();
 }
 if ($role == 'admin') {
-    header("Location: /ticketing-platform/home");
+    include 'prefix.php';
+    header("Location: {$prefix}/home");
     exit;
 } else {
     require_once "src\Views\contactForm.php";
