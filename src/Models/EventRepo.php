@@ -28,4 +28,25 @@ class EventRepo extends Repo {
         $response->bindParam(':name', $eventName);
         return $response->execute();
     }
+
+    public function isEventOnSellTime($eventId) {
+        $req = "SELECT startSellTime, eventDate FROM {$this->tableName} WHERE id = ?";
+        $response = $this->db->prepare($req);
+        $response->execute([$eventId]);
+        $event = $response->fetch(PDO::FETCH_OBJ);
+
+        if (!$event) {
+            return false;
+        }
+
+        $currentDateTime = date('Y-m-d H:i:s');
+        $startSellTime = $event->startSellTime;
+        $eventDate = $event->eventDate;
+
+        if ($currentDateTime >= $startSellTime && $currentDateTime <= $eventDate) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

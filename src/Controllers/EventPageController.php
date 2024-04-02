@@ -12,11 +12,16 @@ class EventPageController {
     
     private function getData(){
         if(!isset($_GET['id'])){
-            header("Location: /");
+            header("Location: home");
             die();
         }
 
         $this->event = $this->eventTable->findById($_GET['id']);
+
+        if ($this->event === false) {
+            header("Location: home");
+            die();
+        }
 
         $this->currentCategoryEvents = $this->eventTable->getEventsByCategory($this->event->category);
     }
