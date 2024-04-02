@@ -18,10 +18,8 @@ $pathToComponents = "src/Views/";
 
         require_once "{$pathToComponents}Common/modalSearch.php";
         
-        
-        require_once "{$pathToComponents}contactPage\contactFormView.php";
+        require_once "{$pathToComponents}contactPage/contactFormView.php";
 
-        
         require_once "{$pathToComponents}Home/facts.php";
 
         require_once "{$pathToComponents}Home/testimonialSection.php";

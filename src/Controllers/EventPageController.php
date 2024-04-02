@@ -12,7 +12,8 @@ class EventPageController {
     
     private function getData(){
         if(!isset($_GET['id'])){
-            header("Location: /");
+            include 'prefix.php';
+            header("Location: {$prefix}/");
             die();
         }
 

@@ -1,13 +1,17 @@
 <?php 
-require_once "..\..\src\Models\UserRepo.php";
-class loginController {
+require_once "src\Models\UserRepo.php";
+include 'prefix.php';
 
+
+class loginController {
     private $email;
     private $pwd;
+    private $userTable;
 
     public function __construct($email, $pwd) {
         $this->email = $email;
         $this->pwd = $pwd;
+        $this->userTable = new UserRepo();
     }
     
     public function sanitizeInput() {
@@ -20,18 +24,15 @@ class loginController {
     }
 
     public function isUserInDB() {
-        $userTable = new UserRepo();
-        $user = $userTable->findByEmail($this->email);
+        $user = $this->userTable->findByEmail($this->email);
         if($user) {
             return true;
         }
         return false;
     }
 
-
     public function isPasswordIncorrect() {
-        $userTable = new UserRepo();
-        $user = $userTable->findByEmail($this->email);
+        $user = $this->userTable->findByEmail($this->email);
         if(!empty($user)){
             if(password_verify($this->pwd, $user->pwd)) {
                 return false;
@@ -44,8 +45,7 @@ class loginController {
     }
 
     public function getUser(){
-        $userTable = new UserRepo();
-        $user = $userTable->findByEmail($this->email);
+        $user = $this->userTable->findByEmail($this->email);
         return $user;
     }
 
@@ -54,26 +54,23 @@ class loginController {
 
         // ERROR HANDLING
         $errors = [];
-
         if ($this->isInputEmpty()) {
             $errors["empty_input"] = "Fill in all fields!";
         }
-
         if (!$this->isUserInDB()) {
             $errors["user_not_found"] = "User not found!";
         }
-
         if ($this->isUserInDB() && $this->isPasswordIncorrect()) {
             $errors["incorrect_password"] = "Incorrect password";
         }
 
-        require_once("C:\\xampp\htdocs\\ticketing-platform\src\Controllers\includes\configSession.inc.php");
+        require_once("src\Controllers\includes\configSession.inc.php");
 
         // Other error handling can be added here
-
         if (!empty($errors)) {
             $_SESSION["login_errors"] = $errors;
-            header("Location: /ticketing-platform/home?login=failed");
+            include 'prefix.php';
+            header("Location: {$prefix}/home?login=failed");
             die();
         }
 
@@ -85,8 +82,16 @@ class loginController {
         
         // Create a new session id and append the user id to it for better security and association of data with the user for a personalized experience
         regenerate_session_id_loggedin();
-
-        header("Location: /ticketing-platform/home?login=success");
+        include 'prefix.php';
+        header("Location: {$prefix}/home?login=success");
         die();
     }
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $loginController = new loginController($_POST["email"], $_POST["password"]);
+    $loginController->handleLoginForm();
+} else {
+    header("Location: {$prefix}/home?notpost");
+    die();
 }

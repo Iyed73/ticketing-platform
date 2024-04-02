@@ -24,11 +24,7 @@ $pathToComponents = "src/Views/";
         require_once "{$pathToComponents}Common/modalSearch.php";
         ?>
 
-
-
         <?php include "{$pathToComponents}CustomerSupportPage/formSubmissionsView.php" ?>
-
-
 
         <?php
         require_once "{$pathToComponents}Home/facts.php";
