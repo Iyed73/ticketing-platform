@@ -24,7 +24,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
     </div>
     <div class="container px-0">
         <nav class="navbar navbar-light bg-white navbar-expand-xl">
-            <?php include 'prefix.php' ?>
+            <?php $prefix = $_ENV['prefix']; ?>
             <a href=<?= "{$prefix}/" ?> class="navbar-brand">
                 <h1 class="text-primary display-6">Tickety</h1>
             </a>

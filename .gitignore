@@ -1,2 +1,4 @@
 colorpalette.txt
 vendor
+.htaccess
+.env

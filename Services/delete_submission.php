@@ -1,5 +1,5 @@
 <?php
-include '../prefix.php';
+$prefix = $_ENV['prefix'];
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
 
     $submissionId = $_GET['id'];

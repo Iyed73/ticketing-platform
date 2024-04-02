@@ -85,14 +85,14 @@ class SignupController {
                 "email" => $this->email
             ];
             $_SESSION["signup_data"] = $signupData;
-            include 'prefix.php';
+            $prefix = $_ENV['prefix'];
             header("Location: {$prefix}/home?signup=failed");
             die();
         }
         //If there are no errors, create a new user
         $this->addCustomer();
         sendMail("Tickety",$this->firstName,$this->email,"Welcome to Tickety",generateSingUpMessageHtml($this->firstName),generateSignUpMessageText($this->firstName));
-        include 'prefix.php';
+        $prefix = $_ENV['prefix'];
         header("Location: {$prefix}/home?signup=success");
         die();
     } 
@@ -102,6 +102,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $signupcontroller = new signupController($_POST["firstname"], $_POST["lastname"], $_POST["email"], $_POST["password"]);
     $signupcontroller->handleSignupForm();
 } else {
+    $prefix = $_ENV['prefix'];
     header("Location: {$prefix}/home?notpost");
     die();
 }

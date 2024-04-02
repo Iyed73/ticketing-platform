@@ -1,6 +1,5 @@
 <?php 
 require_once "src\Models\UserRepo.php";
-include 'prefix.php';
 
 
 class loginController {
@@ -69,7 +68,7 @@ class loginController {
         // Other error handling can be added here
         if (!empty($errors)) {
             $_SESSION["login_errors"] = $errors;
-            include 'prefix.php';
+            $prefix = $_ENV['prefix'];
             header("Location: {$prefix}/home?login=failed");
             die();
         }
@@ -82,7 +81,7 @@ class loginController {
         
         // Create a new session id and append the user id to it for better security and association of data with the user for a personalized experience
         regenerate_session_id_loggedin();
-        include 'prefix.php';
+        $prefix = $_ENV['prefix'];
         header("Location: {$prefix}/home?login=success");
         die();
     }
@@ -92,6 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $loginController = new loginController($_POST["email"], $_POST["password"]);
     $loginController->handleLoginForm();
 } else {
+    $prefix = $_ENV['prefix'];
     header("Location: {$prefix}/home?notpost");
     die();
 }

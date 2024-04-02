@@ -3,7 +3,7 @@
         <div class="pb-4 mb-4" style="border-bottom: 1px solid rgba(247, 92, 125, 0.5) ;">
             <div class="row g-4">
                 <div class="col-lg-3">
-                    <?php include 'prefix.php' ?>
+                    <?php $prefix = $_ENV['prefix']; ?>
                     <a href=<?= "{$prefix}/" ?>>
                         <h1 class="text-white mb-0">Tickety</h1>
                         <p class="text-secondary mb-0">Realiable Event Booking</p>

@@ -12,7 +12,7 @@ class EventPageController {
     
     private function getData(){
         if(!isset($_GET['id'])){
-            include 'prefix.php';
+            $prefix = $_ENV['prefix'];
             header("Location: {$prefix}/");
             die();
         }

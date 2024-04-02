@@ -2,6 +2,6 @@
 session_start();
 session_unset();
 session_destroy();
-include 'prefix.php';
+$prefix = $_ENV['prefix'];
 header("Location: {$prefix}/home?logout=success");
 die();
