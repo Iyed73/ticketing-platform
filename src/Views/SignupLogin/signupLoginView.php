@@ -1,3 +1,4 @@
+<? include "prefix.php"?>
 
 <div class="form_container">
 
@@ -6,7 +7,7 @@
 
     <!-- Login From -->
     <div class="form login_form">
-        <form id="loginForm" action="Services\signupLoginHandlers\loginFormHandler.php" method="post">
+        <form id="loginForm" action="<?="{$prefix}/login"?>" method="post">
             <h2>Login</h2>
 
             <!-- displays error messages if there are any -->
@@ -51,7 +52,7 @@
 
     <!-- Signup From -->
     <div class="form signup_form">
-        <form id="signupForm" action="Services\signupLoginHandlers\singupFormHandler.php" method="post">
+        <form id="signupForm" action="<?="{$prefix}/register"?>" method="post">
             <h2>Signup</h2>
 
             <!-- displays error messages if there are any -->
@@ -129,7 +130,6 @@ function checkLoginErrors(){
         foreach ($errors as $error){
             echo "<p>$error</p>";
         }
-
         unset($_SESSION["login_errors"]);
     }
 }
@@ -143,7 +143,6 @@ function checkSignupErrors(){
         foreach ($errors as $error){
             echo "<p class=error-message>$error</p>";
         }
-
         unset($_SESSION["signup_errors"]);
     }
 }

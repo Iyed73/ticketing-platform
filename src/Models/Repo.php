@@ -1,5 +1,5 @@
 <?php 
-require_once "C:\\xampp\htdocs\\ticketing-platform\Database\dbConnection.php";
+require_once "Database/dbConnection.php";
 
 abstract class Repo {
     protected $db;

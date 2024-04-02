@@ -12,7 +12,7 @@ CREATE TABLE form_submissions (
   PRIMARY KEY (id)
 );
 
-=CREATE TABLE users ( 
+CREATE TABLE users ( 
     id INT AUTO_INCREMENT PRIMARY KEY,
     firstname VARCHAR(255) NOT NULL,
     lastname VARCHAR(255) NOT NULL,

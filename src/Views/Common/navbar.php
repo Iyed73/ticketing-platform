@@ -54,7 +54,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
                 </form>
                 <?php if ($role === "customer"): // If user is logged in as a customer     ?>
                     <a href="#" class="nav-item nav-link">Manage Tickets</a>
-                    <a href="#" class="nav-item nav-link">Customer Support</a>
+                    <a href="<?= "{$prefix}/customerSupport"?>" class="nav-item nav-link">Customer Support</a>
                 <?php elseif ($role === "admin"): // If user is logged in as an admin    ?>
                     <a href="#" class="nav-item nav-link">Dashboard</a>
                 <?php endif; ?>
@@ -67,7 +67,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
                     <button class="button" id="signup-open">Signup</button>
 
                 <?php else: ?>
-                    <form action="src\Controllers\signupLoginControllers\logout.php" method="post">
+                    <form action="<?= "{$prefix}/logout" ?>" method="post">
                         <button class="button" id="logout-btn">Logout</button>
                     </form>
                     <a href="#" class="my-auto">

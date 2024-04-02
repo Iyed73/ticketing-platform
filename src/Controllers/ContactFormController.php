@@ -1,5 +1,6 @@
 <?php 
 require_once "Services\MailingService.php";
+require_once "src\Models\FormSubmissionsRepo.php";
 
 class ContactFormController{
     private $name;
@@ -29,8 +30,20 @@ class ContactFormController{
         }
         else {
             $this->sanitizeInput();
+            //sending email to the website 
             $email = "tickety873@gmail.com";
             sendMail($this->name,"Tickety", $email, $this->subject, $this->message, $this->message);
+
+            //inserting the form submission into the database
+            $date = date('Y-m-d H:i:s');
+            $formSubmissionsTable = new FormSubmissionsRepo();
+            $Data = [
+                'name' => $this->name,
+                'subject' => $this->subject,
+                'message' => $this->message,
+                'date' => $date
+            ];
+            $formSubmissionsTable->insert($Data);
             return "Message sent successfully";
         }
     }
@@ -38,25 +51,9 @@ class ContactFormController{
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = $_POST["name"];
-    $subject = $_POST["subject"];
-    $message = $_POST["message"];
     $date = date('Y-m-d H:i:s');
-
-    $controller = new ContactFormController($name, $subject, $message);
-    /* $response = $controller->handleRequest(); */
-    
-    try {
-        require_once "src\Models\FormSubmissionsRepo.php";
-        
-        $formSubmissionsRepo = new FormSubmissionsRepo();
-        $formSubmissionsRepo->insertFormSubmission($name, $subject, $message, $date);
-
-        header("Location: /ticketing-platform/contact?mailsend");
-        die("query successful");
-    } catch (PDOException $e) {
-        die("query failed: " . $e->getMessage());
-    }
+    $contactFormController = new ContactFormController($_POST['name'], $_POST['subject'], $_POST['message']);
+    $response = $contactFormController->handleRequest(); 
 }
 
 require_once "src\Views\contactForm.php";

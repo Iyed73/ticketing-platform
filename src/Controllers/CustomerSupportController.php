@@ -5,7 +5,6 @@ require_once "src\Models\FormSubmissionsRepo.php";
 class CustomerSupportController {
 
     public $contactForms;
-
     public $contactFormTable;
 
     public function __construct() {
@@ -18,7 +17,7 @@ class CustomerSupportController {
     
     public function handleRequest(){
         $this->getData();
-        require_once "includes/configSession.inc.php";
+        require_once "src\Controllers\includes\configSession.inc.php";
         $_SESSION["contactForms"] = serialize($this->contactForms);
         require_once "src\Views\customerSupport.php";
         die();
