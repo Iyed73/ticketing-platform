@@ -1,7 +1,8 @@
 <?php
-require_once ("../Models/EventRepo.php");
-class addEventController
-{
+require_once ("src/Models/UserRepo.php");
+include("prefix.php");
+
+class eventAdditionController{
     private $name;
     private $venue;
     private $eventDate;
@@ -11,6 +12,7 @@ class addEventController
     private $totalTickets;
     private $availableTickets;
     private $ticketPrice;
+    private UserRepo $userRepo;
 
     public function __construct($name, $venue, $eventDate, $shortDescription, $longDescription, $organizer, $totalTickets, $availableTickets, $ticketPrice){
         $this -> name = $name;
@@ -22,6 +24,7 @@ class addEventController
         $this -> totalTickets = $totalTickets;
         $this -> availableTickets = $availableTickets;
         $this -> ticketPrice = $ticketPrice;
+        $this -> userRepo = new UserRepo();
     }
 
     public function sanitizeInput() {
@@ -65,4 +68,54 @@ class addEventController
         ]);
     }
 
+    public function handleEventAdditionForm(){
+        //EROOR HANDLING
+        $errors = [];
+        if($this -> is_input_empty()){
+            $errors["empty_input"] = "Fill in all fields!";
+        }
+        if($this -> is_name_taken()){
+            $errors["name_taken"] = "Name already taken!";
+        }
+
+        //other error handling can be added here
+
+        require_once("src/Controllers/includes/configSession.inc.php");
+
+        if($errors){
+            $_SESSION["eventAddition_errors"] = $errors;
+
+            $eventAdditionData = [
+                "name" => $this -> name,
+                "venue" => $this -> venue,
+                "eventDate" => $this -> eventDate,
+                "shortDescription" => $this -> shortDescription,
+                "longDescription" => $this -> longDescription,
+                "organizer" => $this -> organizer,
+                "totalTickets" => $this -> totalTickets,
+                "availableTickets" => $this -> availableTickets,
+                "ticketPrice" => $this -> ticketPrice
+            ];
+
+            $_SESSION["eventAddition_data"] = $eventAdditionData;
+
+            header("Location: /ticketing-platform/dashboard?eventAddition=failed");
+            die();
+        }
+
+        $this -> addEvent();
+        header("Location: /ticketing-platform/dashboard?eventAddition=success");
+        die();
+    }
+}
+
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+    $eventAdditionController = new eventAdditionController($_POST["name"], $_POST["venue"], $_POST["eventDate"], $_POST["shortDescription"], $_POST["longDescription"], $_POST["organizer"], $_POST["totalTickets"], $_POST["availableTickets"], $_POST["ticketPrice"]);
+    $eventAdditionController -> handleEventAdditionForm();
+}
+
+else{
+    require_once "src/Views/Dashboard/eventAdditionView.php";
+   /* header("Location: src/Views/Dashboard/eventAdditionView.php");*/
+    die();
 }

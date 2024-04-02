@@ -1,7 +1,9 @@
+<?php include "prefix.php"?>
+
 <div class = "container-fluid py-5" style="margin-top: 20vh">
             
             <h2> All Events </h2>
-            <a class = "btn btn-primary text-white" href = "addEventForm.php" role = "button"> Add Event </a>
+            <a class = "btn btn-primary text-white" href = "<?="{$prefix}/event_addition"?>" role = "button"> Add Event </a>
             <br>
             <table class = "table">
                 <thead>
@@ -22,7 +24,7 @@
                             $servername  = "localhost";
                             $username = "root";
                             $password = "";
-                            $database = "ticketing_platform";
+                            $database = "Tickety";
 
                             //Create Connection
                             $connection = new mysqli($servername, $username, $password, $database);

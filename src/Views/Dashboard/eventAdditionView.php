@@ -1,12 +1,12 @@
 <?php
 
-    function addEventInput(){
+    function eventAdditionInput(){
         //fill input fields with data if it exists
-        if(isset($_SESSION["addEvent_data"]["name"])){
+        if(isset($_SESSION["eventAddition_data"]["name"])){
             echo '<div class = "row mb-3">
             <label class = "col-sm-3 col-form-label">Name</label>
             <div class = "col-sm-6">
-                <input type = "text" class = "form-control" name = "name" value = "'. $_SESSION["addEvent_data"]["name"].'">
+                <input type = "text" class = "form-control" name = "name" value = "'. $_SESSION["eventAddition_data"]["name"].'">
             </div>
         </div>';
         }
@@ -20,11 +20,11 @@
                 </div>';
         }
 
-        if(isset($_SESSION["addEvent_data"]["venue"])){
+        if(isset($_SESSION["eventAddition_data"]["venue"])){
             echo   '<div class = "row mb-3">
                         <label class = "col-sm-3 col-form-label">Venue</label>
                         <div class = "col-sm-6">
-                            <input type = "text" class = "form-control" name = "venue" value = "'. $_SESSION["addEvent_data"]["venue"].'">
+                            <input type = "text" class = "form-control" name = "venue" value = "'. $_SESSION["eventAddition_data"]["venue"].'">
                         </div>
                     </div>';
         }
@@ -37,11 +37,11 @@
                   </div>';
         }
 
-        if(isset($_SESSION["addEvent_data"]["eventDate"])){
+        if(isset($_SESSION["eventAddition_data"]["eventDate"])){
             echo    '<div class = "row mb-3">
             <label class = "col-sm-3 col-form-label">Date</label>
             <div class = "col-sm-6">
-                <input type = "date" class = "form-control" name = "eventDate" value = "'. $_SESSION["addEvent_data"]["eventDate"].'">
+                <input type = "date" class = "form-control" name = "eventDate" value = "'. $_SESSION["eventAddition_data"]["eventDate"].'">
             </div>
         </div>';
 
@@ -55,11 +55,11 @@
         </div>';
         }
 
-        if(isset($_SESSION["addEvent_data"]["shortDescription"])){
+        if(isset($_SESSION["eventAddition_data"]["shortDescription"])){
             echo    '<div class = "row mb-3">
             <label class = "col-sm-3 col-form-label">Short Description</label>
             <div class = "col-sm-6">
-                <input type = "text" class = "form-control" name = "shortDescription" value = "'. $_SESSION["addEvent_data"]["shortDescription"].'">
+                <input type = "text" class = "form-control" name = "shortDescription" value = "'. $_SESSION["eventAddition_data"]["shortDescription"].'">
             </div>
         </div>';
 
@@ -73,11 +73,11 @@
         </div>';
         }
 
-        if(isset($_SESSION["addEvent_data"]["longDescription"])){
+        if(isset($_SESSION["eventAddition_data"]["longDescription"])){
             echo    '<div class = "row mb-3">
             <label class = "col-sm-3 col-form-label">Long Description</label>
             <div class = "col-sm-6">
-                <input type = "text" class = "form-control" name = "longDescription" value = "'. $_SESSION["addEvent_data"]["longDescription"].'">
+                <input type = "text" class = "form-control" name = "longDescription" value = "'. $_SESSION["eventAddition_data"]["longDescription"].'">
             </div>
         </div>';
         }
@@ -90,11 +90,11 @@
         </div>';
         }
 
-        if(isset($_SESSION["addEvent_data"]["organizer"])){
+        if(isset($_SESSION["eventAddition_data"]["organizer"])){
             echo    '<div class = "row mb-3">
             <label class = "col-sm-3 col-form-label">Organizer</label>
             <div class = "col-sm-6">
-                <input type = "text" class = "form-control" name = "organizer" value = "'. $_SESSION["addEvent_data"]["organizer"].'">
+                <input type = "text" class = "form-control" name = "organizer" value = "'. $_SESSION["eventAddition_data"]["organizer"].'">
             </div>
         </div>';
         }
@@ -107,11 +107,11 @@
         </div>';
         }
 
-        if(isset($_SESSION["addEvent_data"]["totalTickets"])){
+        if(isset($_SESSION["eventAddition_data"]["totalTickets"])){
             echo    '<div class = "row mb-3">
             <label class = "col-sm-3 col-form-label">Total Tickets</label>
             <div class = "col-sm-6">
-                <input type = "number" class = "form-control" name = "totalTickets" value = "'. $_SESSION["addEvent_data"]["totalTickets"].'">
+                <input type = "number" class = "form-control" name = "totalTickets" value = "'. $_SESSION["eventAddition_data"]["totalTickets"].'">
             </div>
         </div>';
         }
@@ -124,11 +124,11 @@
         </div>';
         }
 
-        if(isset($_SESSION["addEvent_data"]["availableTickets"])){
+        if(isset($_SESSION["eventAddition_data"]["availableTickets"])){
             echo    '<div class = "row mb-3">
             <label class = "col-sm-3 col-form-label">Available Tickets</label>
             <div class = "col-sm-6">
-                <input type = "number" class = "form-control" name = "availableTickets" value = "'. $_SESSION["addEvent_data"]["availableTickets"].'">
+                <input type = "number" class = "form-control" name = "availableTickets" value = "'. $_SESSION["eventAddition_data"]["availableTickets"].'">
             </div>
         </div>';
 
@@ -142,11 +142,11 @@
         </div>';
         }
 
-        if(isset($_SESSION["addEvent_data"]["ticketPrice"])){
+        if(isset($_SESSION["eventAddition_data"]["ticketPrice"])){
             echo    '<div class = "row mb-3">
             <label class = "col-sm-3 col-form-label">Ticket Price</label>
             <div class = "col-sm-6">
-                <input type = "number" class = "form-control" name = "ticketPrice" value = "'. $_SESSION["addEvent_data"]["ticketPrice"].'">
+                <input type = "number" class = "form-control" name = "ticketPrice" value = "'. $_SESSION["eventAddition_data"]["ticketPrice"].'">
             </div>
         </div>';
         }
@@ -159,24 +159,24 @@
         </div>';
         }
 
-        unset($_SESSION["addEvent_data"]);
+        unset($_SESSION["eventAddition_data"]);
     }
 
-    function checkAddEventErrors(){
-        if(isset($_SESSION["addEvent_errors"])){
-            $errors = $_SESSION["addEvent_errors"];
+    function checkEventAdditionErrors(){
+        if(isset($_SESSION["eventAddition_errors"])){
+            $errors = $_SESSION["eventAddition_errors"];
             echo "<br>";
             foreach ($errors as $error){
                 echo "<p class=error-message>$error</p>";
             }
         }
 
-        unset($_SESSION["addEvent_errors"]);
+        unset($_SESSION["eventAddition_errors"]);
     }
 
-    function checkAddEventSuccess(){
-        if(isset($_GET["addEvent"])){
-            if($_GET["addEvent"]=="success"){
+    function checkEventAdditionSuccess(){
+        if(isset($_GET["eventAddition"])){
+            if($_GET["eventAddition"]=="success"){
                 echo "<p class=success-message>Event added successfully!</p>";
             }
 

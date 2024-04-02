@@ -2,27 +2,26 @@
 <html lang="en">
     <head>
 
-        <?php include '../header.php' ?>
+        <?php include 'src/Views/Common/header.php' ?>
         
     </head>
 
     <body>
-        <?php include '../loadingSpinner.php' ?>
 
-        <?php include '../navbar.php' ?>
+        <?php include 'src/Views/Common/loadingSpinner.php' ?>
 
-        <?php include 'eventsDashboard.php' ?>
+        <?php include 'src/Views/Common/navbar.php' ?>
+
+        <?php include 'src/Views/Dashboard/eventsDashboard.php' ?>
         
-        <?php include '../footer.php' ?>
+        <?php include 'src/Views/Common/footer.php' ?>
 
-        <?php include '../copyright.php' ?>
+        <?php include 'src/Views/Common/copyright.php' ?>
 
-        <?php include '../backToTopButton.php' ?>
+        <?php include 'src/Views/Common/backToTopButton.php' ?>
 
-        <?php include '../scripts.php' ?>
+        <?php include 'src/Views/Common/scripts.php' ?>
 
-
-    
     </body>
 
 </html>

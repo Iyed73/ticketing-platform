@@ -1,6 +1,8 @@
 <?php 
 require_once "src/Controllers/includes/configSession.inc.php";
 
+$_SESSION["user_id"] = 1;
+
 // Retrieve and unserialize session variables
 $events = unserialize($_SESSION["events"]) ?? [];
 $categories = unserialize($_SESSION["categories"]) ?? [];
