@@ -36,7 +36,7 @@
 
             <div class="option_field">
                 <span class="checkbox">
-                    <input type="checkbox" id="check" />
+                    <input id="check" name="remember_me" type= "checkbox"  />
                     <label for="check">Remember me</label>
                 </span>
                 <a href="#" class="forgot_pw">Forgot password?</a>

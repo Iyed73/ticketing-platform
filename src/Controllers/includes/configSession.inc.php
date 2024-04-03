@@ -4,7 +4,6 @@ ini_set('session.use_only_cookies',1);
 ini_set('session.use_strict_mode',1);
 
 session_set_cookie_params([
-	'lifetime' => 1800,  //after 30 mins the cookie expires
 	'domain' => 'localhost', //if you have an online site then put it's address instead 
 	'path' => '/' , //means that cookies are accesssible in every path of the site
 	'secure' =>true, //means that https is required for more security

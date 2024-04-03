@@ -43,6 +43,13 @@ class SignupController {
         return false;
     }
 
+    public function isUserLoggedIn(){
+        if(isset($_SESSION["user_id"])&&isset($_SESSION["role"])){
+            return true;
+        }
+        return false;
+    }
+
     public function addCustomer() {        
         //Hashing the password
         $options = [
@@ -59,6 +66,14 @@ class SignupController {
     }
 
     public function handleSignupForm($prefix) {
+        $prefix = $_ENV['prefix'];
+
+        //check if the user is already logged in for security reasons
+        if($this->isUserLoggedIn()){
+            header("Location: {$prefix}/home?alreadyloggedin");
+            die();
+        }
+
         $this->sanitizeInput();
 
         //ERROR HANDLING
@@ -92,7 +107,6 @@ class SignupController {
         //If there are no errors, create a new user
         $this->addCustomer();
         sendMail("Tickety",$this->firstName,$this->email,"Welcome to Tickety",generateSingUpMessageHtml($this->firstName),generateSignUpMessageText($this->firstName));
-        $prefix = $_ENV['prefix'];
         header("Location: {$prefix}/home?signup=success");
         die();
     } 

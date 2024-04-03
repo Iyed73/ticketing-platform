@@ -1,5 +1,6 @@
 <?php 
 require_once "src\Models\UserRepo.php";
+require_once("src\Controllers\includes\configSession.inc.php");
 
 
 class loginController {
@@ -43,14 +44,27 @@ class loginController {
         return true;
     }
 
+    public function isUserLoggedIn(){
+        if(isset($_SESSION["user_id"])&&isset($_SESSION["role"])){
+            return true;
+        }
+        return false;
+    }
+
     public function getUser(){
         $user = $this->userTable->findByEmail($this->email);
         return $user;
     }
 
     public function handleLoginForm($prefix) {
+        $prefix = $_ENV['prefix'];
+        //check if the user is already logged in for security reasons
+        if($this->isUserLoggedIn()){
+            header("Location: {$prefix}/home?alreadyloggedin");
+            die();
+        }
+        //else continue with the login process
         $this->sanitizeInput();
-
         // ERROR HANDLING
         $errors = [];
         if ($this->isInputEmpty()) {
@@ -62,9 +76,6 @@ class loginController {
         if ($this->isUserInDB() && $this->isPasswordIncorrect()) {
             $errors["incorrect_password"] = "Incorrect password";
         }
-
-        require_once("src\Controllers\includes\configSession.inc.php");
-
         // Other error handling can be added here
         if (!empty($errors)) {
             $_SESSION["login_errors"] = $errors;
@@ -79,14 +90,18 @@ class loginController {
         $_SESSION["email"] = $user->email;
         $_SESSION["role"] = $user->role;
         
+        // Check if the the user chose to be remembered
+        if(isset($_POST['remember_me'])) {
+            setcookie("remember_me_cookie", $user->id, time() + (86400 * 30), "/"); // cookie expires after 30 day 
+        }
         // Create a new session id and append the user id to it for better security and association of data with the user for a personalized experience
         regenerate_session_id_loggedin();
-        $prefix = $_ENV['prefix'];
         header("Location: {$prefix}/home?login=success");
         die();
     }
 }
 
+//check if the request method is post
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $loginController = new loginController($_POST["email"], $_POST["password"]);
     $loginController->handleLoginForm($prefix);
