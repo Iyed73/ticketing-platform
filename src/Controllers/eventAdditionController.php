@@ -1,7 +1,8 @@
 <?php
+
 require_once ("src/Models/UserRepo.php");
 require_once ("src/Models/EventRepo.php");
-include("prefix.php");
+include 'prefix.php';
 
 class eventAdditionController{
     private $name;
@@ -13,7 +14,6 @@ class eventAdditionController{
     private $totalTickets;
     private $availableTickets;
     private $ticketPrice;
-    private UserRepo $userRepo;
 
     public function __construct($name, $venue, $eventDate, $shortDescription, $longDescription, $organizer, $totalTickets, $availableTickets, $ticketPrice){
         $this -> name = $name;
@@ -25,7 +25,6 @@ class eventAdditionController{
         $this -> totalTickets = $totalTickets;
         $this -> availableTickets = $availableTickets;
         $this -> ticketPrice = $ticketPrice;
-        $this -> userRepo = new UserRepo();
     }
 
     public function sanitizeInput() {
@@ -101,7 +100,7 @@ class eventAdditionController{
 
             $_SESSION["eventAddition_data"] = $eventAdditionData;
 
-            header("Location: /ticketing-platform/dashboard?eventAddition=failed");
+            header("Location: /ticketing-platform/event_addition?eventAddition=failed");
             die();
         }
 
@@ -109,7 +108,13 @@ class eventAdditionController{
         header("Location: /ticketing-platform/dashboard?eventAddition=success");
         die();
     }
+
+    function handleRequest($userID)
+    {
+
+    }
 }
+
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     $eventAdditionController = new eventAdditionController($_POST["name"], $_POST["venue"], $_POST["eventDate"], $_POST["shortDescription"], $_POST["longDescription"], $_POST["organizer"], $_POST["totalTickets"], $_POST["availableTickets"], $_POST["ticketPrice"]);
@@ -117,6 +122,24 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 }
 
 else{
+
     require_once "src/Views/Dashboard/eventAdditionForm.php";
-   /* header("Location: src/Views/Dashboard/eventAdditionView.php");*/
+
+    if(!isset($_SESSION["user_id"])){
+        http_response_code(401);
+        exit();
+    }
+    else {
+
+        $userRepo = new UserRepo();
+
+        if($this->userRepo->isAdmin($_GET["user_id"]) === true){
+            require_once "src/Views/Dashboard/eventAdditionForm.php";
+            die();
+        }
+        else{
+            http_response_code(401);
+            die();
+        }
+    }
 }

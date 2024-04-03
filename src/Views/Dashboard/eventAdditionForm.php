@@ -15,7 +15,7 @@ require_once("src/Views/Dashboard/eventAdditionView.php")
 
     <?php include 'src/Views/Common/navbar.php' ?>
 
-    <form action="<?="{$prefix}/event_addition"?>" method="post" style = "margin-top: 20vh">
+    <form action="<?="{$prefix}/event_addition"?>" method="post" style = "margin-top: 30vh">
         <?php eventAdditionInput(); ?>
         <div class = "offset-sm-3 col-sm-3 d-grid">
             <button type = "submit" class = "btn btn-primary">Submit</button>

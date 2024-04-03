@@ -10,7 +10,7 @@ class DashboardController{
     function handleRequest($userID)
     {
         if($this->userRepo->isAdmin($userID) === true){
-            require_once("src/Views/Dashboard/adminDashboard.php");
+            require_once "src/Views/Dashboard/adminDashboard.php";
             die();
         }
         else{
@@ -20,7 +20,6 @@ class DashboardController{
     }
 }
 
-/*session_start();*/
 require_once "src/Controllers/includes/configSession.inc.php";
 
 if(!isset($_SESSION["user_id"])){
