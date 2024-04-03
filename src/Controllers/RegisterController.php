@@ -58,7 +58,7 @@ class SignupController {
         ]);
     }
 
-    public function handleSignupForm() {
+    public function handleSignupForm($prefix) {
         $this->sanitizeInput();
 
         //ERROR HANDLING
@@ -100,7 +100,7 @@ class SignupController {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $signupcontroller = new signupController($_POST["firstname"], $_POST["lastname"], $_POST["email"], $_POST["password"]);
-    $signupcontroller->handleSignupForm();
+    $signupcontroller->handleSignupForm($prefix);
 } else {
     header("Location: {$prefix}/home?notpost");
     die();

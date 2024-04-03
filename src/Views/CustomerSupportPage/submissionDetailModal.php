@@ -15,7 +15,7 @@ foreach ($contactForms as $row) {
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title">Submission Details</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div class="row">

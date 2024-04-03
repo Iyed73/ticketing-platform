@@ -118,7 +118,6 @@
 </div>
 
 
-<script src="Static\JS\signupLoginScript.js"></script>
 
 
 <!-- functions that checks if there are any signup or login errors in the session and displays them-->

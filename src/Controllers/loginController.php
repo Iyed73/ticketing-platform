@@ -49,7 +49,7 @@ class loginController {
         return $user;
     }
 
-    public function handleLoginForm() {
+    public function handleLoginForm($prefix) {
         $this->sanitizeInput();
 
         // ERROR HANDLING
@@ -90,7 +90,7 @@ class loginController {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $loginController = new loginController($_POST["email"], $_POST["password"]);
-    $loginController->handleLoginForm();
+    $loginController->handleLoginForm($prefix);
 } else {
     header("Location: {$prefix}/home?notpost");
     die();

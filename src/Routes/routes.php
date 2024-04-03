@@ -11,5 +11,6 @@ $routes = [
     "{$prefix}/search" => 'src/Controllers/SearchController.php',
     "{$prefix}/contact" => 'src\Controllers\ContactFormController.php',
     "{$prefix}/customerSupport" => 'src\Controllers\CustomerSupportController.php',
+    "{$prefix}/deleteSubmission" => 'src\Controllers\DeleteSubmissionController.php',
 ];
 

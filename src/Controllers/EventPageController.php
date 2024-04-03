@@ -1,5 +1,6 @@
 <?php
 require_once "src\Models\EventRepo.php";
+include 'prefix.php';
 
 class EventPageController {
     private $event;
@@ -10,7 +11,7 @@ class EventPageController {
         $this->eventTable = new EventRepo();
     }
     
-    private function getData(){
+    private function getData($prefix){
         if(!isset($_GET['id'])){
             include 'prefix.php';
             header("Location: {$prefix}/");
@@ -22,8 +23,8 @@ class EventPageController {
         $this->currentCategoryEvents = $this->eventTable->getSimilarEvents($this->event->category, $this->event->id, 7);
     }
     
-    public function handleRequest(){
-        $this->getData();
+    public function handleRequest($prefix){
+        $this->getData($prefix);
         require_once "src/Controllers/includes/configSession.inc.php";
         
         $_SESSION["event"] = serialize($this->event);
@@ -35,6 +36,6 @@ class EventPageController {
 }
 
 $eventPageController = new EventPageController();
-$eventPageController->handleRequest();
+$eventPageController->handleRequest($prefix);
 
 

@@ -5,7 +5,7 @@
                 <div class="table-title">
                     <div class="row">
                         <div class="col-sm-6">
-                            <h2>Form Submissions</h2>
+                            <h2>Contact Form Submissions</h2>
                         </div>
                         <div class="col-sm-6">
                             <a class="btn btn-danger deleteAllSelectedButton">
@@ -42,4 +42,3 @@
         </div>
     </div>
     <?php include "src\Views\CustomerSupportPage\submissionDetailModal.php" ?>
-    <script src="Static\JS\customerSupportScript.js"></script>

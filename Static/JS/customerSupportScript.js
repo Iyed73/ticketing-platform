@@ -52,9 +52,9 @@ document.addEventListener("DOMContentLoaded", function () {
         "Are you sure you want to delete this submission?"
       );
       if (confirmation) {
-        // Redirect to delete_submission.php with submission ID
+        // Redirect to DeleteSubmissionController.php with submission ID
         window.location.href =
-          "Services/delete_submission.php?id=" + submissionId;
+          "/ticketing-platform/deleteSubmission?id=" + submissionId;
       }
     });
   });
@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (confirmation) {
       // Redirect to delete_submission.php with submission IDs
       window.location.href =
-        "Services/delete_submission.php?id=" +
+        "/ticketing-platform/deleteSubmission?id=" +
         selectedSubmissionIds.join(",");
     }
   });
