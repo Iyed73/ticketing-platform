@@ -1,5 +1,5 @@
 <?php
-include 'prefix.php';
+$prefix = $_ENV['prefix'];
 
 $routes = [
     "{$prefix}/" => 'src\Controllers\HomeController.php',

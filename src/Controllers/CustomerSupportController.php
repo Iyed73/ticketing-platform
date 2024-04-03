@@ -26,7 +26,7 @@ class CustomerSupportController {
     }
 }
 if ($role != 'admin') {
-    include 'prefix.php';
+    $prefix = $_ENV['prefix'];
     header("Location: {$prefix}/home");
     exit;
 }

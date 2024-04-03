@@ -7,7 +7,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <?php include 'prefix.php'; ?>
+                <?php $prefix = $_ENV['prefix']; ?>
                 <form class="input-group  mx-auto d-flex" action="<?= "{$prefix}/search" ?>" method="POST">
                     <input type="search" class="form-control p-3" placeholder="Search for events, organizers, venues..."
                         aria-describedby="search-icon-1" name="searchInput" required>

@@ -1,6 +1,5 @@
 <?php
-/* require_once "Services\MailingService.php";
- */
+require_once "Services\MailingService.php";
 require_once "src\Models\FormSubmissionsRepo.php";
 require_once "src\Controllers\includes\configSession.inc.php";
 
@@ -39,8 +38,7 @@ class ContactFormController
             $this->sanitizeInput();
             //sending email to the website 
             $email = "tickety873@gmail.com";
-            /*             sendMail($this->name,"Tickety", $email, $this->subject, $this->message, $this->message);
-             */
+            sendMail($this->name,"Tickety", $email, $this->subject, $this->message, $this->message);
             //inserting the form submission into the database
             $date = date('Y-m-d H:i:s');
             $formSubmissionsTable = new FormSubmissionsRepo();
@@ -63,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $response = $contactFormController->handleRequest();
 }
 if ($role == 'admin') {
-    include 'prefix.php';
+    $prefix = $_ENV['prefix'];
     header("Location: {$prefix}/home");
     exit;
 } else {

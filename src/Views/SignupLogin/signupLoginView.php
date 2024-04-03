@@ -1,4 +1,4 @@
-<? include "prefix.php"?>
+<? $prefix = $_ENV['prefix'];?>
 
 <div class="form_container">
 

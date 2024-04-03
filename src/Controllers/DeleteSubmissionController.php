@@ -1,5 +1,5 @@
 <?php
-include 'prefix.php';
+$prefix = $_ENV['prefix'];
 require_once "src/Models/FormSubmissionsRepo.php"; 
 
 
