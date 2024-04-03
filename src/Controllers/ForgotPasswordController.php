@@ -3,6 +3,11 @@ require_once "src\Models\UserRepo.php";
 require_once "src\Models\TokenRepo.php";
 require_once "Services\MailingService.php";
 
+
+/**
+ This class is responsible for creating the token, the recovery link and the mail sent to the user's email.
+ */
+
 class ForgotPasswordController {
     private $userTable;
     private $tokenTable;
@@ -72,7 +77,7 @@ class ForgotPasswordController {
         }
         
         $token = bin2hex(random_bytes(16));
-        $this->recoveryLink = "localhost{$prefix}/recoverPassword?token={$token}";
+        $this->recoveryLink = "http://localhost{$prefix}/recoverPassword?token={$token}";
         
         //else, create a new token and send a recovery link to user's email
         $this->token = $this->tokenTable->insert([
@@ -82,7 +87,7 @@ class ForgotPasswordController {
             'expires_at' => date('Y-m-d H:i:s', strtotime('+1 hour'))
         ]);
 
-        /*TODO: Mail works, link is broken*/
+        /*TODO: Works fine, uncomment later*/
         // if(!$this->token || !sendMail($this->user->firstname,"Tickety", $this->email, '[Password Recovery]', $this->htmlMessage(), $this->textMessage())) {
         //    $response = "An error occurred, please try again!";
         // }

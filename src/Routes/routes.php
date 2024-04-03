@@ -12,5 +12,7 @@ $routes = [
     "{$prefix}/contact" => 'src\Controllers\ContactFormController.php',
     "{$prefix}/customerSupport" => 'src\Controllers\CustomerSupportController.php',
     "{$prefix}/forgotPassword" => 'src/Controllers/ForgotPasswordController.php',
+    "{$prefix}/recoverPassword" => 'src/Controllers/RecoverPasswordController.php',
+    "{$prefix}/resetPassword" => 'src/Controllers/ResetPasswordController.php',
 ];
 

@@ -2,6 +2,11 @@
 require_once "src\Models\TokenRepo.php";
 require_once "src\Models\UserRepo.php";
 
+
+/**
+ This class is responsible for handling the recovery link sent to the user's email.
+ */
+
 class RecoverPasswordController {
     private $token;
     private $tokenTable;
@@ -13,8 +18,12 @@ class RecoverPasswordController {
         $this->tokenTable = new TokenRepo();
     }
     
+    private function sanitize($input){
+        return htmlspecialchars(stripslashes(trim($input)));
+    }
+
     private function isTokenInvalid() {
-        return $this->token || strtotime($this->token->expires_at) < time() 
+        return !$this->token || strtotime($this->token->expires_at) < time() 
         || $this->token->type !== 'forgot_password';
     }
 
@@ -25,7 +34,8 @@ class RecoverPasswordController {
             die();
         }
 
-        $this->token = $this->tokenTable->findByToken($_GET['token']);
+        $token = $this->sanitize($_GET['token']);
+        $this->token = $this->tokenTable->findByToken($token);
 
         if($this->isTokenInvalid()){
             require_once "src/Views/invalidToken.php";
@@ -34,7 +44,7 @@ class RecoverPasswordController {
 
         $this->userId = $this->token->user_id;
 
-        $this->tokenTable->deleteByToken($_GET['token']);
+        $this->tokenTable->deleteByToken($token);
     }
     
     public function handleRequest(){
@@ -43,7 +53,7 @@ class RecoverPasswordController {
         
         $_SESSION["userForgotId"] = serialize($this->userId);
         
-        require_once "src/Views/changeLostPassword.php";
+        require_once "src/Views/recoverPassword.php";
         die();
     }
 }
