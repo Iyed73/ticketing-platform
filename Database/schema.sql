@@ -24,6 +24,13 @@ CREATE TABLE users (
     role ENUM('admin', 'customer') DEFAULT 'customer',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+CREATE TABLE tokens (
+  token VARCHAR(255) PRIMARY KEY,
+  user_id INT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  expires_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  type ENUM('forgot_password', 'account_verification', 'remember_me') NOT NULL
+);
 
 CREATE TABLE categories (
   name VARCHAR(255) NOT NULL PRIMARY KEY
@@ -69,6 +76,9 @@ ALTER TABLE tickets ADD eventID INT NOT NULL;
 ALTER TABLE tickets ADD orderID INT NOT NULL;
 ALTER TABLE tickets ADD CONSTRAINT fk_eventID FOREIGN KEY (eventID) REFERENCES events(id);
 ALTER TABLE tickets ADD CONSTRAINT fk_orderID FOREIGN KEY (orderID) REFERENCES orders(id);
+
+ALTER TABLE tokens ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id);
+
 
 INSERT INTO users (firstname, lastname, email, pwd, role) VALUES ('John', 'Doe', 'johndoe@gmail.com', '$2y$12$WFzkKn9UtpBWS7HYXH8n/e/c0IornFVFDrNRpEXGx4RGR7KuxK5KG', 'admin');
 

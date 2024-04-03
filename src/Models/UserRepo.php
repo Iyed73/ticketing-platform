@@ -20,7 +20,7 @@ class UserRepo extends Repo {
         $response->execute();
         return $response->fetch(PDO::FETCH_OBJ);
     }
-
+    
     public function deleteByUsername($username) {
         $req = "DELETE FROM {$this->tableName} WHERE username = :username";
         $response = $this->db->prepare($req);

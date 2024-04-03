@@ -1,8 +1,6 @@
 <?php
 require_once "src\Controllers\includes\configSession.inc.php";
 
-session_start();
-
 if (!isset($_SESSION['currency'])) {
     $_SESSION['currency'] = 'EUR';
 }
