@@ -9,7 +9,6 @@ use PHPMailer\PHPMailer\Exception;
 require_once 'vendor\autoload.php';
 
 
-
 function sendMail($sendorName, $receiverName, $email, $subject, $messageHtml, $messageText, $attachementPaths = null)
 {
     //Create an instance; passing `true` enables exceptions
@@ -47,17 +46,3 @@ function sendMail($sendorName, $receiverName, $email, $subject, $messageHtml, $m
         return false;
     }
 }
-
-
-function generateSingUpMessageHtml($username)
-{
-    return "<h1>Welcome to Tickety</h1><br><p>Dear $username, <br>Thank you for signing up with us. We are excited to have you on board. <br>Best Regards, <br>Tickety Team</p>";
-}
-
-function generateSignUpMessageText($username)
-{
-    return "Welcome to Tickety\n\nDear $username,\nThank you for signing up with us. We are excited to have you on board.\n\nBest Regards,\nTickety Team";
-}
-
-//add other message generation functions here
-

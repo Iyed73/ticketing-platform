@@ -28,6 +28,13 @@ class UserRepo extends Repo {
         $response->bindParam(':id', $id);
         return $response->execute();
     }
+
+    public function verifyUser($id) {
+        $req = "UPDATE {$this->tableName} SET is_verified = 1 WHERE id = :id";
+        $response = $this->db->prepare($req);
+        $response->bindParam(':id', $id);
+        return $response->execute();
+    }
     
     public function deleteByUsername($username) {
         $req = "DELETE FROM {$this->tableName} WHERE username = :username";
