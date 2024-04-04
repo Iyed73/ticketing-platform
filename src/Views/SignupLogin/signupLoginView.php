@@ -39,7 +39,7 @@
                     <input id="check" name="remember_me" type= "checkbox"  />
                     <label for="check">Remember me</label>
                 </span>
-                <a href="#" class="forgot_pw">Forgot password?</a>
+                <a href=<?= "{$prefix}/forgotPassword" ?> class="forgot_pw">Forgot password?</a>
             </div>
 
             <button class="button">Login Now</button>
