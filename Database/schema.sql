@@ -16,13 +16,25 @@ CREATE TABLE form_submissions (
 );
 
 CREATE TABLE users ( 
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    firstname VARCHAR(255) NOT NULL,
-    lastname VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    pwd VARCHAR(255) NOT NULL,
-    role ENUM('admin', 'customer') DEFAULT 'customer',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  firstname VARCHAR(255) NOT NULL,
+  lastname VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  pwd VARCHAR(255) NOT NULL,
+  role ENUM('admin', 'customer') DEFAULT 'customer',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE user_tokens
+(
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  selector VARCHAR(255) NOT NULL,
+  hashed_validator VARCHAR(255) NOT NULL,
+  user_id INT NOT NULL,
+  expiry DATETIME NOT NULL,
+  CONSTRAINT fk_user_id
+      FOREIGN KEY (user_id)
+          REFERENCES users (id) ON DELETE CASCADE
 );
 
 CREATE TABLE categories (
