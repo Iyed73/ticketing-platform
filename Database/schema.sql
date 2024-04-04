@@ -40,7 +40,7 @@ CREATE TABLE user_tokens
   hashed_validator VARCHAR(255) NOT NULL,
   user_id INT NOT NULL,
   expiry DATETIME NOT NULL,
-  CONSTRAINT fk_user_id
+  CONSTRAINT fk_user_id1
       FOREIGN KEY (user_id)
           REFERENCES users (id) ON DELETE CASCADE
 );
