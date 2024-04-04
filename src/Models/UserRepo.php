@@ -21,6 +21,21 @@ class UserRepo extends Repo {
         return $response->fetch(PDO::FETCH_OBJ);
     }
 
+    public function updatePassword($id, $password) {
+        $req = "UPDATE {$this->tableName} SET pwd = :pwd WHERE id = :id";
+        $response = $this->db->prepare($req);
+        $response->bindParam(':pwd', $password);
+        $response->bindParam(':id', $id);
+        return $response->execute();
+    }
+
+    public function verifyUser($id) {
+        $req = "UPDATE {$this->tableName} SET is_verified = 1 WHERE id = :id";
+        $response = $this->db->prepare($req);
+        $response->bindParam(':id', $id);
+        return $response->execute();
+    }
+    
     public function deleteByUsername($username) {
         $req = "DELETE FROM {$this->tableName} WHERE username = :username";
         $response = $this->db->prepare($req);

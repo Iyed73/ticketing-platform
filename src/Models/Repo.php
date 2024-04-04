@@ -33,4 +33,10 @@ abstract class Repo {
         return $response->execute(array_values($data));
     }
 
+    public function deleteById($id) {
+        $req = "DELETE FROM {$this->tableName} WHERE id = ?";
+        $response = $this->db->prepare($req);
+        return $response->execute([$id]);
+    }
+
 }

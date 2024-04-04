@@ -1,7 +1,7 @@
 <?php 
 require_once "src\Models\UserRepo.php";
-require_once("src\Controllers\includes\configSession.inc.php");
-
+require_once "src\Controllers\includes\configSession.inc.php";
+require_once 'Services\rememberMeService.php';
 
 class loginController {
     private $email;
@@ -92,7 +92,8 @@ class loginController {
         
         // Check if the the user chose to be remembered
         if(isset($_POST['remember_me'])) {
-            setcookie("remember_me_cookie", $user->id, time() + (86400 * 30), "/"); // cookie expires after 30 day 
+            $rememberMeService = new rememberMeService();
+            $rememberMeService->rememberMe($user->id);
         }
         // Create a new session id and append the user id to it for better security and association of data with the user for a personalized experience
         regenerate_session_id_loggedin();

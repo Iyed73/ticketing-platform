@@ -2,6 +2,7 @@
 require_once "src\Models\UserRepo.php";
 require_once "src\Models\EventRepo.php";
 require_once "src\Models\CategoryRepo.php";
+require_once 'Services\rememberMeService.php';
 
 class HomeController {
     public $events;
@@ -34,24 +35,18 @@ class HomeController {
         }
     }
 
-    public function rememberUser(){
-        if(isset($_COOKIE["remember_me_cookie"])){
-            $user = $this->userTable->findById($_COOKIE["remember_me_cookie"]);
-            if($user){
-                $_SESSION["user_id"] = $user->id;
-                $_SESSION["email"] = $user->email;
-                $_SESSION["role"] = $user->role;
-            }
-        }
-    }
-
     public function handleRequest(){
         $this->getData();
         require_once "includes/configSession.inc.php";
         $_SESSION["events"] = serialize($this->events);
         $_SESSION["categories"] = serialize($this->categories);
         $_SESSION["eventsByCategory"] = serialize($this->eventsByCategory);
-        $this->rememberUser();
+
+        // Log in user if he chose to be remembered
+        $rememberMeService = new rememberMeService();
+        if (isset($_COOKIE['remember_me'])) {
+            $rememberMeService->LoginWithToken($_COOKIE['remember_me']);
+        }
         
         require_once "src/Views/home.php";
         die();
