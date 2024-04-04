@@ -1,9 +1,9 @@
 <?php
 require_once("src/Controllers/includes/configSession.inc.php");
-require_once("src/Views/Dashboard/eventAdditionView.php")
+require_once("src/Views/EventAddition/eventAdditionForm.php")
 ?>
 
-<?php include "prefix.php"?>
+<?php include "prefix.php" ?>
 
 <!doctype html>
 <html lang="en">

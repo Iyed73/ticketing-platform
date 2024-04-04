@@ -186,9 +186,14 @@ class eventAdditionController{
         die();
     }
 
-    function handleRequest($userID)
-    {
-
+    public function handleRequest($userID) {
+        $userRepo = new UserRepo();
+        if ($userRepo->isAdmin($userID)) {
+            require_once "src/Views/EventAddition/eventAdditionView.php";
+        } else {
+            http_response_code(401);
+            exit();
+        }
     }
 }
 
@@ -200,7 +205,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 else{
 
-    require_once "src/Views/Dashboard/eventAdditionForm.php";
+    require_once "src/Views/EventAddition/eventAdditionView.php";
 
     if(!isset($_SESSION["user_id"])){
         http_response_code(401);
@@ -210,8 +215,8 @@ else{
 
         $userRepo = new UserRepo();
 
-        if($this->userRepo->isAdmin($_GET["user_id"]) === true){
-            require_once "src/Views/Dashboard/eventAdditionForm.php";
+        if($userRepo->isAdmin($_SESSION["user_id"]) === true){
+            require_once "src/Views/EventAddition/eventAdditionView.php";
             die();
         }
         else{

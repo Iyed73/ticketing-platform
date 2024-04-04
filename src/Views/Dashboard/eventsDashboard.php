@@ -1,71 +1,45 @@
-<?php include "prefix.php"?>
+<?php require "prefix.php"; ?>
 
-<div class = "container-fluid py-5" style="margin-top: 20vh">
-            
-            <h2> All Events </h2>
-            <a class = "btn btn-primary text-white" href = "<?="{$prefix}/event_addition"?>" role = "button"> Add Event </a>
-            <br>
-            <table class = "table">
-                <thead>
-                    <tr>
-                        <th> ID </th>
-                        <th> Name </th>
-                        <th> Venue </th>
-                        <th> Date </th>
-                        <th> Short Description </th>
-                        <th> Long Description </th>
-                        <th> Organizer </th>
-                        <th> Total Tickets </th>
-                        <th> Available Tickets </th>
-                    </tr>
-                </thead>
-                    <tbody>
-                        <?php
-                            $servername  = "localhost";
-                            $username = "root";
-                            $password = "";
-                            $database = "Tickety";
-
-                            //Create Connection
-                            $connection = new mysqli($servername, $username, $password, $database);
-
-                            //Check Connection
-                            if($connection -> connect_error){
-                                die("Connection failed: " . $connection -> connect_error);
-                            }
-
-                            //read all row from database table
-                            $sql = "SELECT * FROM events";
-                            $result = $connection -> query($sql);
-
-                            if(!$result){
-                                die("Invalid query: " . $connection -> error);
-                            }
-
-                            // read data of each row
-                            while($row = $result -> fetch_assoc()){
-                                echo "
-                                <tr>
-                                    <td> $row[id] </td>
-                                    <td> $row[name] </td>
-                                    <td> $row[venue] </td>
-                                    <td> $row[eventDate] </td>
-                                    <td> $row[shortDescription] </td>
-                                    <td> $row[longDescription] </td>
-                                    <td> $row[organizer] </td>
-                                    <td> $row[totalTickets] </td>
-                                    <td> $row[availableTickets] </td>
-                                    <td>
-                                        <a class = 'btn btn-primary btn-sm text-white' href = '#?id = $row[id]'>Edit</a>
-                                        <a class  = 'btn btn-danger btn-sm text-white' href = '#?id = $row[id]'>Delete</a>
-                                    </td>
-                                </tr>
-                                ";
-                            }
-                        ?>
-                        
-                    </tbody>
-            </table>
-                
-
-        </div>
+<div class="container-fluid py-5" style="margin-top: 20vh">
+    <h2>All Events</h2>
+    <a class="btn btn-primary text-white" href="<?= "{$prefix}/event_addition" ?>" role="button">Add Event</a>
+    <br>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Venue</th>
+                <th scope="col">Category</th>
+                <th scope="col">Date</th>
+                <th scope="col">Short Description</th>
+                <th scope="col">Long Description</th>
+                <th scope="col">Organizer</th>
+                <th scope="col">Start Sell Time</th>
+                <th scope="col">End Sell Time</th>
+                <th scope="col">Total Tickets</th>
+                <th scope="col">Available Tickets</th>
+                <th scope="col">Ticket Price</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php foreach ($events as $event): ?>
+                <tr>
+                    <td><?php echo $event->id; ?></td>
+                    <td><?php echo $event->name; ?></td>
+                    <td><?php echo $event->venue; ?></td>
+                    <td><?php echo $event->category; ?></td>
+                    <td><?php echo $event->eventDate; ?></td>
+                    <td><?php echo $event->shortDescription; ?></td>
+                    <td><?php echo $event->longDescription; ?></td>
+                    <td><?php echo $event->organizer; ?></td>
+                    <td><?php echo $event->startSellTime; ?></td>
+                    <td><?php echo $event->endSellTime; ?></td>
+                    <td><?php echo $event->totalTickets; ?></td>
+                    <td><?php echo $event->availableTickets; ?></td>
+                    <td><?php echo $event->ticketPrice; ?></td>
+                </tr>
+            <?php endforeach; ?>
+            </tbody>
+        </table>
+</div>
