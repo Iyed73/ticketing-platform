@@ -17,22 +17,18 @@ require_once("src/Views/Dashboard/eventAdditionView.php")
 
     <form action="<?="{$prefix}/event_addition"?>" method="post" style = "margin-top: 30vh">
         <?php eventAdditionInput(); ?>
-        <div class = "offset-sm-3 col-sm-3 d-grid">
-            <button type = "submit" class = "btn btn-primary">Submit</button>
-        </div>
-        <div class = "col-sm-3 d-grid">
-            <a class = "btn btn-outline-primary" href = "<?="{$prefix}/dashboard"?>" role = "button">Cancel</a>
+        <div class = "row mb-3">
+            <div class = "offset-sm-3 col-sm-3 d-grid">
+                <button type = "submit" class = "btn btn-primary">Submit</button>
+            </div>
+            <div class = "col-sm-3 d-grid">
+                <a class = "btn btn-outline-primary" href = "<?="{$prefix}/dashboard"?>" role = "button">Cancel</a>
+            </div>
         </div>
     </form>
     <?php checkEventAdditionErrors(); ?>
+
     <?php checkEventAdditionSuccess(); ?>
-    <?php
-    if(isset($_GET["eventAddition"])){
-        if($_GET["eventAddition"]=="success"){
-            header("Location: {$prefix}/dashboard");
-        }
-    }
-    ?>
 
     <?php include 'src/Views/Common/footer.php' ?>
 
