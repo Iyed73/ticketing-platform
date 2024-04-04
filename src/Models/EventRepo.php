@@ -36,4 +36,21 @@ class EventRepo extends Repo {
         $response->bindParam(':name', $eventName);
         return $response->execute();
     }
+
+    public function totalPagesNum(){
+        $req = "SELECT COUNT(*) FROM {$this -> tableName}";
+        $response = $this -> db -> prepare($req);
+        $response -> execute();
+        $count = $response -> fetchColumn();
+        $totalPages = ceil($count / 5);
+        return $totalPages;
+    }
+
+    public function findWithOffset($offset, $totalPages){
+        $req = "SELECT * FROM {$this -> tableName} LIMIT $offset, $totalPages ";
+        $response = $this->db->query($req);
+        $response->execute();
+        return  $response->fetchAll(PDO::FETCH_OBJ);
+    }
+
 }
