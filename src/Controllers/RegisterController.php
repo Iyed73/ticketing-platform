@@ -64,13 +64,6 @@ class SignupController
         return false;
     }
 
-    public function isUserLoggedIn(){
-        if(isset($_SESSION["user_id"])&&isset($_SESSION["role"])){
-            return true;
-        }
-        return false;
-    }
-
     public function addCustomer()
     {
         //Hashing the password
