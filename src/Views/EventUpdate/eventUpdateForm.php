@@ -23,6 +23,7 @@ unset($_SESSION['error']);
     <?php endif; ?>
 
     <form action="<?="{$prefix}/event_update"?>" method="post" style = "margin-top: 30vh">
+        <input type="hidden" name="id" value="<?= $eventData ? $eventData->id: '' ?>">
         <div class="row mb-3">
             <label class="col-sm-3 col-form-label">Name</label>
             <div class="col-sm-6">

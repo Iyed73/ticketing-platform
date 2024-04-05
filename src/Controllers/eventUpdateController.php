@@ -96,7 +96,7 @@ class eventUpdateController{
             die();
         }
     }
-    public function handlePostRequest($userID, $eventID){
+    public function handlePostRequest($userID){
 
         $userRepo = new UserRepo();
 
@@ -105,6 +105,7 @@ class eventUpdateController{
             die();
         }
 
+        $eventID = $_POST['id'];
         $name = $_POST['name'];
         $venue = $_POST['venue'];
         $category = $_POST['category'];
@@ -124,25 +125,27 @@ class eventUpdateController{
         if ($this -> is_input_empty($name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $endSellTime, $totalTickets, $availableTickets, $ticketPrice)){
             $_SESSION['error'] = "Fields must not be empty!";
             $is_There_Errors = true;
-            header("Location: event_update?eventUpdate=failed");
+            header("Location: event_update?id={$eventID}&eventUpdate=failed");
+
         }
 
         else if($this -> is_eventDate_invalid($eventDate, $startSellTime, $endSellTime)){
             $_SESSION['error'] = "Event date not valid!";
             $is_There_Errors = true;
-            header("Location: event_update?eventUpdate=failed");
+            header("Location: event_update?id={$eventID}&eventUpdate=failed");
+
         }
 
         else if($this -> is_startSellTime_invalid($startSellTime, $endSellTime, $eventDate)){
             $_SESSION['error'] = "Start Sell Time not valid!";
             $is_There_Errors = true;
-            header("Location: event_update?eventUpdate=failed");
+            header("Location: event_update?id={$eventID}&eventUpdate=failed");
         }
 
         else if($this -> is_endSellTime_invalid($startSellTime, $endSellTime, $eventDate)){
             $_SESSION['error'] = "End Sell Time not valid!";
             $is_There_Errors = true;
-            header("Location: event_update?eventUpdate=failed");
+            header("Location: event_update?id={$eventID}&eventUpdate=failed");
         }
 
         else if(!$is_There_Errors){
@@ -169,12 +172,11 @@ if (!isset($_SESSION["user_id"])) {
 }
 
 $userID = $_SESSION["user_id"];
-$eventID ="";
 
 $eventUpdateController = new eventUpdateController();
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-    $eventUpdateController -> handlePostRequest($userID, $eventID);
+    $eventUpdateController -> handlePostRequest($userID);
 }
 
 else if($_SERVER["REQUEST_METHOD"] == "GET"){
