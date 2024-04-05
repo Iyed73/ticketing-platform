@@ -1,6 +1,8 @@
 <?php
 //loading environment variables
 require_once "vendor/autoload.php";
+require_once "src/Controllers/includes/configSession.inc.php";
+
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 

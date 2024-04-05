@@ -106,8 +106,6 @@ $pathToComponents = "src/Views/";
                         </div>
                     </div>
                 </div>
-
-                <?php require_once "{$pathToComponents}EventPage/eventPageCarousel.php"; ?>
             </div>
 
 

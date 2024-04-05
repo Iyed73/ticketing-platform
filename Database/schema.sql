@@ -22,7 +22,21 @@ CREATE TABLE users (
     email VARCHAR(255) NOT NULL,
     pwd VARCHAR(255) NOT NULL,
     role ENUM('admin', 'customer') DEFAULT 'customer',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_recovery_token_sent_at DATETIME DEFAULT NULL,
+    is_verified BOOLEAN DEFAULT FALSE
+);
+
+CREATE TABLE unique_tokens
+(
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  selector VARCHAR(255) NOT NULL,
+  hashed_validator VARCHAR(255) NOT NULL,
+  user_id INT NOT NULL,
+  expiry DATETIME NOT NULL,
+  CONSTRAINT fk_user_id1
+      FOREIGN KEY (user_id)
+          REFERENCES users (id) ON DELETE CASCADE
 );
 
 CREATE TABLE categories (
@@ -70,7 +84,7 @@ ALTER TABLE tickets ADD orderID INT NOT NULL;
 ALTER TABLE tickets ADD CONSTRAINT fk_eventID FOREIGN KEY (eventID) REFERENCES events(id);
 ALTER TABLE tickets ADD CONSTRAINT fk_orderID FOREIGN KEY (orderID) REFERENCES orders(id);
 
-INSERT INTO users (firstname, lastname, email, pwd, role) VALUES ('John', 'Doe', 'johndoe@gmail.com', '$2y$12$WFzkKn9UtpBWS7HYXH8n/e/c0IornFVFDrNRpEXGx4RGR7KuxK5KG', 'admin');
+INSERT INTO users (firstname, lastname, email, pwd, role, is_verified) VALUES ('John', 'Doe', 'johndoe@gmail.com', '$2y$12$WFzkKn9UtpBWS7HYXH8n/e/c0IornFVFDrNRpEXGx4RGR7KuxK5KG', 'admin', TRUE);
 
 
 INSERT INTO categories (name) VALUES
