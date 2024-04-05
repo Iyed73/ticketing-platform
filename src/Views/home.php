@@ -1,5 +1,4 @@
 <?php
-require_once "src/Controllers/includes/configSession.inc.php";
 
 // Retrieve and unserialize session variables
 $events = unserialize($_SESSION["events"]) ?? [];
