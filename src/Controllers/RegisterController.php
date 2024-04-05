@@ -1,8 +1,7 @@
 <?php
 require_once ("src\Models\UserRepo.php");
-require_once ("src\Models\TokenRepo.php");
 require_once ("Services\MailingService.php");
-require_once ("Services\DecodableToken.php");
+require_once ("Services\StatelessTokenService.php");
 
 
 class SignupController
@@ -12,7 +11,6 @@ class SignupController
     private $email;
     private $pwd;
     private $userTable;
-    private $tokenTable;
     private $token;
     private $user;
     private $verificationUrl;
@@ -24,7 +22,6 @@ class SignupController
         $this->email = $email;
         $this->pwd = $pwd;
         $this->userTable = new UserRepo();
-        $this->tokenTable = new TokenRepo();
     }
 
     public function sanitizeInput()
@@ -121,53 +118,40 @@ class SignupController
         }
 
         if (empty($errors) && !$this->user) {
-            $errors["server_error"] = "No user";
+            $errors["server_error"] = "Server error, please try again.";
         }
         
-        //we need this token to be decodable to use it to encode the user id,
-        //this enables users to verify their account even when they are not logged in
-        $token = generate_token($this->user->id, $_ENV['SECRET_KEY']);
+    
+        $JWT = new JwtService();
 
-        if (empty($errors)) {
-            $this->tokenTable->insert([
-                'user_id' => $this->user->id,
-                'token' => $token,
-                'type' => 'account_verification',
-                'expires_at' => '2038-01-19 03:14:07' //largest possible timestamp for 32-bit systems, we want a token that doesn't expire
-            ]);
+        $payload = [
+            'userId' => $this->user->id,
+            'type' => 'account_verification'
+        ];
 
-            $this->token = $this->tokenTable->findByToken($token);
-        }
+        $this->token = $JWT->encode($payload, $_ENV["SECRET_KEY"]);
 
-        if (empty($errors) && !$this->token) {
+        
+
+        $prefix = $_ENV['prefix'];
+        $this->verificationUrl = "http://localhost{$prefix}/verify?token={$this->token}";
+
+        
+        if (
+            !sendMail(
+                "Tickety",
+                $this->firstName,
+                $this->email,
+                "Welcome to Tickety - [Account Verification]",
+                $this->htmlMessage($this->firstName, $this->verificationUrl),
+                $this->textMessage($this->firstName, $this->verificationUrl)
+            )
+        ) {
             $errors["server_error"] = "Server error, please try again.";
             if ($this->user) {
                 $this->userTable->deleteById($this->user->id);
             }
         }
-
-        $prefix = $_ENV['prefix'];
-        $this->verificationUrl = "http://localhost{$prefix}/verify?token={$token}";
-
-        /*TODO: Works, uncomment later */
-        // if (
-        //     !sendMail(
-        //         "Tickety",
-        //         $this->firstName,
-        //         $this->email,
-        //         "Welcome to Tickety - [Account Verification]",
-        //         $this->htmlMessage($this->firstName, $this->verificationUrl),
-        //         $this->textMessage($this->firstName, $this->verificationUrl)
-        //     )
-        // ) {
-        //     $errors["server_error"] = "Server error, please try again.";
-        //     if ($this->token) {
-        //         $this->tokenTable->deleteByToken($this->token->token);
-        //     }
-        //     if ($this->user) {
-        //         $this->userTable->deleteById($this->user->id);
-        //     }
-        // }
 
 
         //other error handling can be added here

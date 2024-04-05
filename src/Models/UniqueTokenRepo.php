@@ -1,8 +1,8 @@
 <?php 
 require_once "src\Models\Repo.php";
-class UserTokenRepo extends Repo {
+class UniqueTokenRepo extends Repo {
     public function __construct() {
-        parent::__construct('user_tokens');
+        parent::__construct('unique_tokens');
     }
 
     public function findTokenBySelector($selector) {

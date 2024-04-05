@@ -1,7 +1,6 @@
 <?php
 require_once "src\Models\UserRepo.php";
-require_once "src\Models\TokenRepo.php";
-require_once "Services/DecodableToken.php";
+require_once "Services/StatelessTokenService.php";
 require_once("src\Controllers\includes\configSession.inc.php");
 
 /**
@@ -10,13 +9,11 @@ require_once("src\Controllers\includes\configSession.inc.php");
 
 class VerifyAccountController {
     private $userTable;
-    private $tokenTable;
     private $user;
     private $token;
 
     public function __construct() {
         $this->userTable = new UserRepo();
-        $this->tokenTable = new TokenRepo();
     }
     
     private function sanitize($input){
@@ -24,9 +21,13 @@ class VerifyAccountController {
     }
 
     private function isTokenInvalid() {
-        return !$this->token || $this->token->type !== 'account_verification';
+        return !$this->token 
+        || $this->token["type"] !== 'account_verification' 
+        || !$this->user
+        || $this->user->is_verified;
     }
     
+
     private function getData(){
         $prefix = $_ENV['prefix'];
         if(!isset($_GET['token'])){
@@ -34,25 +35,32 @@ class VerifyAccountController {
             die();
         }
 
-        $token = $this->sanitize($_GET['token']);
-        $this->token = $this->tokenTable->findByToken($token);
+        $this->token = $this->sanitize($_GET['token']);
+
+        try {
+            $JWT = new JwtService();
+            $this->token = $JWT->decode($this->token, $_ENV['SECRET_KEY']);
+        } catch (Exception $e) {
+            require_once "src/Views/invalidToken.php";
+            die();  
+        }
+
+    
+        $this->user = $this->userTable->findById($this->token["userId"]);
+    }
+    
+    public function handleRequest(){
+        $this->getData();
 
         if($this->isTokenInvalid()){
             require_once "src/Views/invalidToken.php";
             die();
         }
-
-        $userId = decode_token($this->token->token, $_ENV['SECRET_KEY']);
-        $this->user = $this->userTable->findById($userId);
-    }
-    
-    public function handleRequest(){
-        $prefix = $_ENV['prefix'];
-        $this->getData();
         
-        $this->userTable->verifyUser($this->user->id);
-
-        $this->tokenTable->deleteByToken($this->token->token);
+        if(!$this->userTable->verifyUser($this->user->id)) {
+            http_response_code(500);
+            die();
+        }
 
         require_once "src/Views/accountVerified.php";
         die();

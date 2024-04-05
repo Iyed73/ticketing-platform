@@ -14,6 +14,13 @@ abstract class Repo {
         return  $response->fetchAll(PDO::FETCH_OBJ);
     }
 
+    public function exists($id) {
+        $req = "SELECT * FROM {$this->tableName} where id = ?";
+        $response = $this->db->prepare($req);
+        $response->execute([$id]);
+        return $response->rowCount() > 0;
+    }
+
     public function findById($id) {
         $req = "SELECT * FROM {$this->tableName} where id = ?";
         $response = $this->db->prepare($req);

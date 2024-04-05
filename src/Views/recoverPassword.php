@@ -30,7 +30,7 @@ $pathToComponents = "src/Views/";
                 <div class="p-5 bg-light rounded">
                     <div class="row g-4">
                         <div class="col-lg-12">
-                            <form action="<?= "{$prefix}/resetPassword" ?>" class="contact-form" method="POST">
+                            <form action="<?= "{$prefix}/resetPassword?token={$_GET['token']}" ?>" class="contact-form" method="POST">
                                 <input type="password" class="w-100 form-control border-0 py-3 mb-4" name="newPassword"
                                     placeholder="New Password" required>
                                 <input type="password" class="w-100 form-control border-0 py-3 mb-4" name="newPasswordConfirm"
