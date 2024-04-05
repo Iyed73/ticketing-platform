@@ -117,6 +117,9 @@
 /*** Topbar End ***/
 
 /*** Navbar Start ***/
+#navbar-container{
+    z-index:999;
+}
 .navbar .navbar-nav .nav-link {
     padding: 10px 15px;
     font-size: 16px;

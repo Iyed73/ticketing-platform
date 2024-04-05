@@ -5,4 +5,6 @@
 <script src="lib/lightbox/js/lightbox.min.js"></script>
 <script src="lib/owlcarousel/owl.carousel.min.js"></script>
 
+<script src="Static\JS\signupLoginScript.js"></script>
+<script src="Static\JS\customerSupportScript.js"></script>
 <script src="Static/JS/main.js"></script>
