@@ -32,7 +32,7 @@ abstract class Repo {
         return $response->execute(array_values($data));
     }
 
-    public function edit(array $data, $eventId) {
+    public function update(array $data, $Id) {
         $sets = [];
         foreach ($data as $key => $value) {
             $sets[] = "{$key} = ?";
@@ -43,7 +43,7 @@ abstract class Repo {
         $response = $this->db->prepare($request);
 
         $values = array_values($data);
-        $values[] = $eventId;
+        $values[] = $Id;
 
         return $response->execute($values);
     }
