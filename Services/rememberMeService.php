@@ -1,13 +1,13 @@
 <?php
-require_once "src\Models\UserTokenRepo.php";
+require_once "src\Models\UniqueTokenRepo.php";
 //a token contains two parts selector and validator the selector is used to find the user token in the database then a validator is comaared with the hashed validator to verify the token
 //the addition of the validator is a security measure to prevent timing attacks
 //the expiry date of the token is also verified
 class rememberMeService {
-    private $userTokenRepo;
+    private $uniqueTokenTable;
 
     public function __construct() {
-        $this->userTokenRepo = new UserTokenRepo();
+        $this->uniqueTokenTable = new UniqueTokenRepo();
     }
 
     function generateToken(){
@@ -32,12 +32,12 @@ class rememberMeService {
             'user_id' => $userId,
             'expiry' => date('Y-m-d H:i:s', time() + 60*60*24*30)
         ];
-        $this->userTokenRepo->insert($data);
+        $this->uniqueTokenTable->insert($data);
         setcookie('remember_me',$token,time() + 60*60*24*30, '/');
     }
 
     public function forgetMe($userId) {
-        $this->userTokenRepo->deleteByUserId($userId);
+        $this->uniqueTokenTable->deleteByUserId($userId);
         setcookie('remember_me','',time() - 3600,'/');
     }
 
@@ -48,7 +48,7 @@ class rememberMeService {
             return false;
         }
 
-        $userToken = $this->userTokenRepo->findTokenBySelector($parsedToken[0]);
+        $userToken = $this->uniqueTokenTable->findTokenBySelector($parsedToken[0]);
         if ($userToken) {
             if (password_verify($parsedToken[1], $userToken->hashed_validator)) {
                 return $userToken;
@@ -60,7 +60,7 @@ class rememberMeService {
     public function loginWithToken($token) {
         $userToken = $this->validateToken($token);
         if ($userToken) {
-            $user = $this->userTokenRepo->findUserBySelector($userToken->selector);
+            $user = $this->uniqueTokenTable->findUserBySelector($userToken->selector);
             if ($user) {
                 $_SESSION["user_id"] = $user->id;
                 $_SESSION["email"] = $user->email;

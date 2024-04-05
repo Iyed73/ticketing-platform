@@ -36,7 +36,7 @@ $pathToComponents = 'src/Views/';
                             <input type="text" class="w-100 form-control border-0 py-3 mb-4" name="email"
                                 placeholder="Your Email" required>
                             <?php if (isset($response)): ?>
-                                <?php if (strpos($response, 'error') !== false): ?>
+                                <?php if (strpos($response, 'error') !== false || strpos($response,'later') !== false): ?>
                                     <div class='alert alert-danger' role='alert'>
                                         <?= $response ?>
                                     </div>

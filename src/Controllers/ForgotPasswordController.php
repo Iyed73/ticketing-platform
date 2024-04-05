@@ -1,8 +1,9 @@
 <?php
 require_once "src\Models\UserRepo.php";
-require_once "src\Models\TokenRepo.php";
 require_once "Services\MailingService.php";
-
+require_once "Services\StatelessTokenService.php";
+$MAIL_RATE_LIMIT = 60*30; // 30 minutes
+$JWT_EXPIRATION_TIME = 60*30; // 30 minutes
 
 /**
  This class is responsible for creating the token, the recovery link and the mail sent to the user's email.
@@ -10,7 +11,6 @@ require_once "Services\MailingService.php";
 
 class ForgotPasswordController {
     private $userTable;
-    private $tokenTable;
     private $user;
     private $token;
     private $email;
@@ -18,7 +18,6 @@ class ForgotPasswordController {
 
     public function __construct() {
         $this->userTable = new UserRepo();
-        $this->tokenTable = new TokenRepo();
     }
     
     private function sanitizeInput()
@@ -39,6 +38,8 @@ class ForgotPasswordController {
         return "Password Recovery Link:\n\nDear {$this->user->firstname},\n\nPlease click the link below to recover your password:\n\n{$this->recoveryLink}\n\nIf you didn't request this, please ignore this email.\n\nBest Regards,\nTickety Team";
     }
     
+    
+
     public function handleRequest(){
         $prefix = $_ENV['prefix'];
         if(!isset($_POST['email'])){
@@ -58,40 +59,48 @@ class ForgotPasswordController {
         $this->user = $this->userTable->findByEmail($this->email);
         
         $response = "An email has been sent, please check your inbox!";
-        //if user does not exist or the user has no token or the token has expired, show the email form
+        
+        //if user does not exist or is rate limited show the email form
         if(!$this->user){
             require_once "src/Views/forgotPassword.php";
             die();
         }
         
-        $this->token = $this->tokenTable->findByUserIdAndType($this->user->id, 'forgot_password');
-        
-        if($this->token && strtotime($this->token->expires_at) >= time()){
+        if($this->user->last_recovery_token_sent_at 
+        && ((time() - strtotime($this->user->last_recovery_token_sent_at) - 3600) < $GLOBALS["MAIL_RATE_LIMIT"])){
+            $response = "You've tried too many times, please try again later!";
             require_once "src/Views/forgotPassword.php";
             die();
         }
         
-        //if token exists and has expired, delete the token
-        if($this->token){
-            $this->tokenTable->deleteByToken($this->token->token);
-        }
         
-        $token = bin2hex(random_bytes(16));
-        $this->recoveryLink = "http://localhost{$prefix}/recoverPassword?token={$token}";
-        
-        //else, create a new token and send a recovery link to user's email
-        $this->token = $this->tokenTable->insert([
-            'user_id' => $this->user->id,
-            'token' =>  $token,
+        $JWT = new JwtService();
+        $payload = [
+            'userId' => $this->user->id,
             'type' => 'forgot_password',
-            'expires_at' => date('Y-m-d H:i:s', strtotime('+1 hour'))
-        ]);
+            'expiresAt' => (time() + $GLOBALS["JWT_EXPIRATION_TIME"])
+        ];
+        
+        $oldPasswordHash = $this->userTable->getOldPasswordHash($this->user->id);
 
-        /*TODO: Works fine, uncomment later*/
-        // if(!$this->token || !sendMail($this->user->firstname,"Tickety", $this->email, '[Password Recovery]', $this->htmlMessage(), $this->textMessage())) {
-        //    $response = "An error occurred, please try again!";
-        // }
+        if(!$oldPasswordHash) {
+            $response = "An error occurred, please try again!";
+            require_once "src/Views/forgotPassword.php";
+            die();
+        }
 
+
+        $this->token = $JWT->encode($payload, $oldPasswordHash->pwd);
+
+        $this->recoveryLink = "http://localhost{$prefix}/recoverPassword?token={$this->token}";
+        
+        if(!sendMail($this->user->firstname,"Tickety", $this->email, '[Password Recovery]', $this->htmlMessage(), $this->textMessage())) {
+           $response = "An error occurred, please try again!";
+        } else {
+            $this->userTable->updateLastTokenSent($this->user->id);
+        }
+
+        
         require_once "src/Views/forgotPassword.php";
         die();
     }
