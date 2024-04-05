@@ -14,5 +14,9 @@ $routes = [
     "{$prefix}/deleteSubmission" => 'src\Controllers\DeleteSubmissionController.php',
     "{$prefix}/profile" => 'src\Controllers\UserProfileController.php',
     
+    "{$prefix}/forgotPassword" => 'src/Controllers/ForgotPasswordController.php',
+    "{$prefix}/recoverPassword" => 'src/Controllers/RecoverPasswordController.php',
+    "{$prefix}/resetPassword" => 'src/Controllers/ResetPasswordController.php',
+    "{$prefix}/verify" => 'src/Controllers/VerifyAccountController.php',
 ];
 
