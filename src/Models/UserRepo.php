@@ -21,6 +21,22 @@ class UserRepo extends Repo {
         return $response->execute();
     }
 
+    public function updateFirstName($id,$firstname){
+        $req = "UPDATE {this->tableName} SET firstname = :firstname WHERE id = :id";
+        $response = $this->db->prepare($req);
+        $response->bindParam(':firstname', $firstname);
+        $response->bindParam(':id', $id);
+        return $response->execute();
+    }
+
+    public function updateLastName($id,$lastname){
+        $req = "UPDATE {this->tableName} SET lastname = :lastname WHERE id = :id";
+        $response = $this->db->prepare($req);
+        $response->bindParam(':lastname', $lastname);
+        $response->bindParam(':id', $id);
+        return $response->execute();
+    }
+
     public function verifyUser($id) {
         $req = "UPDATE {$this->tableName} SET is_verified = 1 WHERE id = :id";
         $response = $this->db->prepare($req);
