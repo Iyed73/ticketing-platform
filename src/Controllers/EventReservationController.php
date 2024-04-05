@@ -24,6 +24,7 @@ class EventReservationController {
         if ($reservationResult === true) {
             $reservationId = $this->eventReservationModel->getReservationId($eventId, $userId);
             if ($reservationId !== null) {
+                sleep(1);
                 $_SESSION["reservation_id"] = $reservationId;
                 header("Location: payment?reservation_id=" . urlencode($reservationId));
             } else {

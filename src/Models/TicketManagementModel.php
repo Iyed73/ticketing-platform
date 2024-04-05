@@ -41,11 +41,11 @@ class TicketManagementModel extends Repo
 
     public function isTicketValidForUser($ticketId, $userId): bool {
         $query = "SELECT COUNT(*) FROM {$this->tableName} WHERE ticket_id = :ticket_id AND buyer_id = :buyer_id";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindParam(':ticket_id', $ticketId, PDO::PARAM_STR);
-        $stmt->bindParam(':buyer_id', $userId, PDO::PARAM_INT);
-        $stmt->execute();
-        $count = $stmt->fetchColumn();
+        $response = $this->db->prepare($query);
+        $response->bindParam(':ticket_id', $ticketId, PDO::PARAM_STR);
+        $response->bindParam(':buyer_id', $userId, PDO::PARAM_INT);
+        $response->execute();
+        $count = $response->fetchColumn();
         return $count > 0;
     }
 }

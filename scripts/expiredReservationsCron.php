@@ -5,18 +5,22 @@
  */
 
 function updateEventAvailability(): void {
-    require_once "Database/dbConnection.php";
+    require_once __DIR__ . "/../Database/dbConnection.php";
     $db = dbConnection::getConnection();
 
     // Retrieve event ids for expired reservations with quantity sum
     $query = "SELECT event_id, SUM(quantity) AS total_quantity 
           FROM reservation 
-          WHERE expiration_date < NOW() 
+          WHERE expiration < NOW() 
           GROUP BY event_id";
 
     $response = $db->prepare($query);
     $response->execute();
     $expiredReservations = $response->fetchAll(PDO::FETCH_ASSOC);
+
+    $query = "DELETE FROM reservation WHERE expiration < NOW()";
+    $response = $db->prepare($query);
+    $response->execute();
 
     $db->beginTransaction();
 
@@ -25,7 +29,7 @@ function updateEventAvailability(): void {
             $eventId = $reservation['event_id'];
             $quantity = $reservation['total_quantity'];
 
-            $query = "UPDATE events SET available_tickets = available_tickets + ? WHERE id = ?";
+            $query = "UPDATE events SET availableTickets = availableTickets + ? WHERE id = ?";
             $response = $db->prepare($query);
             $response->execute([$quantity, $eventId]);
         }
