@@ -12,5 +12,6 @@ $routes = [
     "{$prefix}/payment" => 'src/Controllers/PaymentController.php',
     "{$prefix}/cancel" => 'src/Controllers/CancelReservationController.php',
     "{$prefix}/view-tickets" => 'src/Controllers/TicketsPageController.php',
+    "{$prefix}/ticket" => 'src/Controllers/TicketPDFController.php',
 ];
 

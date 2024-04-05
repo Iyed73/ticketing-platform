@@ -27,7 +27,7 @@ class TicketManagementModel extends Repo
     }
 
     public function getAllTickets($buyerId) {
-        $query = "SELECT ticket.*, events.name AS event_name, events.venue, events.eventDate
+        $query = "SELECT {$this->tableName}.*, events.name AS event_name, events.venue, events.eventDate
               FROM ticket
               INNER JOIN events ON ticket.event_id = events.id
               WHERE ticket.buyer_id = :buyer_id
@@ -37,6 +37,16 @@ class TicketManagementModel extends Repo
         $response->bindParam(':buyer_id', $buyerId, PDO::PARAM_INT);
         $response->execute();
         return $response->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function isTicketValidForUser($ticketId, $userId): bool {
+        $query = "SELECT COUNT(*) FROM {$this->tableName} WHERE ticket_id = :ticket_id AND buyer_id = :buyer_id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam(':ticket_id', $ticketId, PDO::PARAM_STR);
+        $stmt->bindParam(':buyer_id', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+        $count = $stmt->fetchColumn();
+        return $count > 0;
     }
 }
 
