@@ -5,38 +5,30 @@ require_once("src/Models/EventRepo.php");
 class DashboardController {
     private UserRepo $userRepo;
     private EventRepo $eventRepo;
-    private $allEvents;
-    private $totalPages;
-    private $currentPage;
-    private $offset;
-
     public function __construct() {
         $this->userRepo = new UserRepo();
         $this->eventRepo = new EventRepo();
-        $this->totalPages = $this->eventRepo->totalPagesNum();
-        $this->currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
-        $this->offset = ($this->currentPage - 1) * 5;
-        $this->allEvents = $this->eventRepo->findWithOffset($this->offset, 5); // Assuming 5 events per page
     }
 
-    public function adminDashboard() {
-        if ($this->allEvents === null) {
-            $this->allEvents = [];
-        }
-        $currentPage = $this->currentPage;
-        $offset = $this->offset;
-        $allEvents = $this->allEvents;
-        $totalPages = $this->totalPages;
-        require_once "src/Views/Dashboard/adminDashboard.php";
-    }
 
     public function handleRequest($userID) {
-        if ($this->userRepo->isAdmin($userID)) {
-            $this->adminDashboard();
-        } else {
+
+        if (!$this->userRepo->isAdmin($userID)) {
             http_response_code(401);
             exit();
         }
+
+        $totalPages = $this->eventRepo->totalPagesNum();
+        $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
+        $offset = ($currentPage - 1) * 5;
+        $allEvents = $this->eventRepo->findWithOffset($offset, 5);
+
+        if($allEvents == null){
+            $allEvents = [];
+        }
+
+        require_once "src/Views/Dashboard/adminDashboard.php";
+
     }
 }
 

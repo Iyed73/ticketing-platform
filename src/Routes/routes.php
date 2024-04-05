@@ -10,7 +10,7 @@ $routes = [
     "{$prefix}/event" => 'src/Controllers/EventPageController.php',
     "{$prefix}/dashboard" => 'src/Controllers/DashboardController.php',
     "{$prefix}/event_addition" => 'src/Controllers/eventAdditionController.php',
-
+    "{$prefix}/dashboard/event_update" => 'src/Controllers/eventUpdateController.php',
 
 ];
 

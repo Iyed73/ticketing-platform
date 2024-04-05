@@ -1,252 +1,123 @@
-<?php
+<?php include "prefix.php";
 
-require "src/Models/CategoryRepo.php";
+    require "src/Models/CategoryRepo.php";
 
-$categoryRepo = new CategoryRepo();
-$categories = $categoryRepo->findAll();
+    $categoryRepo = new CategoryRepo();
+    $categories = $categoryRepo->findAll();
 
-function eventAdditionInput()
-{
-    //fill input fields with data if it exists
-    global $categories;
-    if (isset($_SESSION["eventAddition_data"]["name"])) {
-        echo '<div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Name</label>
-                <div class="col-sm-6">
-                    <input type="text" class="form-control" name="name" value="' . $_SESSION["eventAddition_data"]["name"] . '">
-                </div>
-            </div>';
-    } else {
-        echo '<div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Name</label>
-                <div class="col-sm-6">
-                    <input type="text" class="form-control" name="name" value="">
-                </div>
-            </div>';
-    }
+    $error = $_SESSION['error'] ?? null;
 
-    if (isset($_SESSION["eventAddition_data"]["venue"])) {
-        echo '<div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Venue</label>
-                <div class="col-sm-6">
-                    <input type="text" class="form-control" name="venue" value="' . $_SESSION["eventAddition_data"]["venue"] . '">
-                </div>
-            </div>';
-    } else {
-        echo '<div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Venue</label>
-                <div class="col-sm-6">
-                    <input type="text" class="form-control" name="venue" value="">
-                </div>
-            </div>';
-    }
+    unset($_SESSION['error']);
+?>
 
-    if (isset($_SESSION["eventAddition_data"]["category"])) {
-        echo '<div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Category</label>
-                <div class="col-sm-6">
-                    <select class="form-select" aria-label="Categories" name="category">';
-        foreach ($categories as $category) {
-            echo '<option value="' . $category->name . '">' . $category->name . '</option>';
-        }
-        echo '</select>
-                </div>
-            </div>';
-    } else {
-        echo '<div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Category</label>
-                <div class="col-sm-6">
-                    <select class="form-select" aria-label="Categories" name="category">
-                        <option selected disabled>Select a category</option>';
-        foreach ($categories as $category) {
-            echo '<option value="' . $category->name . '">' . $category->name . '</option>';
-        }
-        echo '</select>
-                </div>
-            </div>';
-    }
 
-    if(isset($_SESSION["eventAddition_data"]["eventDate"])){
-        echo    '<div class = "row mb-3">
+<div class = "container py-5">
+
+    <div style="margin-top: 20vh;"></div>
+    <?php if ($error): ?>
+        <div class="alert alert-danger text-center mb-5" role="alert">
+            <?php echo $error; ?>
+        </div>
+    <?php endif; ?>
+
+    <form action="<?="{$prefix}/event_addition"?>" method="post" style = "margin-top: 30vh">
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">Name</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="name">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">Venue</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="venue">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">Category</label>
+            <div class="col-sm-6">
+                <select class="form-select" aria-label="Categories" name="category">
+                    <option selected disabled>Select a category</option>
+                    <?php foreach ($categories as $category): ?>
+                        <option value="<?= $category->name ?>"><?= $category->name ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+
+        <div class = "row mb-3">
             <label class = "col-sm-3 col-form-label">Date</label>
             <div class = "col-sm-6">
-                <input type = "date" class = "form-control" name = "eventDate" value = "'. $_SESSION["eventAddition_data"]["eventDate"].'">
+                <input type = "date" class = "form-control" name = "eventDate">
             </div>
-        </div>';
+        </div>
 
-    }
-    else{
-        echo '<div class = "row mb-3">
-            <label class = "col-sm-3 col-form-label">Date</label>
-            <div class = "col-sm-6">
-                <input type = "date" class = "form-control" name = "eventDate" value = "">
-            </div>
-        </div>';
-    }
-
-    if(isset($_SESSION["eventAddition_data"]["shortDescription"])){
-        echo    '<div class = "row mb-3">
+        <div class = "row mb-3">
             <label class = "col-sm-3 col-form-label">Short Description</label>
             <div class = "col-sm-6">
-                <input type = "text" class = "form-control" name = "shortDescription" value = "'. $_SESSION["eventAddition_data"]["shortDescription"].'">
+                <input type = "text" class = "form-control" name = "shortDescription">
             </div>
-        </div>';
+        </div>
 
-    }
-    else{
-        echo    '<div class = "row mb-3">
-            <label class = "col-sm-3 col-form-label">Short Description</label>
-            <div class = "col-sm-6">
-                <input type = "text" class = "form-control" name = "shortDescription" value = "">
-            </div>
-        </div>';
-    }
-
-    if(isset($_SESSION["eventAddition_data"]["longDescription"])){
-        echo    '<div class = "row mb-3">
+        <div class = "row mb-3">
             <label class = "col-sm-3 col-form-label">Long Description</label>
             <div class = "col-sm-6">
-                <input type = "text" class = "form-control" name = "longDescription" value = "'. $_SESSION["eventAddition_data"]["longDescription"].'">
+                <input type = "text" class = "form-control" name = "longDescription">
             </div>
-        </div>';
-    }
-    else{
-        echo    '<div class = "row mb-3">
-            <label class = "col-sm-3 col-form-label">Long Description</label>
-            <div class = "col-sm-6">
-                <input type = "text" class = "form-control" name = "longDescription" value = "">
-            </div>
-        </div>';
-    }
+        </div>
 
-    if(isset($_SESSION["eventAddition_data"]["organizer"])){
-        echo    '<div class = "row mb-3">
+        <div class = "row mb-3">
             <label class = "col-sm-3 col-form-label">Organizer</label>
             <div class = "col-sm-6">
-                <input type = "text" class = "form-control" name = "organizer" value = "'. $_SESSION["eventAddition_data"]["organizer"].'">
+                <input type = "text" class = "form-control" name = "organizer">
             </div>
-        </div>';
-    }
-    else{
-        echo    '<div class = "row mb-3">
-            <label class = "col-sm-3 col-form-label">Organizer</label>
-            <div class = "col-sm-6">
-                <input type = "text" class = "form-control" name = "organizer" value = "">
-            </div>
-        </div>';
-    }
+        </div>
 
-    if(isset($_SESSION["eventAddition_data"]["startSellTime"])){
-        echo    '<div class = "row mb-3">
+        <div class = "row mb-3">
             <label class = "col-sm-3 col-form-label">Start-Sell Time</label>
             <div class = "col-sm-6">
-                <input type = "date" class = "form-control" name = "startSellTime" value = "'. $_SESSION["eventAddition_data"]["startSellTime"].'">
+                <input type = "date" class = "form-control" name = "startSellTime">
             </div>
-        </div>';
+        </div>
 
-    }
-    else{
-        echo '<div class = "row mb-3">
-            <label class = "col-sm-3 col-form-label">Start-Sell Time</label>
-            <div class = "col-sm-6">
-                <input type = "date" class = "form-control" name = "startSellTime" value = "">
-            </div>
-        </div>';
-    }
-
-    if(isset($_SESSION["eventAddition_data"]["endSellTime"])){
-        echo    '<div class = "row mb-3">
+        <div class = "row mb-3">
             <label class = "col-sm-3 col-form-label">End-Sell Time</label>
             <div class = "col-sm-6">
-                <input type = "date" class = "form-control" name = "endSellTime" value = "'. $_SESSION["eventAddition_data"]["endSellTime"].'">
+                <input type = "date" class = "form-control" name = "endSellTime">
             </div>
-        </div>';
+        </div>
 
-    }
-    else{
-        echo '<div class = "row mb-3">
-            <label class = "col-sm-3 col-form-label">End-Sell Time</label>
-            <div class = "col-sm-6">
-                <input type = "date" class = "form-control" name = "endSellTime" value = "">
-            </div>
-        </div>';
-    }
-
-    if(isset($_SESSION["eventAddition_data"]["totalTickets"])){
-        echo    '<div class = "row mb-3">
+        <div class = "row mb-3">
             <label class = "col-sm-3 col-form-label">Total Tickets</label>
             <div class = "col-sm-6">
-                <input type = "number" class = "form-control" name = "totalTickets" value = "'. $_SESSION["eventAddition_data"]["totalTickets"].'">
+                <input type = "number" class = "form-control" name = "totalTickets">
             </div>
-        </div>';
-    }
-    else{
-        echo    '<div class = "row mb-3">
-            <label class = "col-sm-3 col-form-label">Total Tickets</label>
-            <div class = "col-sm-6">
-                <input type = "number" class = "form-control" name = "totalTickets" value = "">
-            </div>
-        </div>';
-    }
+        </div>
 
-    if(isset($_SESSION["eventAddition_data"]["availableTickets"])){
-        echo    '<div class = "row mb-3">
+        <div class = "row mb-3">
             <label class = "col-sm-3 col-form-label">Available Tickets</label>
             <div class = "col-sm-6">
-                <input type = "number" class = "form-control" name = "availableTickets" value = "'. $_SESSION["eventAddition_data"]["availableTickets"].'">
+                <input type = "number" class = "form-control" name = "availableTickets">
             </div>
-        </div>';
+        </div>
 
-    }
-    else{
-        echo    '<div class = "row mb-3">
-            <label class = "col-sm-3 col-form-label">Available Tickets</label>
-            <div class = "col-sm-6">
-                <input type = "number" class = "form-control" name = "availableTickets" value = "">
-            </div>
-        </div>';
-    }
-
-    if(isset($_SESSION["eventAddition_data"]["ticketPrice"])){
-        echo    '<div class = "row mb-3">
+        <div class = "row mb-3">
             <label class = "col-sm-3 col-form-label">Ticket Price</label>
             <div class = "col-sm-6">
-                <input type = "number" class = "form-control" name = "ticketPrice" value = "'. $_SESSION["eventAddition_data"]["ticketPrice"].'">
+                <input type = "number" class = "form-control" name = "ticketPrice">
             </div>
-        </div>';
-    }
-    else{
-        echo    '<div class = "row mb-3">
-            <label class = "col-sm-3 col-form-label">Ticket Price</label>
-            <div class = "col-sm-6">
-                <input type = "number" class = "form-control" name = "ticketPrice" value = "">
+        </div>
+
+
+        <div class = "row mb-3">
+            <div class = "offset-sm-3 col-sm-3 d-grid">
+                <button type = "submit" value ="register" class = "btn btn-primary text-white">Submit</button>
             </div>
-        </div>';
-    }
-
-    unset($_SESSION["eventAddition_data"]);
-}
-
-function checkEventAdditionErrors()
-{
-    if (isset($_SESSION["eventAddition_errors"])) {
-        $errors = $_SESSION["eventAddition_errors"];
-        echo "<br>";
-        foreach ($errors as $error) {
-            echo "<p class=error-message>$error</p>";
-        }
-    }
-
-    unset($_SESSION["eventAddition_errors"]);
-}
-
-function checkEventAdditionSuccess()
-{
-    if (isset($_GET["eventAddition"])) {
-        if ($_GET["eventAddition"] == "success") {
-            echo "<p class=success-message>Event added successfully!</p>";
-        }
-    }
-}
-
-
+            <div class = "col-sm-3 d-grid">
+                <a class = "btn btn-outline-primary" href = "<?="{$prefix}/dashboard"?>" role = "button">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>
