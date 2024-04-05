@@ -66,6 +66,10 @@ class ForgotPasswordController {
             die();
         }
         
+        //the comparison is offset by an hour due to a mismatch between the epoch time of php and the db
+        //even though they're both using the same timezone
+        //?????????
+
         if($this->user->last_recovery_token_sent_at 
         && ((time() - strtotime($this->user->last_recovery_token_sent_at) - 3600) < $GLOBALS["MAIL_RATE_LIMIT"])){
             $response = "You've tried too many times, please try again later!";
