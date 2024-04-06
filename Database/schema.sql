@@ -96,6 +96,7 @@ CREATE TABLE ticket (
     email VARCHAR(255),
     buy_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     email_sent BOOLEAN DEFAULT FALSE, -- Indicates whether the ticket has been sent via email to the holder
+    price INT,
     FOREIGN KEY (buyer_id) REFERENCES users(id),
     FOREIGN KEY (event_id) REFERENCES events(id)
 );

@@ -1,6 +1,7 @@
 <?php
 require_once("src/Models/EventReservationModel.php");
 require_once("src/Models/EventRepo.php");
+require_once("src/Models/UserRepo.php");
 
 
 class EventReservationController {
@@ -19,6 +20,7 @@ class EventReservationController {
         $eventId = $_POST["event_id"] ?? null;
         $quantity = $_POST["quantity"] ?? null;
 
+
         if ($eventId === null || $quantity === null) {
             http_response_code(400); // Bad Request
             exit();
@@ -30,13 +32,19 @@ class EventReservationController {
             exit();
         }
 
+        if (!isset($_SESSION["user_id"])) {
+            $_SESSION["error"] = "You must login to make a purchase.";
+            header("Location: event?id=" . urlencode($eventId));
+            exit();
+        }
+
         $userId = $_SESSION["user_id"];
+
         if (!$this->userModel->isUserVerified($userId)) {
             $_SESSION["error"] = "You must verify your account to make a purchase.";
             header("Location: event?id=" . urlencode($eventId));
             exit();
         }
-
 
         if (!$this->eventModel->isEventOnSellTime($eventId)) {
             $_SESSION["error"] = "Tickets are not on sale yet.";
@@ -63,11 +71,6 @@ class EventReservationController {
     }
 }
 
-// todo: make this piece of a code inside a function
-if (!isset($_SESSION["user_id"])) {
-    http_response_code(401); // Unauthorized
-    exit();
-}
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $controller = new EventReservationController();
