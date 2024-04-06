@@ -1,5 +1,6 @@
 <?php
 $pathToComponents = "src/Views/";
+$prefix = $_ENV['prefix'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -35,26 +36,31 @@ $pathToComponents = "src/Views/";
           <div class="tab-content py-3" id="nav-tabContent">
             <div class="tab-pane fade show active" id="nav-profileInfo" role="tabpanel"
               aria-labelledby="nav-profileInfo-tab">
-              <form id="updateProfileForm">
+              <form id="updateProfileForm" action="<?="{$prefix}/userProfile"?>" method="post">
                 <div class="form-group row">
                   <label for="firstname" class="col-sm-3 col-form-label">Firstname</label>
                   <div class="col-sm-9 inputBox">
-                    <input type="text" readonly class="form-control-plaintext" id="firstname" value="seif">
+                    <input  name="firstname" type="text" readonly class="form-control-plaintext" id="firstname" value="<?= $_SESSION["firstName"]?>">
                     <small id="newFirstnameError"></small>
                   </div>
                 </div>
                 <div class="form-group row">
                   <label for="lastname" class="col-sm-3 col-form-label">Lastname</label>
                   <div class="col-sm-9 inputBox">
-                    <input type="text" readonly class="form-control-plaintext" id="lastname" value="chouchane">
+                    <input name="lastname" type="text" readonly class="form-control-plaintext" id="lastname" value="<?= $_SESSION["lastName"]?>">
                     <small id="newLastnameError"></small>
                   </div>
                 </div>
-
-                <button type="submit" class="btn btn-primary" id="saveChanges" style="display:none;color:white;">Save
+                <?php 
+                  if(isset($_SESSION["firstName"]))
+                    unset($_SESSION["firstName"]);
+                  if(isset($_SESSION["lastName"]))
+                    unset($_SESSION["lastName"]);
+                ?>
+                <button type="submit" name="SaveChanges" class="btn btn-primary" id="saveChanges" style="display:none;color:white;">Save
                   Changes</button>
-                <button type="button" class="btn btn-primary" id="updateProfile" style="color:white;">Update Profile</button>
-                <button type="button" class="btn btn-danger" id="cancelChanges" style="display:none;">Cancel</button>
+                <button type="button" name="UpdateProfile" class="btn btn-primary" id="updateProfile" style="color:white;">Update Profile</button>
+                <button type="button" name="Cancel" class="btn btn-danger" id="cancelChanges" style="display:none;">Cancel</button>
               </form>
             </div>
             <div class="tab-pane fade" id="nav-security" role="tabpanel" aria-labelledby="nav-security-tab">
@@ -62,22 +68,22 @@ $pathToComponents = "src/Views/";
               <div class="errorBox">
                 <p> if password is incorrect show error here </p>
               </div>
-              <form id="changePasswordForm">
+              <form id="changePasswordForm" action="<?="{$prefix}/changePassword"?>" method="post">
                 <div class="form-group mx-sm-3 mb-2 inputBox">
-                  <label for="currentPassword" class="sr-only">Your current password</label>
-                  <input type="password" class="form-control" id="currentPassword" placeholder="Your current Password">
+                  <label  for="currentpassword" class="sr-only">Your current password</label>
+                  <input name="currentpassword" type="password" class="form-control" id="currentPassword" placeholder="Your current Password">
                   <small id="currentPasswordError"></small>
                 </div>
 
                 <div class="form-group mx-sm-3 mb-2 inputBox">
-                  <label for="newPassword" class="sr-only">New Password</label>
-                  <input type="password" class="form-control" id="newPassword" placeholder="Enter the new password">
+                  <label  for="newpassword" class="sr-only">New Password</label>
+                  <input name="newpassword" type="password" class="form-control" id="newPassword" placeholder="Enter the new password">
                   <small id="newPasswordError"></small>
                 </div>
 
                 <div class="form-group mx-sm-3 mb-2 inputBox">
-                  <label for="confirmPassword" class="sr-only">Confirm Password</label>
-                  <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm the password">
+                  <label for="confirmpassword" class="sr-only">Confirm Password</label>
+                  <input name="confirmpassword" type="password" class="form-control" id="confirmPassword" placeholder="Confirm the password">
                   <small id="newPasswordConfirmError"></small>
                 </div>
                 <button type="submit" class="btn btn-primary" id="saveNewPassword" style="color:white;">Save

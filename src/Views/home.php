@@ -1,5 +1,4 @@
 <?php
-
 // Retrieve and unserialize session variables
 $events = unserialize($_SESSION["events"]) ?? [];
 $categories = unserialize($_SESSION["categories"]) ?? [];

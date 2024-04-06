@@ -18,6 +18,7 @@ $routes = [
     "{$prefix}/recoverPassword" => 'src/Controllers/RecoverPasswordController.php',
     "{$prefix}/resetPassword" => 'src/Controllers/ResetPasswordController.php',
     "{$prefix}/verify" => 'src/Controllers/VerifyAccountController.php',
-    "{$prefix}/changeAccountInfo" => 'src/Controllers/ChangeAccountInfoController.php',
+    "{$prefix}/userProfile" => 'src\Controllers\ChangeAccountInfoControler.php',
+    "{$prefix}/changePassword" => 'src\Controllers\ChangePasswordController.php',
 ];
 

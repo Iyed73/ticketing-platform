@@ -1,7 +1,4 @@
 <?php
-require_once "src\Controllers\includes\configSession.inc.php";
-
-
 
 if (!isset($_SESSION['currency'])) {
     $_SESSION['currency'] = 'EUR';
@@ -71,7 +68,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
                     <form action="<?= "{$prefix}/logout" ?>" method="post">
                         <button class="button" id="logout-btn">Logout</button>
                     </form>
-                    <a href="#" class="my-auto">
+                    <a href="<?= "{$prefix}/userProfile"?>" class="my-auto">
                         <i class="fas fa-user fa-2x"></i>
                     </a>
                 <?php endif; ?>

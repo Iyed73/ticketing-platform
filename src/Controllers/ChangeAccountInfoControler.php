@@ -1,16 +1,15 @@
 <?php
-require_once "src\Controllers\includes\configSession.inc.php";
 require_once "src\Models\UserRepo.php";
 
 class ChangeAccountInfoController{
-    private $userRepo;
+    private $userTable;
     private $newFirstName;
     private $newLastName;
 
-    public function __construct($newFirstName, $newLastName){
+    public function __construct($newFirstName = null, $newLastName= null){
         $this->newFirstName = $newFirstName;
         $this->newLastName = $newLastName;
-        $this->userRepo = new UserRepo();
+        $this->userTable = new UserRepo();
     }
 
     public function sanitizeInput(){
@@ -23,7 +22,6 @@ class ChangeAccountInfoController{
     }
 
     public function handleRequest(){
-        $prefix = $_ENV['prefix'];
         $this->sanitizeInput();
         //ERROR HANDLING
         if($this->is_input_empty()){
@@ -36,7 +34,7 @@ class ChangeAccountInfoController{
             //UPDATE FIRST NAME
             if(!empty($this->newFirstName)){
                 try{
-                    $this->userRepo->updateFirstName($_SESSION["user_id"], $this->newFirstName);
+                    $this->userTable->updateFirstName($_SESSION["user_id"], $this->newFirstName);
                 }catch (Exception $e) {
                     http_response_code(500);
                     die();
@@ -45,27 +43,34 @@ class ChangeAccountInfoController{
             //UPDATE LAST NAME
             if(!empty($this->newLastName)){
                 try{
-                    $this->userRepo->updateLastName($_SESSION["user_id"], $this->newLastName);
+                    $this->userTable->updateLastName($_SESSION["user_id"], $this->newLastName);
                 }catch (Exception $e) {
                     http_response_code(500);
                     die();
                 }
             }
         }
-        include "src/Views/ChangeAccountInfoView.php";
+    }
+
+    public function loadPage(){
+        $prefix = $_ENV['prefix'];
+        $user = $this->userTable->findById($_SESSION["user_id"]);
+        $_SESSION["firstName"] = $user->firstname;
+        $_SESSION["lastName"] = $user->lastname;
+        include "src\Views\userProfile.php";
     }
 }
 
 if(isset($_SESSION["user_id"])){
     if($_SERVER["REQUEST_METHOD"] == "POST"){
-        $changeAccountInfoController = new ChangeAccountInfoController($_POST["newFirstName"], $_POST["newLastName"]);
+        $changeAccountInfoController = new ChangeAccountInfoController($_POST["firstname"], $_POST["lastname"]);
         $changeAccountInfoController->handleRequest();
     }
-    else{
-        include "src/Views/ChangeAccountInfoView.php";
-    }
+    $loader = new ChangeAccountInfoController();
+    $loader->loadPage();
 }
 else{
-    header("Location: {$prefix}/home"); //change url to the page where the form is later
+    $prefix = $_ENV['prefix'];
+    header("Location: {$prefix}/home"); 
 }
 
