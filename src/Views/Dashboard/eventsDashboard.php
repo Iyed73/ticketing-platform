@@ -45,7 +45,7 @@
                     <td>
                         <div class="btn-group" role="group" aria-label="Edit and Delete buttons">
                             <a class = "btn btn-primary text-white" href = "<?="{$prefix}/event_update?id={$e->id}"?>" role="button">Edit</a>
-                            <a class="btn btn-danger">Delete</a>
+                            <a href = "<?="{$prefix}/event_delete?id={$e->id}"?>" class="btn btn-danger" onclick ="return confirm('Are you sure to delete this event?')">Delete</a>
                         </div>
                     </td>
                 </tr>

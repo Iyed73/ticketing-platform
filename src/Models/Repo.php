@@ -32,19 +32,10 @@ abstract class Repo {
         return $response->execute(array_values($data));
     }
 
-    public function update(array $data, $Id) {
-        $sets = [];
-        foreach ($data as $key => $value) {
-            $sets[] = "{$key} = ?";
-        }
-        $setsString = implode(', ', $sets);
-
-        $request = "UPDATE `{$this->tableName}` SET {$setsString} WHERE id = ?";
-        $response = $this->db->prepare($request);
-
-        $values = array_values($data);
-        $values[] = $Id;
-
-        return $response->execute($values);
+    public function delete($id){
+        $req = "DELETE FROM {$this -> tableName} where id = ?";
+        $response = $this -> db -> prepare($req);
+        $response -> execute([$id]);
     }
+
 }

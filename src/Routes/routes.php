@@ -11,6 +11,7 @@ $routes = [
     "{$prefix}/dashboard" => 'src/Controllers/DashboardController.php',
     "{$prefix}/event_addition" => 'src/Controllers/eventAdditionController.php',
     "{$prefix}/event_update" => 'src/Controllers/eventUpdateController.php',
+    "{$prefix}/event_delete" => 'src/Controllers/eventDeleteController.php',
 
 ];
 
