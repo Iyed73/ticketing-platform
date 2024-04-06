@@ -60,4 +60,12 @@ class EventRepo extends Repo {
             return false;
         }
     }
+
+    public function getTicketPrice($eventId) {
+        $req = "SELECT ticketPrice FROM {$this->tableName} WHERE id = ?";
+        $response = $this->db->prepare($req);
+        $response->execute([$eventId]);
+        $ticketPrice = $response->fetchColumn();
+        return $ticketPrice;
+    }
 }

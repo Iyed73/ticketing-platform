@@ -17,7 +17,7 @@ class TicketManagementModel extends Repo
             "first_name" => $firstName,
             "last_name" => $lastName,
             "email" => $email,
-            "price" => $price  // Add the price field
+            "price" => $price
         );
         $this->insert($ticketData);
         return true;

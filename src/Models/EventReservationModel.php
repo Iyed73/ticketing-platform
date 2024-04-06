@@ -165,4 +165,12 @@ class EventReservationModel extends Repo {
         }
     }
 
+    public function getReservationExpiration($reservationId) {
+        $req = "SELECT expiration FROM reservation WHERE id = ?";
+        $response = $this->db->prepare($req);
+        $response->execute([$reservationId]);
+        $expiration = $response->fetchColumn();
+        return $expiration;
+    }
+
 }
