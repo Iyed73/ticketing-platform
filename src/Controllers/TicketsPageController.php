@@ -11,7 +11,9 @@ class TicketsPageController {
         $this->ticketModel = new TicketManagementModel();
     }
 
-    public function handleRequest($userId) {
+    public function handleRequest() {
+        $userId = $_SESSION["user_id"];
+        // todo: add check that user is not an admin
         $tickets = $this->ticketModel->getAllTickets($userId);
 
 
@@ -19,12 +21,11 @@ class TicketsPageController {
     }
 }
 
-session_start();
 if (!isset($_SESSION["user_id"])) {
     http_response_code(401);
     exit();
 }
 
 $manageTicketsController = new TicketsPageController();
-$manageTicketsController->handleRequest($_SESSION["user_id"]);
+$manageTicketsController->handleRequest();
 

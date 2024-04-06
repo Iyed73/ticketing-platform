@@ -11,6 +11,10 @@ unset($_SESSION["error"]);
             <?php echo $error; ?>
         </div>
     <?php endif; ?>
+    <div class="text-center mb-3">
+        <h3>Total Price: $<?php echo number_format($totalPrice, 2); ?></h3>
+        <h3 id="countdown"></h3>
+    </div>
     <form method="post" action="cancel"  class="text-center mb-5">
         <input type="hidden" name="reservation_id" value="<?php echo $reservation_id; ?>">
         <button type="submit" name="cancel" class="btn btn-secondary mb-3 text-white">Cancel</button>
@@ -58,4 +62,27 @@ unset($_SESSION["error"]);
         <button type="submit" class="btn btn-primary text-white">Submit Payment</button>
     </form>
 </div>
+<script>
+    
+    let expirationTime = new Date("<?php echo $expiration; ?>").getTime();
+    let countdown = document.querySelector('#countdown');
 
+    // Update the countdown every second
+    let countdownInterval = setInterval(function() {
+        let now = new Date().getTime();
+        let remainingTime = expirationTime - now;
+
+        let hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        let minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+        
+        let text = "Expires After: " + hours + "h " + minutes + "m " + seconds + "s ";
+
+        countdown.innerHTML = text;
+
+        if (remainingTime < 0) {
+            clearInterval(countdownInterval);
+            countdown.innerHTML = "Reservation expired!";
+        }
+    }, 1000);
+</script>
