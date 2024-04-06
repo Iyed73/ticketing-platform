@@ -136,7 +136,7 @@ class SignupController
         $prefix = $_ENV['prefix'];
         $this->verificationUrl = "http://localhost{$prefix}/verify?token={$this->token}";
 
-       /* 
+       
         if (
             !sendMail(
                 "Tickety",
@@ -153,7 +153,7 @@ class SignupController
             }
         }
 
-*/
+
         //other error handling can be added here
 
 
