@@ -6,14 +6,38 @@ require_once("src/Models/EventRepo.php");
 class EventReservationController {
     private EventReservationModel $eventReservationModel;
     private EventRepo $eventModel;
+    private UserRepo $userModel;
 
 
     public function __construct() {
         $this->eventReservationModel = new EventReservationModel();
         $this->eventModel = new EventRepo();
+        $this->userModel = new UserRepo();
     }
 
-    public function handleReservationRequest($eventId, $userId, $quantity) {
+    public function handleReservationRequest() {
+        $eventId = $_POST["event_id"] ?? null;
+        $quantity = $_POST["quantity"] ?? null;
+
+        if ($eventId === null || $quantity === null) {
+            http_response_code(400); // Bad Request
+            exit();
+        }
+
+        $event = $this->eventModel->findById($eventId);
+        if (!$event) {
+            http_response_code(400); // Bad Request
+            exit();
+        }
+
+        $userId = $_SESSION["user_id"];
+        if (!$this->userModel->isUserVerified($userId)) {
+            $_SESSION["error"] = "You must verify your account to make a purchase.";
+            header("Location: event?id=" . urlencode($eventId));
+            exit();
+        }
+
+
         if (!$this->eventModel->isEventOnSellTime($eventId)) {
             $_SESSION["error"] = "Tickets are not on sale yet.";
             header("Location: event?id=" . urlencode($eventId));
@@ -28,9 +52,6 @@ class EventReservationController {
                 $_SESSION["reservation_id"] = $reservationId;
                 header("Location: payment?reservation_id=" . urlencode($reservationId));
             } else {
-                http_response_code(402);
-                exit();
-
                 header("Location: event?id=" . urlencode($eventId));
             }
         } else {
@@ -42,25 +63,16 @@ class EventReservationController {
     }
 }
 
-
-session_start();
+// todo: make this piece of a code inside a function
 if (!isset($_SESSION["user_id"])) {
     http_response_code(401); // Unauthorized
     exit();
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $eventId = $_POST["event_id"] ?? null;
-    $quantity = $_POST["quantity"] ?? null;
+    $controller = new EventReservationController();
+    $controller->handleReservationRequest();
 
-    if ($eventId !== null && $quantity !== null) {
-        $controller = new EventReservationController();
-        $userId = $_SESSION["user_id"];
-        $controller->handleReservationRequest($eventId, $userId, $quantity);
-    } else {
-        http_response_code(400); // Bad Request
-        exit();
-    }
 } else {
     http_response_code(405); // Not Allowed status
     exit();
