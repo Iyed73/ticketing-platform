@@ -58,7 +58,7 @@
     </div>
 
     <nav aria-label="page_nav" class="d-flex justify-content-center">
-        <ul class="pagination">
+        <ul class="pagination d-inline-flex justify-content-between">
             <?php if ($currentPage > 1): ?>
                 <li class="page-item">
                     <a class="page-link" href="?page=<?php echo $currentPage - 1; ?>">Previous</a>

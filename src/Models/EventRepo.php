@@ -53,25 +53,24 @@ class EventRepo extends Repo {
         return  $response->fetchAll(PDO::FETCH_OBJ);
     }
 
-    public function updateEvent($Id, $name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $endSellTime, $totalTickets, $availableTickets, $ticketPrice) {
-        $request = "UPDATE `{$this->tableName}` SET 
-                name = '{$name}', 
-                venue = '{$venue}', 
-                category = '{$category}', 
-                eventDate = '{$eventDate}', 
-                shortDescription = '{$shortDescription}', 
-                longDescription = '{$longDescription}', 
-                organizer = '{$organizer}', 
-                startSellTime = '{$startSellTime}', 
-                endSellTime = '{$endSellTime}', 
-                totalTickets = '{$totalTickets}', 
-                availableTickets = '{$availableTickets}', 
-                ticketPrice = '{$ticketPrice}' 
-                WHERE id = '{$Id}'";
+    public function update($data, $Id) {
+        $ID = intval($Id);
+        $fields = array_keys($data);
+        $placeholders = implode('=?, ', $fields) . '=?';
+        $request = "UPDATE `{$this->tableName}` SET {$placeholders} WHERE id = ?";
+        $values = array_values($data);
+        $values[] = $ID;
         $response = $this->db->prepare($request);
+        $success = $response->execute($values);
 
-        return $response->execute();
+        if ($success) {
+            return $response->fetchAll();
+        } else {
+            return false;
+        }
     }
+
+
 
 
 }
