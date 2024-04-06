@@ -13,16 +13,14 @@ $pathToComponents = "src/Views/";
     <section class="all">
 
         <?php
+        require_once "{$pathToComponents}Common/loadingSpinner.php";
+
 
         require_once "{$pathToComponents}Common/navbar.php";
 
         require_once "{$pathToComponents}Common/modalSearch.php";
-        
+
         require_once "{$pathToComponents}contactPage/contactFormView.php";
-
-        require_once "{$pathToComponents}Home/facts.php";
-
-        require_once "{$pathToComponents}Home/testimonialSection.php";
 
         require_once "{$pathToComponents}Common/footer.php";
 
