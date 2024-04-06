@@ -35,6 +35,7 @@ function generateTicket($ticketInfo, $action) {
     $purchaseDate = $ticketInfo['purchaseDate'];
     $buyerName = $ticketInfo['buyerName'];
     $ticketHolderName = $ticketInfo['ticketHolderName'];
+    $price = $ticketInfo['price'];
 
     $pdf = new PDF('P', 'mm', 'A4', true, 'UTF-8', false);
     $pdf->SetCreator('Someone');
@@ -100,6 +101,8 @@ function generateTicket($ticketInfo, $action) {
     $pdf->Cell(95, 10, "Buyer: $buyerName", 0, 1, 'L', true);
     $pdf->Ln(5);
     $pdf->Cell(95, 10, "Ticket Holder: $ticketHolderName", 0, 1, 'L', true);
+    $pdf->Ln(5);
+    $pdf->Cell(95, 10, "Price: " . $price . " $", 0, 1, 'L', true);
 
     if ($action === 'view') {
         $pdf->Output('event_ticket.pdf', 'I');

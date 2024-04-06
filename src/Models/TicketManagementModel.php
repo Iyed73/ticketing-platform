@@ -8,7 +8,7 @@ class TicketManagementModel extends Repo
         parent::__construct("ticket");
     }
 
-    public function createTicket($buyerId, $eventId, $firstName, $lastName, $email): bool|string{
+    public function createTicket($buyerId, $eventId, $firstName, $lastName, $email, $price): bool|string {
         $ticketId = $this->generateTicketId();
         $ticketData = array(
             "ticket_id" => $ticketId,
@@ -16,7 +16,8 @@ class TicketManagementModel extends Repo
             "event_id" => $eventId,
             "first_name" => $firstName,
             "last_name" => $lastName,
-            "email" => $email
+            "email" => $email,
+            "price" => $price  // Add the price field
         );
         $this->insert($ticketData);
         return true;
@@ -47,6 +48,31 @@ class TicketManagementModel extends Repo
         $response->execute();
         $count = $response->fetchColumn();
         return $count > 0;
+    }
+
+    public function getTicketInfo($ticketId, $buyerId) {
+        $query = "SELECT ticket.*, events.name AS event_name, events.venue, events.eventDate, 
+              users.firstname, users.lastname
+              FROM {$this->tableName}
+              INNER JOIN events ON ticket.event_id = events.id
+              INNER JOIN users ON ticket.buyer_id = users.id
+              WHERE ticket.ticket_id = :ticket_id AND ticket.buyer_id = :buyer_id";
+
+        $response = $this->db->prepare($query);
+        $response->bindParam(':ticket_id', $ticketId, PDO::PARAM_STR);
+        $response->bindParam(':buyer_id', $buyerId, PDO::PARAM_INT);
+        $response->execute();
+        $ticketInfo = $response->fetch(PDO::FETCH_ASSOC);
+
+        $ticketInfo['ticketId'] = $ticketInfo['ticket_id'];
+        $ticketInfo['eventName'] = $ticketInfo['event_name'];
+        $ticketInfo['eventVenue'] = $ticketInfo['venue'];
+        $ticketInfo['purchaseDate'] = $ticketInfo['buy_date'];
+        $ticketInfo['buyerName'] = $ticketInfo['firstname'] . ' ' . $ticketInfo['lastname'];
+        $ticketInfo['ticketHolderName'] = $ticketInfo['first_name'] . ' ' . $ticketInfo['last_name'];
+        $ticketInfo['price'] = $ticketInfo['price'] / 100;
+
+        return $ticketInfo;
     }
 }
 
