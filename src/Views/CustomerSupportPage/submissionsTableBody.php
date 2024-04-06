@@ -1,6 +1,4 @@
 <?php
-require_once "src\Controllers\includes\configSession.inc.php";
-$contactForms = unserialize($_SESSION["contactForms"]) ?? [];
 foreach ($contactForms as $row) {
     $id = $row->id;
     $subject = $row->subject;
