@@ -1,33 +1,54 @@
 <?php
 require_once "src/Models/EventReservationModel.php";
 require_once "src/Models/TicketManagementModel.php";
+require_once "src/Models/EventRepo.php";
 
 class PaymentController {
 
     private EventReservationModel $eventReservationModel;
     private TicketManagementModel $ticketModel;
+    private EventRepo $eventModel;
 
     public function __construct() {
         $this->eventReservationModel= new EventReservationModel();
         $this->ticketModel = new TicketManagementModel();
+        $this->eventModel = new EventRepo();
     }
 
-    public function handleGetRequest($userId, $reservationId) {
+    private function getTotalPrice($eventId, $quantity) {
+        $price = $this->eventModel->getTicketPrice($eventId);
+        $totalPrice = $price * $quantity / 100;
+        return $totalPrice;
+    }
+
+    public function handleGetRequest() {
+        $reservationId = $_GET["reservation_id"] ?? null;
+        if ($reservationId === null) {
+            http_response_code(400);
+            exit();
+        }
+
+        $userId = $_SESSION["user_id"];
+        $eventId = $this->eventReservationModel->getEventIdForReservation($reservationId);
+
         if ($this->eventReservationModel->isReservationExpired($reservationId)) {
-            $eventId = $this->eventReservationModel->getEventIdForReservation($reservationId);
             $this->eventReservationModel->cancelReservation($reservationId);
             header("Location: event?id=" . urlencode($eventId));
         }
         else if ($this->eventReservationModel->isValidReservation($userId, $reservationId)) {
             $quantity = $this->eventReservationModel->getReservationQuantity($reservationId);
+            $totalPrice = $this->getTotalPrice($eventId, $quantity);
+
+            $expiration = $this->eventReservationModel->getReservationExpiration($reservationId);
+
             require_once "src/Views/paymentView.php";
         } else {
             http_response_code(401);
         }
         exit();
     }
-
-    public function handlePostRequest($userId) {
+    public function handlePostRequest() {
+        $userId = $_SESSION['user_id'];
         $reservationId = $_POST["reservation_id"];
         if (!$this->eventReservationModel->isValidReservation($userId, $reservationId)) {
             http_response_code(401);
@@ -53,19 +74,21 @@ class PaymentController {
             $_SESSION["error"] = "Failed to complete payment before expiration time";
             header("Location: event?id=$eventId");
         }
+        $totalPrice = $this->getTotalPrice($eventId, $quantity);
 
-        if ($this->processPayment($creditCard)) {
+        if ($this->processPayment($creditCard, $totalPrice)) {
             $buyerId = $userId;
+            $price = $this->eventModel->getTicketPrice($eventId);
             for ($i = 0; $i < $quantity; $i++) {
                 $firstName = $firstNames[$i];
                 $lastName = $lastNames[$i];
                 $email = $emails[$i];
-
-                $ticketResult = $this->ticketModel->createTicket($buyerId, $eventId, $firstName, $lastName, $email);
-
-//                if ($ticketResult !== true) {
-//                    echo "Error creating ticket: $ticketResult";
-//                }
+                try {
+                    $ticketResult = $this->ticketModel->createTicket($buyerId, $eventId, $firstName, $lastName, $email, $price);
+                }
+                catch (Exception $e) {
+                    // todo: handle ticket creation error
+                }
             }
             header("Location: view-tickets");
 
@@ -76,7 +99,7 @@ class PaymentController {
         }
     }
 
-    private function processPayment($creditCard): bool {
+    private function processPayment($creditCard, $totalPrice): bool {
         // If payment is successful, return true;
         // always true in our case since we are not simulating a real payment system
         sleep(2); // todo: add loading spinner
@@ -85,24 +108,17 @@ class PaymentController {
 
 }
 
-session_start();
 
 if (!isset($_SESSION["user_id"])) {
     http_response_code(401);
     exit();
 }
 
-$userId = $_SESSION["user_id"];
 
 $paymentController = new PaymentController();
 
 if ($_SERVER["REQUEST_METHOD"] === "GET") {
-    $reservationId = $_GET["reservation_id"] ?? null;
-    if ($reservationId === null) {
-        http_response_code(400);
-        exit();
-    }
-    $paymentController->handleGetRequest($userId, $reservationId);
+    $paymentController->handleGetRequest();
 } elseif ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $paymentController->handlePostRequest($userId);
+    $paymentController->handlePostRequest();
 }
