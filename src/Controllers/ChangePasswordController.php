@@ -57,7 +57,7 @@ class ChangePasswordController
             $errors["password_mismatch"] = "passwords do not match!";
         }
         if (!empty($errors)) {
-            $_SESSION["errors"] = $errors;
+            $_SESSION["change_pwd_errors"] = $errors;
         } 
         else {
             $options = [
@@ -71,7 +71,7 @@ class ChangePasswordController
                 die();
             }
         }
-        header("Location: {$prefix}/userProfile");
+        header("Location: {$prefix}/userProfile?tab=security");
     }
 }
 
