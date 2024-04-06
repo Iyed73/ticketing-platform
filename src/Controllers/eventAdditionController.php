@@ -146,7 +146,7 @@
 
             if(!$is_There_Errors){
                 $this->addEvent($name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $endSellTime, $totalTickets, $availableTickets, $ticketPrice);
-                header("Location: /ticketing-platform/dashboard?eventAddition=success");
+                header("Location: /ticketing-platform/all_events?eventAddition=success");
                 die();
             }
 

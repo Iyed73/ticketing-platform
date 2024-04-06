@@ -122,7 +122,7 @@ unset($_SESSION['error']);
                 <button type = "submit" value ="register" class = "btn btn-primary text-white">Submit</button>
             </div>
             <div class = "col-sm-3 d-grid">
-                <a class = "btn btn-outline-primary" href = "<?="{$prefix}/dashboard"?>" role = "button">Cancel</a>
+                <a class = "btn btn-outline-primary" href = "<?="{$prefix}/all_events"?>" role = "button">Cancel</a>
             </div>
         </div>
     </form>

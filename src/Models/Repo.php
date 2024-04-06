@@ -38,4 +38,38 @@ abstract class Repo {
         $response -> execute([$id]);
     }
 
+
+    public function update($data, $Id) {
+        $ID = intval($Id);
+        $fields = array_keys($data);
+        $placeholders = implode('=?, ', $fields) . '=?';
+        $request = "UPDATE `{$this->tableName}` SET {$placeholders} WHERE id = ?";
+        $values = array_values($data);
+        $values[] = $ID;
+        $response = $this->db->prepare($request);
+        $success = $response->execute($values);
+
+        if ($success) {
+            return $response->fetchAll();
+        } else {
+            return false;
+        }
+    }
+
+    public function totalPagesNum(){
+        $req = "SELECT COUNT(*) FROM {$this -> tableName}";
+        $response = $this -> db -> prepare($req);
+        $response -> execute();
+        $count = $response -> fetchColumn();
+        $totalPages = ceil($count / 5);
+        return $totalPages;
+    }
+
+    public function findWithOffset($offset, $totalPages){
+        $req = "SELECT * FROM {$this -> tableName} LIMIT $offset, $totalPages ";
+        $response = $this->db->query($req);
+        $response->execute();
+        return  $response->fetchAll(PDO::FETCH_OBJ);
+    }
+
 }

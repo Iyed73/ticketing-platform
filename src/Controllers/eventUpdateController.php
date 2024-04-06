@@ -150,7 +150,7 @@ class eventUpdateController{
 
         else if(!$is_There_Errors){
             $this->updateEvent($eventID, $name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $endSellTime, $totalTickets, $availableTickets, $ticketPrice);
-            header("Location: dashboard?eventUpdate=success");
+            header("Location: all_events?eventUpdate=success");
             die();
         }
 
