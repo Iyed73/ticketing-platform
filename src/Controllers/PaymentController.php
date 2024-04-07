@@ -21,6 +21,15 @@ class PaymentController {
         return $totalPrice;
     }
 
+    private function isValidReservation($reservation, $userId): bool {
+        return $reservation->user_id === $userId;
+    }
+
+    private function isReservationExpired($reservation): bool {
+        $expirationDate = $reservation->expiration;
+        return strtotime($expirationDate) < time();
+    }
+
     public function handleGetRequest() {
         $reservationId = $_GET["reservation_id"] ?? null;
         if ($reservationId === null) {
@@ -28,33 +37,51 @@ class PaymentController {
             exit();
         }
 
-        $userId = $_SESSION["user_id"];
-        $eventId = $this->eventReservationModel->getEventIdForReservation($reservationId);
+        $reservation = $this->eventReservationModel->findById($reservationId);
 
-        if ($this->eventReservationModel->isReservationExpired($reservationId)) {
+        if ($reservation === null) {
+            http_response_code(404);
+            exit();
+        }
+
+        $userId = $_SESSION["user_id"];
+        $eventId = $reservation->event_id;
+
+        if (!$this->isValidReservation($reservation, $userId)) {
+            http_response_code(401);
+            exit();
+        }
+
+        if ($this->isReservationExpired($reservation)) {
             $this->eventReservationModel->cancelReservation($reservationId);
             header("Location: event?id=" . urlencode($eventId));
+            exit();
         }
-        else if ($this->eventReservationModel->isValidReservation($userId, $reservationId)) {
-            $quantity = $this->eventReservationModel->getReservationQuantity($reservationId);
-            $totalPrice = $this->getTotalPrice($eventId, $quantity);
 
-            $expiration = $this->eventReservationModel->getReservationExpiration($reservationId);
+        $quantity = $reservation->quantity;
+        $totalPrice = $this->getTotalPrice($eventId, $quantity);
+        $expiration = $reservation->expiration;
 
-            require_once "src/Views/paymentView.php";
-        } else {
-            http_response_code(401);
-        }
+        require_once "src/Views/paymentView.php";
+
         exit();
     }
     public function handlePostRequest() {
         $userId = $_SESSION['user_id'];
         $reservationId = $_POST["reservation_id"];
-        if (!$this->eventReservationModel->isValidReservation($userId, $reservationId)) {
+
+        $reservation = $this->eventReservationModel->findById($reservationId);
+
+        if ($reservation === null) {
+            http_response_code(404);
+            exit();
+        }
+
+        if (!$this->isValidReservation($reservation, $userId)) {
             http_response_code(401);
             exit;
         }
-        $quantity = $this->eventReservationModel->getReservationQuantity($reservationId);
+        $quantity = $reservation->quantity;
 
         $firstNames = $_POST["first_names"];
         $lastNames = $_POST["last_names"];
@@ -67,13 +94,14 @@ class PaymentController {
             header("Location: payment?reservation_id=$reservationId&quantity=$quantity");
             exit();
         }
-        $eventId = $this->eventReservationModel->getEventIdForReservation($reservationId);
+        $eventId = $reservation->event_id;
 
         if ($this->eventReservationModel->isReservationExpiredWithDelete($reservationId)) {
             $this->eventReservationModel->increaseAvailableTickets($eventId, $quantity);
             $_SESSION["error"] = "Failed to complete payment before expiration time";
             header("Location: event?id=$eventId");
         }
+
         $totalPrice = $this->getTotalPrice($eventId, $quantity);
 
         if ($this->processPayment($creditCard, $totalPrice)) {
@@ -91,7 +119,6 @@ class PaymentController {
                 }
             }
             header("Location: view-tickets");
-
 
         } else {
             $_SESSION["error"] = "Couldn't process payment";
