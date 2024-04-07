@@ -8,24 +8,21 @@ class TicketManagementModel extends Repo
         parent::__construct("ticket");
     }
 
-    public function createTicket($buyerId, $eventId, $firstName, $lastName, $email, $price): bool|string {
-        $ticketId = $this->generateTicketId();
-        $ticketData = array(
-            "ticket_id" => $ticketId,
-            "buyer_id" => $buyerId,
-            "event_id" => $eventId,
-            "first_name" => $firstName,
-            "last_name" => $lastName,
-            "email" => $email,
-            "price" => $price
-        );
-        $this->insert($ticketData);
-        return true;
+    public function createTickets(array $ticketDataArray): bool {
+        $values = array();
+        $placeholders = array();
+
+        foreach ($ticketDataArray as $ticketData) {
+            $placeholders[] = '(' . rtrim(str_repeat('?,', count($ticketData)), ',') . ')';
+            $values = array_merge($values, array_values($ticketData));
+        }
+
+        $query = "INSERT INTO `{$this->tableName}` (" . implode(', ', array_keys($ticketDataArray[0])) . ") VALUES " . implode(', ', $placeholders);
+        $response = $this->db->prepare($query);
+
+        return $response->execute($values);
     }
 
-    private function generateTicketId(): string {
-        return uniqid();
-    }
 
     public function getAllTickets($buyerId) {
         $query = "SELECT {$this->tableName}.*, events.name AS event_name, events.venue, events.eventDate

@@ -30,6 +30,10 @@ class PaymentController {
         return strtotime($expirationDate) < time();
     }
 
+    private function generateTicketId(): string {
+        return uniqid('INSAT', true);
+    }
+
     public function handleGetRequest() {
         $reservationId = $_GET["reservation_id"] ?? null;
         if ($reservationId === null) {
@@ -39,7 +43,7 @@ class PaymentController {
 
         $reservation = $this->eventReservationModel->findById($reservationId);
 
-        if ($reservation === null) {
+        if (!$reservation) {
             http_response_code(404);
             exit();
         }
@@ -107,30 +111,48 @@ class PaymentController {
         if ($this->processPayment($creditCard, $totalPrice)) {
             $buyerId = $userId;
             $price = $this->eventModel->getTicketPrice($eventId);
+            $ticketDataArray = array();
+
             for ($i = 0; $i < $quantity; $i++) {
                 $firstName = $firstNames[$i];
                 $lastName = $lastNames[$i];
                 $email = $emails[$i];
-                try {
-                    $ticketResult = $this->ticketModel->createTicket($buyerId, $eventId, $firstName, $lastName, $email, $price);
-                }
-                catch (Exception $e) {
-                    // todo: handle ticket creation error
-                }
-            }
-            header("Location: view-tickets");
 
-        } else {
-            $_SESSION["error"] = "Couldn't process payment";
-            header("Location: event?id=$eventId");
+                $ticketDataArray[] = array(
+                    "ticket_id" => $this->generateTicketId(),
+                    "buyer_id" => $buyerId,
+                    "event_id" => $eventId,
+                    "first_name" => $firstName,
+                    "last_name" => $lastName,
+                    "email" => $email,
+                    "price" => $price
+                );
+            }
+            try {
+                $this->ticketModel->createTickets($ticketDataArray);
+                header("Location: view-tickets");
+            } catch (Exception $e) {
+                error_log($e->getMessage());
+                $this->eventReservationModel->increaseAvailableTickets($eventId, $quantity);
+                $_SESSION["error"] = "An error occurred.";
+                header("Location: event?id=$eventId");
+            }
         }
+        exit();
     }
 
     private function processPayment($creditCard, $totalPrice): bool {
         // If payment is successful, return true;
         // always true in our case since we are not simulating a real payment system
         sleep(2); // todo: add loading spinner
-        return true; // Placeholder for successful payment
+        return true;
+    }
+
+
+    private function refundPayment($creditCard, $totalPrice): bool {
+        // If tickets creation failed the payment is refunded
+        sleep(2); // todo: add loading spinner
+        return true;
     }
 
 }
