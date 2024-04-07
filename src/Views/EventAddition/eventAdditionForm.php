@@ -1,4 +1,4 @@
-<?php include "prefix.php";
+<?php $prefix = $_ENV['prefix'];
 
     require "src/Models/CategoryRepo.php";
 
@@ -79,13 +79,6 @@
             <label class = "col-sm-3 col-form-label">Start-Sell Time</label>
             <div class = "col-sm-6">
                 <input type = "date" class = "form-control" name = "startSellTime">
-            </div>
-        </div>
-
-        <div class = "row mb-3">
-            <label class = "col-sm-3 col-form-label">End-Sell Time</label>
-            <div class = "col-sm-6">
-                <input type = "date" class = "form-control" name = "endSellTime">
             </div>
         </div>
 

@@ -1,4 +1,4 @@
-<?php include 'prefix.php'; ?>
+<?php $prefix = $_ENV['prefix'];?>
 
 <!doctype html>
 <html lang="en">

@@ -1,4 +1,4 @@
-<?php include "prefix.php"; ?>
+<?php $prefix = $_ENV['prefix']; ?>
 
 <div class="container-fluid py-5" style="margin-top: 20vh">
     <h2>All Events</h2>
@@ -17,7 +17,6 @@
                 <th scope="col">Long Description</th>
                 <th scope="col">Organizer</th>
                 <th scope="col">Start Sell Time</th>
-                <th scope="col">End Sell Time</th>
                 <th scope="col">Total Tickets</th>
                 <th scope="col">Available Tickets</th>
                 <th scope="col">Ticket Price</th>
@@ -38,7 +37,6 @@
                     </td>
                     <td><?php echo $e->organizer; ?></td>
                     <td><?php echo $e->startSellTime; ?></td>
-                    <td><?php echo $e->endSellTime; ?></td>
                     <td><?php echo $e->totalTickets; ?></td>
                     <td><?php echo $e->availableTickets; ?></td>
                     <td><?php echo $e->ticketPrice; ?></td>

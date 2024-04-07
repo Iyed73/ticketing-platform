@@ -1,4 +1,4 @@
-<?php include "prefix.php"; ?>
+<?php $prefix = $_ENV['prefix']; ?>
 
 <div class="container-fluid py-5" style="margin-top: 20vh">
     <h2>All Users</h2>
@@ -10,7 +10,6 @@
                 <th scope="col">#</th>
                 <th scope="col">First Name</th>
                 <th scope="col">Last Name</th>
-                <th scope="col">Username</th>
                 <th scope="col">Email</th>
                 <th scope="col">Role</th>
                 <th scope="col">Created At</th>
@@ -22,7 +21,6 @@
                     <td><?php echo $u->id; ?></td>
                     <td><?php echo $u->firstname; ?></td>
                     <td><?php echo $u->lastname; ?></td>
-                    <td><?php echo $u->username; ?></td>
                     <td><?php echo $u->email; ?></td>
                     <td><?php echo $u->role; ?></td>
                     <td><?php echo $u->created_at; ?></td>

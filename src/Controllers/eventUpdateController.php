@@ -10,8 +10,8 @@ class eventUpdateController{
         $this -> eventRepo = new EventRepo();
     }
 
-    public function is_input_empty($name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $endSellTime, $totalTickets, $availableTickets, $ticketPrice) {
-        return (empty($name) || empty($venue) || empty($category) || empty($eventDate) || empty($shortDescription) || empty($longDescription) || empty($organizer) || empty($startSellTime) || empty($endSellTime) || empty($totalTickets) || empty($availableTickets) || empty($ticketPrice));
+    public function is_input_empty($name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $totalTickets, $availableTickets, $ticketPrice) {
+        return (empty($name) || empty($venue) || empty($category) || empty($eventDate) || empty($shortDescription) || empty($longDescription) || empty($organizer) || empty($startSellTime) || empty($totalTickets) || empty($availableTickets) || empty($ticketPrice));
     }
 
     public function is_name_taken($name) {
@@ -23,43 +23,30 @@ class eventUpdateController{
         return false;
     }
 
-    public function is_eventDate_invalid($eventDate, $startSellTime, $endSellTime) {
+    public function is_eventDate_invalid($eventDate, $startSellTime) {
         $eventDateObj = new DateTime($eventDate);
         $startSellTimeObj = new DateTime($startSellTime);
-        $endSellTimeObj = new DateTime($endSellTime);
 
-        if ($eventDateObj < new DateTime('today') || $eventDateObj < $startSellTimeObj || $eventDateObj < $endSellTimeObj) {
+        if ($eventDateObj < new DateTime('today') || $eventDateObj < $startSellTimeObj) {
             return true;
         } else {
             return false;
         }
     }
 
-    public function is_startSellTime_invalid($startSellTime, $endSellTime, $eventDate) {
+    public function is_startSellTime_invalid($startSellTime, $eventDate) {
         $startSellTimeObj = new DateTime($startSellTime);
-        $endSellTimeObj = new DateTime($endSellTime);
         $eventDateObj = new DateTime($eventDate);
 
-        if ($startSellTimeObj > $endSellTimeObj || $startSellTimeObj > $eventDateObj) {
+        if ($startSellTimeObj > $eventDateObj) {
             return true;
         } else {
             return false;
         }
     }
 
-    public function is_endSellTime_invalid($endSellTime, $startSellTime, $eventDate) {
-        $endSellTimeObj = new DateTime($endSellTime);
-        $startSellTimeObj = new DateTime($startSellTime);
-        $eventDateObj = new DateTime($eventDate);
 
-        if ($endSellTimeObj < $startSellTimeObj || $endSellTimeObj > $eventDateObj) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    public function updateEvent($Id, $name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $endSellTime, $totalTickets, $availableTickets, $ticketPrice) {
+    public function updateEvent($Id, $name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $totalTickets, $availableTickets, $ticketPrice) {
         $eventTable = new EventRepo();
 
         $eventTable->update([
@@ -71,7 +58,6 @@ class eventUpdateController{
             'longDescription' => $longDescription,
             'organizer' => $organizer,
             'startSellTime' => $startSellTime,
-            'endSellTime' => $endSellTime,
             'totalTickets' => $totalTickets,
             'availableTickets' => $availableTickets,
             'ticketPrice' => $ticketPrice,
@@ -114,7 +100,6 @@ class eventUpdateController{
         $longDescription = $_POST['longDescription'];
         $organizer = $_POST['organizer'];
         $startSellTime = $_POST['startSellTime'];
-        $endSellTime = $_POST['endSellTime'];
         $totalTickets = $_POST['totalTickets'];
         $availableTickets = $_POST['availableTickets'];
         $ticketPrice = $_POST['ticketPrice'];
@@ -122,34 +107,29 @@ class eventUpdateController{
         $is_There_Errors = false;
 
 
-        if ($this -> is_input_empty($name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $endSellTime, $totalTickets, $availableTickets, $ticketPrice)){
+        if ($this -> is_input_empty($name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $totalTickets, $availableTickets, $ticketPrice)){
             $_SESSION['error'] = "Fields must not be empty!";
             $is_There_Errors = true;
             header("Location: event_update?id={$eventID}&eventUpdate=failed");
 
         }
 
-        else if($this -> is_eventDate_invalid($eventDate, $startSellTime, $endSellTime)){
+        else if($this -> is_eventDate_invalid($eventDate, $startSellTime)){
             $_SESSION['error'] = "Event date not valid!";
             $is_There_Errors = true;
             header("Location: event_update?id={$eventID}&eventUpdate=failed");
 
         }
 
-        else if($this -> is_startSellTime_invalid($startSellTime, $endSellTime, $eventDate)){
+        else if($this -> is_startSellTime_invalid($startSellTime, $eventDate)){
             $_SESSION['error'] = "Start Sell Time not valid!";
             $is_There_Errors = true;
             header("Location: event_update?id={$eventID}&eventUpdate=failed");
         }
 
-        else if($this -> is_endSellTime_invalid($startSellTime, $endSellTime, $eventDate)){
-            $_SESSION['error'] = "End Sell Time not valid!";
-            $is_There_Errors = true;
-            header("Location: event_update?id={$eventID}&eventUpdate=failed");
-        }
 
         else if(!$is_There_Errors){
-            $this->updateEvent($eventID, $name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $endSellTime, $totalTickets, $availableTickets, $ticketPrice);
+            $this->updateEvent($eventID, $name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $totalTickets, $availableTickets, $ticketPrice);
             header("Location: all_events?eventUpdate=success");
             die();
         }
