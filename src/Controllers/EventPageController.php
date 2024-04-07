@@ -24,8 +24,7 @@ class EventPageController {
     
     public function handleRequest($prefix){
         $this->getData($prefix);
-        require_once "src/Controllers/includes/configSession.inc.php";
-        
+                
         $_SESSION["event"] = serialize($this->event);
         $_SESSION["currentCategoryEvents"] = serialize($this->currentCategoryEvents);
         
