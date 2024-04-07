@@ -117,6 +117,9 @@
 /*** Topbar End ***/
 
 /*** Navbar Start ***/
+#navbar-container{
+    z-index:999;
+}
 .navbar .navbar-nav .nav-link {
     padding: 10px 15px;
     font-size: 16px;
@@ -477,10 +480,6 @@
 
 
 /*** Footer Start ***/
-footer{
-    position: relative;
-    bottom: 0;
-}
 .footer .footer-item .btn-link {
     line-height: 35px;
     color: rgba(255, 255, 255, .5);
@@ -494,6 +493,34 @@ footer{
 .footer .footer-item p.mb-4 {
     line-height: 35px;
 }
-
-
 /*** Footer End ***/
+
+/* Profile page style */
+#profileContainer
+{
+    padding-top: 12rem;
+    padding-bottom: 7rem;
+    padding-left: 7rem;
+}
+.inputBox small {
+    color: red;
+    display: inline;
+    margin: 5px 5px 0 5px;
+    padding-bottom: 5px;
+    visibility: hidden;
+    font-size: small;
+  }
+  .error small {
+    visibility: visible;
+  }
+  .errorBox {
+    margin: 8px;
+    padding: 5px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background-color: rgb(255, 0, 0, 0.5);
+    color: #ffff;
+    font-size: smaller;
+    border-radius: 4px;
+  }

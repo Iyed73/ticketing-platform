@@ -1,1 +1,5 @@
 colorpalette.txt
+vendor
+composer.phar
+.htaccess
+.env

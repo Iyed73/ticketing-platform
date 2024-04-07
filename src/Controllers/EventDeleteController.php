@@ -11,7 +11,7 @@ class EventDeleteController {
     }
 
     public function deleteEvent($eventId) {
-        $this->eventRepo->delete($eventId);
+        $this->eventRepo->deleteById($eventId);
         header("Location: all_events?eventDeleted=true");
         exit();
     }

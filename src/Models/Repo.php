@@ -1,5 +1,6 @@
 <?php 
-require_once "Database\dbConnection.php";
+require_once "Database/dbConnection.php";
+
 abstract class Repo {
     protected $db;
     public function __construct(protected $tableName) {
@@ -11,6 +12,13 @@ abstract class Repo {
         $response = $this->db->query($req);
         $response->execute();
         return  $response->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function exists($id) {
+        $req = "SELECT * FROM {$this->tableName} where id = ?";
+        $response = $this->db->prepare($req);
+        $response->execute([$id]);
+        return $response->rowCount() > 0;
     }
 
     public function findById($id) {
@@ -32,12 +40,11 @@ abstract class Repo {
         return $response->execute(array_values($data));
     }
 
-    public function delete($id){
-        $req = "DELETE FROM {$this -> tableName} where id = ?";
-        $response = $this -> db -> prepare($req);
-        $response -> execute([$id]);
+    public function deleteById($id) {
+        $req = "DELETE FROM {$this->tableName} WHERE id = ?";
+        $response = $this->db->prepare($req);
+        return $response->execute([$id]);
     }
-
 
     public function update($data, $Id) {
         $ID = intval($Id);
