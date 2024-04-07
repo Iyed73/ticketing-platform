@@ -20,7 +20,7 @@
         </div>
     <?php endif; ?>
 
-    <form action="<?="{$prefix}/event_addition"?>" method="post" style = "margin-top: 30vh">
+    <form action="<?="{$prefix}/event_addition"?>" method="post" enctype="multipart/form-data" style = "margin-top: 30vh">
         <div class="row mb-3">
             <label class="col-sm-3 col-form-label">Name</label>
             <div class="col-sm-6">
@@ -103,14 +103,24 @@
             </div>
         </div>
 
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">Image</label>
+            <div class="col-sm-6">
+                <input type="file" class="form-control" name="image" id="image" placeholder="Select image">
+            </div>
+        </div>
+
+
 
         <div class = "row mb-3">
             <div class = "offset-sm-3 col-sm-3 d-grid">
                 <button type = "submit" value ="register" class = "btn btn-primary text-white">Submit</button>
             </div>
             <div class = "col-sm-3 d-grid">
-                <a class = "btn btn-outline-primary" href = "<?="{$prefix}/dashboard"?>" role = "button">Cancel</a>
+                <a class = "btn btn-outline-primary" href = "<?="{$prefix}/all_events"?>" role = "button">Cancel</a>
             </div>
         </div>
     </form>
 </div>
+
+

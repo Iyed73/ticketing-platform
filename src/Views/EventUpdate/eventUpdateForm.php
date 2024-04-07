@@ -22,7 +22,7 @@ unset($_SESSION['error']);
         </div>
     <?php endif; ?>
 
-    <form action="<?="{$prefix}/event_update"?>" method="post" style = "margin-top: 30vh">
+    <form action="<?="{$prefix}/event_update"?>" method="post" enctype="multipart/form-data" style = "margin-top: 30vh">
         <input type="hidden" name="id" value="<?= $eventData ? $eventData->id: '' ?>">
         <div class="row mb-3">
             <label class="col-sm-3 col-form-label">Name</label>
@@ -109,6 +109,13 @@ unset($_SESSION['error']);
             </div>
         </div>
 
+        <div class="row mb-3">
+            <label class="col-sm-3 col-form-label">Image</label>
+            <div class="col-sm-6">
+                <input type="hidden" name="imagePath" value="<?= $eventData ? $eventData->imagePath: '' ?>">
+                <input type="file" class="form-control" name="image" id="image" placeholder="Select image">
+            </div>
+        </div>
 
         <div class = "row mb-3">
             <div class = "offset-sm-3 col-sm-3 d-grid">

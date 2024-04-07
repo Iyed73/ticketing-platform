@@ -43,7 +43,7 @@
                     <td>
                         <div class="btn-group" role="group" aria-label="Edit and Delete buttons">
                             <a class = "btn btn-primary text-white" href = "<?="{$prefix}/event_update?id={$e->id}"?>" role="button">Edit</a>
-                            <a href = "<?="{$prefix}/event_delete?id={$e->id}"?>" class="btn btn-danger" onclick ="return confirm('Are you sure to delete this event?')">Delete</a>
+                            <a href = "<?="{$prefix}/event_delete?id={$e->id}"?>" class="btn btn-danger text-white" onclick ="return confirm('Are you sure to delete this event?')">Delete</a>
                             <a href="<?= "{$prefix}/event?id={$e->id}" ?>" class="btn btn-primary">
                                 <i class="fa fa-eye me-2 text-white"></i>
                             </a>

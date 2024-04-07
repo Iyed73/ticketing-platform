@@ -10,7 +10,8 @@ class eventUpdateController{
         $this -> eventRepo = new EventRepo();
     }
 
-    public function is_input_empty($name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $totalTickets, $availableTickets, $ticketPrice) {
+    public function is_input_empty($name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $totalTickets, $availableTickets, $ticketPrice)
+    {
         return (empty($name) || empty($venue) || empty($category) || empty($eventDate) || empty($shortDescription) || empty($longDescription) || empty($organizer) || empty($startSellTime) || empty($totalTickets) || empty($availableTickets) || empty($ticketPrice));
     }
 
@@ -46,7 +47,7 @@ class eventUpdateController{
     }
 
 
-    public function updateEvent($Id, $name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $totalTickets, $availableTickets, $ticketPrice) {
+    public function updateEvent($Id, $name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $totalTickets, $availableTickets, $ticketPrice, $imagePath) {
         $eventTable = new EventRepo();
 
         $eventTable->update([
@@ -61,6 +62,7 @@ class eventUpdateController{
             'totalTickets' => $totalTickets,
             'availableTickets' => $availableTickets,
             'ticketPrice' => $ticketPrice,
+            'imagePath' => $imagePath,
         ], $Id);
     }
 
@@ -82,8 +84,8 @@ class eventUpdateController{
             die();
         }
     }
-    public function handlePostRequest($userID){
 
+    public function handlePostRequest($userID){
         $userRepo = new UserRepo();
 
         if(!$userRepo->isAdmin($userID)){
@@ -103,45 +105,67 @@ class eventUpdateController{
         $totalTickets = $_POST['totalTickets'];
         $availableTickets = $_POST['availableTickets'];
         $ticketPrice = $_POST['ticketPrice'];
+        $targetFile = $_POST['imagePath'];
 
-        $is_There_Errors = false;
 
+        if (!empty($_FILES['image']['name'])) {
+            $targetDir = "Static/Images/";
+            $targetFile = $targetDir . basename($_FILES["image"]["name"]);
+            $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
-        if ($this -> is_input_empty($name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $totalTickets, $availableTickets, $ticketPrice)){
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $fileMimeType = finfo_file($finfo, $_FILES["image"]["tmp_name"]);
+            finfo_close($finfo);
+
+            // Check if the file is an image
+            if (substr($fileMimeType, 0, 5) !== 'image') {
+                $_SESSION['error'] = "File is not an image.";
+                header("Location: event_update?id={$eventID}&eventUpdate=failed");
+                die();
+            }
+
+            if ($_FILES["image"]["size"] > 500000) {
+                $_SESSION['error'] = "Sorry, your file is too large.";
+                header("Location: event_update?id={$eventID}&eventUpdate=failed");
+                die();
+            }
+
+            if (!in_array($imageFileType, ["jpg", "jpeg", "png"])) {
+                $_SESSION['error'] = "Sorry, only JPG, JPEG, PNG files are allowed.";
+                header("Location: event_update?id={$eventID}&eventUpdate=failed");
+                die();
+            }
+
+            if (!move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
+                $_SESSION['error'] = "Failed to upload image.";
+                header("Location: event_update?id={$eventID}&eventUpdate=failed");
+                die();
+            }
+        }
+
+        $is_there_errors =  false;
+        if ($this->is_input_empty($name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $totalTickets, $availableTickets, $ticketPrice)){
             $_SESSION['error'] = "Fields must not be empty!";
-            $is_There_Errors = true;
             header("Location: event_update?id={$eventID}&eventUpdate=failed");
-
-        }
-
-        else if($this -> is_eventDate_invalid($eventDate, $startSellTime)){
-            $_SESSION['error'] = "Event date not valid!";
-            $is_There_Errors = true;
-            header("Location: event_update?id={$eventID}&eventUpdate=failed");
-
-        }
-
-        else if($this -> is_startSellTime_invalid($startSellTime, $eventDate)){
-            $_SESSION['error'] = "Start Sell Time not valid!";
-            $is_There_Errors = true;
-            header("Location: event_update?id={$eventID}&eventUpdate=failed");
-        }
-
-
-        else if(!$is_There_Errors){
-            $this->updateEvent($eventID, $name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $totalTickets, $availableTickets, $ticketPrice);
-            header("Location: all_events?eventUpdate=success");
             die();
         }
 
+        if($this->is_eventDate_invalid($eventDate, $startSellTime)){
+            $_SESSION['error'] = "Event date not valid!";
+            header("Location: event_update?id={$eventID}&eventUpdate=failed");
+            die();
+        }
 
+        if($this->is_startSellTime_invalid($startSellTime, $eventDate)){
+            $_SESSION['error'] = "Start Sell Time not valid!";
+            header("Location: event_update?id={$eventID}&eventUpdate=failed");
+            die();
+        }
 
-
-
+        $this->updateEvent($eventID, $name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $totalTickets, $availableTickets, $ticketPrice, $targetFile);
+        header("Location: all_events?eventUpdate=success");
+        die();
     }
-
-
-
 }
 
 require_once "src/Controllers/includes/configSession.inc.php";
