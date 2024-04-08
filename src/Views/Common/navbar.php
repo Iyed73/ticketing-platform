@@ -1,11 +1,17 @@
 <?php
 
 if (!isset($_SESSION['currency'])) {
-    $_SESSION['currency'] = 'EUR';
+    $_SESSION['currency'] = 'USD';
 }
 // If user is logged-in session will contain user_id & role
 $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
+
+$currencySymbol = match ($_SESSION['currency']) {
+    'EUR' => '€',
+    'GBP' => '£',
+    default => '$',
+};
 ?>
 
 <div class="container-fluid fixed-top" id="navbar-container">
@@ -38,13 +44,13 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
                     <a href="<?= "{$prefix}/contact" ?>" class="nav-item nav-link ">Contact</a>
                 <?php endif; ?>
 
-                <form id="currencyForm" method="post" action="setCurrency.php" class="me-3 d-inline-block">
+                <form id="currencyForm" method="post" action="set_currency" class="me-3 d-inline-block">
                     <select class="currency-select" name="currency" id="currency" onchange="submitCurrencyForm()">
-                        <option value="EUR" <?php if ($_SESSION['currency'] == 'EUR')
-                            echo 'selected'; ?> >Euro (€)
-                        </option>
                         <option value="USD" <?php if ($_SESSION['currency'] == 'USD')
                             echo 'selected'; ?> >USD ($)
+                        </option>
+                        <option value="EUR" <?php if ($_SESSION['currency'] == 'EUR')
+                            echo 'selected'; ?> >Euro (€)
                         </option>
                         <option value="GBP" <?php if ($_SESSION['currency'] == 'GBP')
                             echo 'selected'; ?> >Pound
@@ -76,5 +82,10 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
         </nav>
     </div>
 </div>
+<script>
+    function submitCurrencyForm(){
+        document.querySelector('#currencyForm').submit();
+    }
+</script>
 
 <?php include 'src\Views\SignupLogin\signupLoginView.php' ?>

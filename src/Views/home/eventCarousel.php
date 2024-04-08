@@ -29,8 +29,10 @@
                             <?= $event->shortDescription; ?>
                         </p>
                         <div class="d-flex justify-content-between flex-lg-wrap">
-                            <p class="text-dark fs-5 fw-bold mb-0">$
-                                <?= $event->ticketPrice / 100 ?>
+                            <p class="text-dark fs-5 fw-bold mb-0">
+                                <?php
+                                echo $currencySymbol . ($event->ticketPrice / 100);
+                                ?>
                             </p>
                             <?php $prefix = $_ENV['prefix']; ?>
                             <a href="<?= "{$prefix}/event?id={$event->id}" ?>"
