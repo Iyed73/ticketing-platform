@@ -1,6 +1,6 @@
 <?php
 require_once "src/Models/NotificationsRepo.php";
-class notificationView {
+class notificationController {
     private $notificationsRepo;
 
     public function __construct() {
@@ -16,6 +16,7 @@ class notificationView {
         }
     }
     public function displayAllNotifications($userId) {
+        $prefix = $_ENV['prefix'];
         $notifications = $this->notificationsRepo->findNotificationsByUserId($userId);
         if($notifications == null) {
             echo "<div class='notifSec'>";
@@ -38,7 +39,7 @@ class notificationView {
                 else {
                     echo "<div class='notifSec'>";
                 }
-                echo "<a href='#'>";
+                echo "<a href='$prefix/notifications?function=read&id=$notificationId>";
                 echo "<div class='notifTxt'>$notificationSender: $notificationContent</div>";
                 echo "<div class='notifTxt sub'>$notificationDate</div>";
                 echo "</a>";
@@ -46,4 +47,28 @@ class notificationView {
             }
         }
     }
+
+    function markNotificationAsRead($notificationId) {
+        $this->notificationsRepo->markNotificationAsRead($notificationId);
+    }
+
+    function deleteNotifications($userId) {
+        $this->notificationsRepo->deleteNotifications($userId);
+    }
+}
+
+if(isset($_GET['function'])) {
+    $function = $_GET['function'];
+    $userId = $_SESSION['user_id'];
+    $notificationController = new notificationController();
+    if ($function == 'deleteNotifications') {
+        $notificationController->deleteNotifications($userId);
+    }
+    elseif ($function == 'read') {
+        $notificationId = $_GET['id'];
+        $notificationController->markNotificationAsRead($notificationId);
+    }
+    $prefix = $_ENV['prefix'];
+    header("Location: {$prefix}/home");
+    die();
 }

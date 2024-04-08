@@ -27,11 +27,15 @@ class NotificationsRepo extends Repo {
         $response->bindParam(':userId', $userId);
         return $response->execute();
     }
+    
+    public function markNotificationAsRead($notificationId) {
+        $req = "UPDATE {$this->tableName} SET is_read = 'read' WHERE id = :notificationId";
+        $response = $this->db->prepare($req);
+        $response->bindParam(':notificationId', $notificationId);
+        return $response->execute();
+    }
 
-    //insert new notications if users has bought tickets of and event that starts in a day
-
-
-    public function deleteNotificationsByUserId($userId) {
+    public function deleteNotifications($userId) {
         $req = "DELETE FROM {$this->tableName} WHERE user_id = :userId";
         $response = $this->db->prepare($req);
         $response->bindParam(':userId', $userId);

@@ -1,5 +1,5 @@
 <?php
-require_once 'src\Views\Common\notificationView.php';
+require_once 'src\Controllers\notificationController.php';
 
 if (!isset($_SESSION['currency'])) {
     $_SESSION['currency'] = 'EUR';
@@ -73,19 +73,21 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
                     </form>
                 </div>
                 <?php if ($role === "customer"): // If its a simple customer            ?>
-                    <?php $notificationView = new notificationView(); ?>
+                    <?php $notificationController = new notificationController(); ?>
                     <div class="notification">
                         <a href="#">
                             <div class="notBtn" href="#">
-                                <?php $notificationView->displayNumberOfUnreadNotifications($user_id); ?>
+                                <?php $notificationController->displayNumberOfUnreadNotifications($user_id); ?>
                                 <i class="fas fa-bell notification_icon"></i>
                                 <div class="notifBox">
                                     <div class="notifDisplay">
                                         <div class="notifCont">
-                                            <?php $notificationView->displayAllNotifications($user_id); ?>
-                                            <div class="clearBtn">
-                                                <button class="btn-clear">Clear All</button>
-                                            </div>
+                                            <?php $notificationController->displayAllNotifications($user_id); ?>
+                                            <a href="<?= "{$prefix}/notifications?function=deleteNotifications" ?>" class="notifLink">
+                                                <div class="clearBtn">
+                                                    <button class="btn-clear">Clear All</button>
+                                                </div>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
