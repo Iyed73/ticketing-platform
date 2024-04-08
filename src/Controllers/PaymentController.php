@@ -2,21 +2,27 @@
 require_once "src/Models/EventReservationModel.php";
 require_once "src/Models/TicketManagementModel.php";
 require_once "src/Models/EventRepo.php";
+require_once "src/Models/UserRepo.php";
+require_once "Services/ticketGenerator.php";
+require_once "Services/MailingService.php";
+
+
 
 class PaymentController {
 
     private EventReservationModel $eventReservationModel;
     private TicketManagementModel $ticketModel;
     private EventRepo $eventModel;
+    private UserRepo $userModel;
 
     public function __construct() {
         $this->eventReservationModel= new EventReservationModel();
         $this->ticketModel = new TicketManagementModel();
         $this->eventModel = new EventRepo();
+        $this->userModel = new UserRepo();
     }
 
-    private function getTotalPrice($eventId, $quantity) {
-        $price = $this->eventModel->getTicketPrice($eventId);
+    private function getTotalPrice($price, $quantity) {
         $totalPrice = $price * $quantity / 100;
         return $totalPrice;
     }
@@ -32,6 +38,60 @@ class PaymentController {
 
     private function generateTicketId(): string {
         return uniqid('INSAT', true);
+    }
+
+    private function parseTicketData($ticketDataArray, $event, $buyer): array {
+        $parsedTickets = array();
+
+        foreach ($ticketDataArray as $ticketData) {
+            $parsedTickets[] = array(
+                "ticketId" => $ticketData['ticket_id'],
+                "eventName" => $event->name,
+                "eventDate" => $event->eventDate,
+                "eventVenue" => $event->venue,
+                "purchaseDate" => $ticketData['buy_date'],
+                "buyerName" => $buyer->firstname . ' ' . $buyer->lastname,
+                "ticketHolderName" => $ticketData['first_name'] . ' ' . $ticketData['last_name'],
+                "price" => $ticketData['price'] / 100,
+            );
+        }
+
+        return $parsedTickets;
+    }
+
+    private function createRandomCombinatedTicketsName() {
+        return uniqid('ticket');
+
+    }
+
+    private function sendTickets($ticketData, $receiverEmail) {
+
+        $senderName = "Tickets Business";
+        $receiverName = $ticketData[0]['buyerName'];
+
+
+        $ticketCount = count($ticketData);
+        if ($ticketCount > 1) {
+            $subject = "Tickets for event: " . $ticketData[0]['eventName'];
+            $messageHtml = "Dear $receiverName, <br><br> Attached are your tickets for the event: <strong>{$ticketData[0]['eventName']}</strong>.";
+            $messageText = "Dear $receiverName, \n\n Attached are your tickets for the event: {$ticketData[0]['eventName']}.";
+        } else {
+            $subject = "Ticket for event: " . $ticketData[0]['eventName'];
+            $messageHtml = "Dear $receiverName, <br><br> Attached is your ticket for the event: <strong>{$ticketData[0]['eventName']}</strong>.";
+            $messageText = "Dear $receiverName, \n\n Attached is your ticket for the event: {$ticketData[0]['eventName']}.";
+        }
+        $fileName = $this->createRandomCombinatedTicketsName();
+        generateCombinedTickets($ticketData, $fileName);
+
+        $attachmentPath = __DIR__ . '\..\..\Static\attachments\\' . $fileName . '.pdf';
+
+
+        $attachmentPaths = array($attachmentPath);
+        sendMail($senderName, $receiverName, $receiverEmail, $subject, $messageHtml, $messageText, $attachmentPaths);
+
+        if (file_exists($attachmentPath)) {
+            unlink($attachmentPath);
+        }
     }
 
     public function handleGetRequest() {
@@ -63,20 +123,24 @@ class PaymentController {
         }
 
         $quantity = $reservation->quantity;
-        $totalPrice = $this->getTotalPrice($eventId, $quantity);
+
+        $price = $this->eventModel->getTicketPrice($eventId);
+
+        $totalPrice = $this->getTotalPrice($price, $quantity);
         $expiration = $reservation->expiration;
 
         require_once "src/Views/paymentView.php";
 
         exit();
     }
+
     public function handlePostRequest() {
         $userId = $_SESSION['user_id'];
         $reservationId = $_POST["reservation_id"];
 
         $reservation = $this->eventReservationModel->findById($reservationId);
 
-        if ($reservation === null) {
+        if (!$reservation) {
             http_response_code(404);
             exit();
         }
@@ -89,11 +153,11 @@ class PaymentController {
 
         $firstNames = $_POST["first_names"];
         $lastNames = $_POST["last_names"];
-        $emails = $_POST["emails"];
+        $phoneNumbers = $_POST["phone_numbers"];
 
         $creditCard = $_POST["credit_card"];
 
-        if (count($firstNames) !== $quantity || count($lastNames) !== $quantity || count($emails) !== $quantity) {
+        if (count($firstNames) !== $quantity || count($lastNames) !== $quantity || count($phoneNumbers) !== $quantity) {
             $_SESSION["error"] = "An error occurred, please try again";
             header("Location: payment?reservation_id=$reservationId&quantity=$quantity");
             exit();
@@ -106,17 +170,22 @@ class PaymentController {
             header("Location: event?id=$eventId");
         }
 
-        $totalPrice = $this->getTotalPrice($eventId, $quantity);
+        $event = $this->eventModel->findById($eventId);
+
+        $user = $this->userModel->findById($userId);
+
+        $price = $event->ticketPrice;
+
+        $totalPrice = $this->getTotalPrice($price, $quantity);
 
         if ($this->processPayment($creditCard, $totalPrice)) {
             $buyerId = $userId;
-            $price = $this->eventModel->getTicketPrice($eventId);
             $ticketDataArray = array();
-
+            $buyDate = date('Y-m-d H:i:s');
             for ($i = 0; $i < $quantity; $i++) {
                 $firstName = $firstNames[$i];
                 $lastName = $lastNames[$i];
-                $email = $emails[$i];
+                $phoneNumber = $phoneNumbers[$i];
 
                 $ticketDataArray[] = array(
                     "ticket_id" => $this->generateTicketId(),
@@ -124,22 +193,32 @@ class PaymentController {
                     "event_id" => $eventId,
                     "first_name" => $firstName,
                     "last_name" => $lastName,
-                    "email" => $email,
-                    "price" => $price
+                    "phone_number" => $phoneNumber,
+                    "price" => $price,
+                    "buy_date" => $buyDate,
                 );
             }
             try {
                 $this->ticketModel->createTickets($ticketDataArray);
-                header("Location: view-tickets");
             } catch (Exception $e) {
                 error_log($e->getMessage());
                 $this->eventReservationModel->increaseAvailableTickets($eventId, $quantity);
                 $_SESSION["error"] = "An error occurred.";
                 header("Location: event?id=$eventId");
+                exit();
             }
+
+            try {
+                $ticketInfos = $this->parseTicketData($ticketDataArray, $event, $user);
+                $this->sendTickets($ticketInfos, $user->email);
+            } catch (Exception $e) {
+                error_log("An error occurred while sending tickets via email: " . $e->getMessage());
+            }
+            header("Location: view-tickets");
         }
         exit();
     }
+
 
     private function processPayment($creditCard, $totalPrice): bool {
         // If payment is successful, return true;

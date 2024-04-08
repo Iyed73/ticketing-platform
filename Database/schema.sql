@@ -93,9 +93,8 @@ CREATE TABLE ticket (
     event_id INT,
     first_name VARCHAR(255),
     last_name VARCHAR(255),
-    email VARCHAR(255),
-    buy_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    email_sent BOOLEAN DEFAULT FALSE, -- Indicates whether the ticket has been sent via email to the holder
+    phone_number VARCHAR(255),
+    buy_date TIMESTAMP,
     price INT,
     FOREIGN KEY (buyer_id) REFERENCES users(id),
     FOREIGN KEY (event_id) REFERENCES events(id)

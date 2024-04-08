@@ -35,7 +35,7 @@ unset($_SESSION["error"]);
                         <input type="text" class="form-control" name="last_names[]" placeholder="Last Name" required>
                     </div>
                     <div class="col-sm-4">
-                        <input type="email" class="form-control" name="emails[]" placeholder="Email" required>
+                        <input type="tel" class="form-control" name="phone_numbers[]" placeholder="Phone Number" required> <!-- Changed from email to phone number -->
                     </div>
                 </div>
             </div>

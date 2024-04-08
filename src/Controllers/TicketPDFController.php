@@ -1,6 +1,7 @@
 <?php
 require_once "src\Models\TicketManagementModel.php";
-require_once "Services\TicketGenerator.php";
+require_once "Services/ticketGenerator.php";
+
 
 
 class TicketPDFController {
@@ -38,7 +39,7 @@ class TicketPDFController {
             exit();
         }
 
-        generateTicket($ticketInfo, $action);
+        generateSingleTicket($ticketInfo, $action);
 
 
 
