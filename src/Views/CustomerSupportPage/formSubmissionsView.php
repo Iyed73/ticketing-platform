@@ -40,5 +40,28 @@
                 </table>
             </div>
         </div>
+        <nav aria-label="page_nav" class="d-flex justify-content-center">
+            <ul class="pagination d-inline-flex justify-content-between">
+                <?php if ($currentPage > 1): ?>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<?php echo $currentPage - 1; ?>">Previous</a>
+                    </li>
+                <?php endif; ?>
+
+                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                    <li class="page-item <?php echo ($currentPage == $i) ? 'active' : ''; ?>">
+                        <a class="page-link" href="?page=<?php echo $i; ?>">
+                            <?php echo $i; ?>
+                        </a>
+                    </li>
+                <?php endfor; ?>
+
+                <?php if ($currentPage < $totalPages): ?>
+                    <li class="page-item">
+                        <a class="page-link" href="?page=<?php echo $currentPage + 1; ?>">Next</a>
+                    </li>
+                <?php endif; ?>
+            </ul>
+        </nav>
     </div>
     <?php include "src\Views\CustomerSupportPage\submissionDetailModal.php" ?>

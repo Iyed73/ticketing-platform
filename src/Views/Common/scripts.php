@@ -8,4 +8,5 @@
 <script src="Static\JS\signupLoginScript.js"></script>
 <script src="Static\JS\customerSupportScript.js"></script>
 <script src="Static\JS\editProfileScript.js"></script>
+<script src="Static\JS\notificationsScript.js"></script>
 <script src="Static/JS/main.js"></script>

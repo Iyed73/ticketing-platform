@@ -1,4 +1,5 @@
 <?php
+require_once 'src\Controllers\notificationController.php';
 
 if (!isset($_SESSION['currency'])) {
     $_SESSION['currency'] = 'USD';
@@ -13,6 +14,7 @@ $currencySymbol = match ($_SESSION['currency']) {
     default => '$',
 };
 ?>
+<link rel="stylesheet" href="Static\CSS\notif.css">
 
 <div class="container-fluid fixed-top" id="navbar-container">
     <div class="container topbar bg-primary d-none d-lg-block">
@@ -40,7 +42,7 @@ $currencySymbol = match ($_SESSION['currency']) {
                     data-bs-toggle="modal" data-bs-target="#searchModal"><i
                         class="fas fa-search text-primary"></i></button>
                 <a href="<?= "{$prefix}/home" ?>" class="nav-item nav-link active">Home</a>
-                <?php if ($role === "customer" || !$user_id): // Don't show if user is admin     ?>
+                <?php if ($role === "customer" || !$user_id): // Don't show if user is admin               ?>
                     <a href="<?= "{$prefix}/contact" ?>" class="nav-item nav-link ">Contact</a>
                 <?php endif; ?>
 
@@ -50,23 +52,23 @@ $currencySymbol = match ($_SESSION['currency']) {
                             echo 'selected'; ?> >USD ($)
                         </option>
                         <option value="EUR" <?php if ($_SESSION['currency'] == 'EUR')
-                            echo 'selected'; ?> >Euro (€)
+                            echo 'selected'; ?>>Euro (€)
                         </option>
                         <option value="GBP" <?php if ($_SESSION['currency'] == 'GBP')
-                            echo 'selected'; ?> >Pound
+                            echo 'selected'; ?>>Pound
                             (£)</option>
                     </select>
                 </form>
-                <?php if ($role === "customer"): // If user is logged in as a customer     ?>
+                <?php if ($role === "customer"): // If user is logged in as a customer               ?>
                     <a href="#" class="nav-item nav-link">Manage Tickets</a>
-                <?php elseif ($role === "admin"): // If user is logged in as an admin    ?>
+                <?php elseif ($role === "admin"): // If user is logged in as an admin              ?>
                     <a href="#" class="nav-item nav-link">Dashboard</a>
                     <a href="<?= "{$prefix}/customerSupport" ?>" class="nav-item nav-link">Customer Support</a>
                 <?php endif; ?>
 
             </div>
             <div class="collapse navbar-collapse bg-white justify-content-end" id="navbarCollapse">
-                <?php if (!$user_id): // If user is not logged in   ?>
+                <?php if (!$user_id): // If user is not logged in             ?>
                     <button class="button" id="login-open">Login</button>
                     <button class="button" id="signup-open">Signup</button>
 
@@ -74,11 +76,37 @@ $currencySymbol = match ($_SESSION['currency']) {
                     <form action="<?= "{$prefix}/logout" ?>" method="post">
                         <button class="button" id="logout-btn">Logout</button>
                     </form>
-                    <a href="<?= "{$prefix}/userProfile"?>" class="my-auto">
-                        <i class="fas fa-user fa-2x"></i>
-                    </a>
+                </div>
+                <?php if ($role === "customer"): // If its a simple customer            ?>
+                    <?php $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);?>
+                    <?php $notificationController = new notificationController(); ?>
+                    <div class="notification">
+                        <a href="#">
+                            <div class="notBtn" href="#">
+                                <?php $notificationController->displayNumberOfUnreadNotifications($user_id); ?>
+                                <i class="fas fa-bell notification_icon"></i>
+                                <div class="notifBox">
+                                    <div class="notifDisplay">
+                                        <div class="notifCont">
+                                            <?php $notificationController->displayAllNotifications($user_id); ?>
+                                            <a href="<?= "{$prefix}/notifications?function=deleteNotifications"?>" class="notifLink">
+                                                <div class="clearBtn">
+                                                    <button class="btn-clear">Clear All</button>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
                 <?php endif; ?>
-            </div>
+                <a href="<?= "{$prefix}/userProfile" ?>" class="my-auto d-flex flex-column align-items-center">
+                    <i class="fas fa-user fa-2x"></i>
+                    <span>Profile</span>
+                </a>
+            <?php endif; ?>
+
         </nav>
     </div>
 </div>

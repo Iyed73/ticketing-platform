@@ -19,6 +19,7 @@ $routes = [
     "{$prefix}/verify" => 'src/Controllers/VerifyAccountController.php',
     "{$prefix}/userProfile" => 'src\Controllers\ChangeAccountInfoControler.php',
     "{$prefix}/changePassword" => 'src\Controllers\ChangePasswordController.php',
+    "{$prefix}/notifications" => 'src\Controllers\NotificationController.php',
     "{$prefix}/set_currency" => 'src\Controllers\SetCurrencyController.php',
 ];
 

@@ -7,6 +7,23 @@ class FormSubmissionsRepo extends Repo
         parent::__construct('form_submissions');
     }
 
+    public function totalPagesNum($x){
+        $req = "SELECT COUNT(*) FROM {$this -> tableName}";
+        $response = $this -> db -> prepare($req);
+        $response -> execute();
+        $count = $response -> fetchColumn();
+        $totalPages = ceil($count / $x);
+        return $totalPages;
+    }
+
+
+    public function findWithOffset($offset, $totalPages){
+        $req = "SELECT * FROM {$this -> tableName} LIMIT $offset, $totalPages ";
+        $response = $this->db->query($req);
+        $response->execute();
+        return  $response->fetchAll(PDO::FETCH_OBJ);
+    }
+
     // Delete a form submission by id
     public function deleteFormSubmissions($id)
     {
