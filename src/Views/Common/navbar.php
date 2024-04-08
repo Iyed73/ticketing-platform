@@ -84,7 +84,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
                                     <div class="notifDisplay">
                                         <div class="notifCont">
                                             <?php $notificationController->displayAllNotifications($user_id); ?>
-                                            <a href="<?= "{$prefix}/notifications?function=deleteNotifications&RequestUrl={$uri}"?>" class="notifLink">
+                                            <a href="<?= "{$prefix}/notifications?function=deleteNotifications"?>" class="notifLink">
                                                 <div class="clearBtn">
                                                     <button class="btn-clear">Clear All</button>
                                                 </div>

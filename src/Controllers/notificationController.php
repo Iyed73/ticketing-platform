@@ -26,7 +26,6 @@ class notificationController {
             echo "</div>";
         }
         else {
-            global $uri;
             foreach ($notifications as $notification) {
                 $notificationId = $notification->id;
                 $notificationSender  = $notification->sender;
@@ -40,7 +39,7 @@ class notificationController {
                 else {
                     echo "<div class='notifSec'>";
                 }
-                echo "<a href='$prefix/notifications?function=read&id=$notificationId&RequestUrl=$uri'>";
+                echo "<a href='$prefix/notifications?function=read&id=$notificationId'>";
                 echo "<div class='notifTxt'>$notificationSender: $notificationContent</div>";
                 echo "<div class='notifTxt sub'>$notificationDate</div>";
                 echo "</a>";
@@ -69,8 +68,6 @@ if(isset($_GET['function'])) {
         $notificationId = $_GET['id'];
         $notificationController->markNotificationAsRead($notificationId);
     }
-    $prefix = $_ENV['prefix'];
-    $uri = $_GET['RequestUrl'];
-    header("Location: $uri");
+    header("Location: " . $_SERVER['HTTP_REFERER']);
     die();
 }
