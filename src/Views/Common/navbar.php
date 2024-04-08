@@ -73,6 +73,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
                     </form>
                 </div>
                 <?php if ($role === "customer"): // If its a simple customer            ?>
+                    <?php $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);?>
                     <?php $notificationController = new notificationController(); ?>
                     <div class="notification">
                         <a href="#">
@@ -83,7 +84,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
                                     <div class="notifDisplay">
                                         <div class="notifCont">
                                             <?php $notificationController->displayAllNotifications($user_id); ?>
-                                            <a href="<?= "{$prefix}/notifications?function=deleteNotifications" ?>" class="notifLink">
+                                            <a href="<?= "{$prefix}/notifications?function=deleteNotifications&RequestUrl={$uri}"?>" class="notifLink">
                                                 <div class="clearBtn">
                                                     <button class="btn-clear">Clear All</button>
                                                 </div>
