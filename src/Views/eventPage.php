@@ -12,7 +12,7 @@ unset($_SESSION["error"]);
 if (isset($_SESSION["user_id"])) {
     $reservationId = hasOnGoingReservation($event->id, $_SESSION["user_id"]);
 } else {
-    $hasReservationId = null;
+    $reservationId = null;
 }
 
 include 'prefix.php';
