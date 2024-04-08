@@ -7,7 +7,6 @@ require_once "Services/ticketGenerator.php";
 require_once "Services/MailingService.php";
 
 
-
 class PaymentController {
 
     private EventReservationModel $eventReservationModel;
@@ -151,17 +150,32 @@ class PaymentController {
         }
         $quantity = $reservation->quantity;
 
+        if (!isset($_POST["first_names"]) || !isset($_POST["last_names"]) || !isset($_POST["phone_numbers"]) ||
+            !isset($_POST["credit_card"]) || !isset($_POST["expiration_date"]) || !isset($_POST["cvv"])) {
+            http_response_code(400);
+            exit;
+        }
+
         $firstNames = $_POST["first_names"];
         $lastNames = $_POST["last_names"];
         $phoneNumbers = $_POST["phone_numbers"];
 
         $creditCard = $_POST["credit_card"];
+        $expirationDate = $_POST["expiration_date"];
+        $cvv = $_POST["cvv"];
 
         if (count($firstNames) !== $quantity || count($lastNames) !== $quantity || count($phoneNumbers) !== $quantity) {
             $_SESSION["error"] = "An error occurred, please try again";
             header("Location: payment?reservation_id=$reservationId&quantity=$quantity");
             exit();
         }
+
+        if (!$this->checkCreditCard($creditCard, $cvv, $expirationDate)) {
+            $_SESSION["error"] = "Check your credit card info.";
+            header("Location: payment?reservation_id=$reservationId&quantity=$quantity");
+            exit();
+        }
+
         $eventId = $reservation->event_id;
 
         if ($this->eventReservationModel->isReservationExpiredWithDelete($reservationId)) {
@@ -178,7 +192,7 @@ class PaymentController {
 
         $totalPrice = $this->getTotalPrice($price, $quantity);
 
-        if ($this->processPayment($creditCard, $totalPrice)) {
+        if ($this->processPayment($creditCard, $cvv, $expirationDate, $totalPrice)) {
             $buyerId = $userId;
             $ticketDataArray = array();
             $buyDate = date('Y-m-d H:i:s');
@@ -202,6 +216,7 @@ class PaymentController {
                 $this->ticketModel->createTickets($ticketDataArray);
             } catch (Exception $e) {
                 error_log($e->getMessage());
+                $this->refundPayment($creditCard, $totalPrice);
                 $this->eventReservationModel->increaseAvailableTickets($eventId, $quantity);
                 $_SESSION["error"] = "An error occurred.";
                 header("Location: event?id=$eventId");
@@ -216,11 +231,53 @@ class PaymentController {
             }
             header("Location: view-tickets");
         }
+        else {
+            $_SESSION["error"] = "An error occurred while trying to process payment.";
+            header("Location: event?id=$eventId");
+        }
         exit();
     }
 
+    private function isValidExpirationDate($expirationDate): bool {
+        $parts = explode('/', $expirationDate);
+        if (count($parts) !== 2) {
+            return false;
+        }
+        $month = $parts[0];
+        $year = $parts[1];
+        if (!is_numeric($month) || !is_numeric($year) || intval($month) < 1 || intval($month) > 12 || intval($year) < 0 || intval($year) > 99) {
+            return false;
+        }
 
-    private function processPayment($creditCard, $totalPrice): bool {
+        $currentYear = intval(date('y'));
+        $currentMonth = intval(date('m'));
+        if (intval($year) < $currentYear || (intval($year) == $currentYear && intval($month) < $currentMonth)) {
+            return false;
+        }
+        return true;
+    }
+
+    private function isValidCVV($cvv): bool {
+        if (is_numeric($cvv) && strlen($cvv) === 3) {
+            return true;
+        }
+        return false;
+    }
+
+    private function isValidCreditCardNumber($creditCard): bool {
+        if (is_numeric($creditCard) && strlen($creditCard) >= 15 && strlen($creditCard) <= 16) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function checkCreditCard($creditCard, $cvv, $expirationDate) {
+        return $this->isValidExpirationDate($expirationDate) && $this->isValidCreditCardNumber($creditCard)
+            && $this->isValidCVV($cvv);
+    }
+
+    private function processPayment($creditCard, $cvv, $expirationDate, $totalPrice): bool {
         // If payment is successful, return true;
         // always true in our case since we are not simulating a real payment system
         sleep(2); // todo: add loading spinner
@@ -230,7 +287,7 @@ class PaymentController {
 
     private function refundPayment($creditCard, $totalPrice): bool {
         // If tickets creation failed the payment is refunded
-        sleep(2); // todo: add loading spinner
+        sleep(1); // todo: add loading spinner
         return true;
     }
 

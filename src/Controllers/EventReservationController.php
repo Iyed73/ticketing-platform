@@ -51,8 +51,14 @@ class EventReservationController {
             header("Location: event?id=" . urlencode($eventId));
             exit();
         }
-
-        $reservationResult = $this->eventReservationModel->reserveTickets($eventId, $userId, $quantity);
+        try {
+            $reservationResult = $this->eventReservationModel->reserveTickets($eventId, $userId, $quantity);
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            $_SESSION["error"] = "An error occurred.";
+            header("Location: event?id=" . urlencode($eventId));
+            exit();
+        }
         if ($reservationResult === true) {
             $reservationId = $this->eventReservationModel->getReservationId($eventId, $userId);
             if ($reservationId !== null) {
