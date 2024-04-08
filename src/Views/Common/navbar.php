@@ -1,4 +1,5 @@
 <?php
+require_once 'src\Views\Common\notificationView.php';
 
 if (!isset($_SESSION['currency'])) {
     $_SESSION['currency'] = 'EUR';
@@ -6,6 +7,7 @@ if (!isset($_SESSION['currency'])) {
 // If user is logged-in session will contain user_id & role
 $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
 $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
+
 ?>
 <link rel="stylesheet" href="Static\CSS\notif.css">
 
@@ -71,45 +73,16 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
                     </form>
                 </div>
                 <?php if ($role === "customer"): // If its a simple customer            ?>
+                    <?php $notificationView = new notificationView(); ?>
                     <div class="notification">
                         <a href="#">
                             <div class="notBtn" href="#">
-                                <div class="notifNumber">?</div>
+                                <?php $notificationView->displayNumberOfUnreadNotifications($user_id); ?>
                                 <i class="fas fa-bell notification_icon"></i>
                                 <div class="notifBox">
                                     <div class="notifDisplay">
                                         <div class="notifCont">
-                                            <div class="notifSec new">
-                                                <a href="#">
-                                                    <div class="notifTxt">notification1 message will be displayed here
-                                                    </div>
-                                                    <div class="notifTxt sub">date and time</div>
-                                                </a>
-                                            </div>
-                                            <div class="notifSec">
-                                                <a href="#">
-                                                    <div class="notifTxt">notification2 message will be displayed here</div>
-                                                    <div class="notifTxt sub">date and time</div>
-                                                </a>
-                                            </div>
-                                            <div class="notifSec">
-                                                <a href="#">
-                                                    <div class="notifTxt">notification2 message will be displayed here</div>
-                                                    <div class="notifTxt sub">date and time</div>
-                                                </a>
-                                            </div>
-                                            <div class="notifSec">
-                                                <a href="#">
-                                                    <div class="notifTxt">notification2 message will be displayed here</div>
-                                                    <div class="notifTxt sub">date and time</div>
-                                                </a>
-                                            </div>
-                                            <div class="notifSec">
-                                                <a href="#">
-                                                    <div class="notifTxt">notification2 message will be displayed here</div>
-                                                    <div class="notifTxt sub">date and time</div>
-                                                </a>
-                                            </div>
+                                            <?php $notificationView->displayAllNotifications($user_id); ?>
                                             <div class="clearBtn">
                                                 <button class="btn-clear">Clear All</button>
                                             </div>
@@ -120,7 +93,7 @@ $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
                         </a>
                     </div>
                 <?php endif; ?>
-                <a href="<?= "{$prefix}/profile" ?>" class="my-auto d-flex flex-column align-items-center">
+                <a href="<?= "{$prefix}/userProfile" ?>" class="my-auto d-flex flex-column align-items-center">
                     <i class="fas fa-user fa-2x"></i>
                     <span>Profile</span>
                 </a>
