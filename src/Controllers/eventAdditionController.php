@@ -38,6 +38,10 @@ class EventAdditionController
         return $startSellTimeObj > $eventDateObj;
     }
 
+    public function is_ticketNumber_invalid($availableTickets, $totalTickets){
+        return $availableTickets > $totalTickets;
+    }
+
     public function addEvent($name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $totalTickets, $availableTickets, $ticketPrice, $imagePath)
     {
         $this->eventRepo->insert([
@@ -121,6 +125,13 @@ class EventAdditionController
 
         if ($this->isStartSellTimeInvalid($startSellTime, $eventDate)) {
             $_SESSION['error'] = "Start Sell Time not valid!";
+            $is_there_errors =  true;
+            header("Location: event_addition?eventAddition=failed");
+            die();
+        }
+
+        if($this -> is_ticketNumber_invalid($availableTickets, $totalTickets)){
+            $_SESSION['error'] = "Tickets Number not valid!";
             $is_there_errors =  true;
             header("Location: event_addition?eventAddition=failed");
             die();

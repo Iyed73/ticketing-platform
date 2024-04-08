@@ -46,6 +46,10 @@ class eventUpdateController{
         }
     }
 
+    public function is_ticketNumber_invalid($availableTickets, $totalTickets){
+        return $availableTickets > $totalTickets;
+    }
+
 
     public function updateEvent($Id, $name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $totalTickets, $availableTickets, $ticketPrice, $imagePath) {
         $eventTable = new EventRepo();
@@ -117,7 +121,6 @@ class eventUpdateController{
             $fileMimeType = finfo_file($finfo, $_FILES["image"]["tmp_name"]);
             finfo_close($finfo);
 
-            // Check if the file is an image
             if (substr($fileMimeType, 0, 5) !== 'image') {
                 $_SESSION['error'] = "File is not an image.";
                 header("Location: event_update?id={$eventID}&eventUpdate=failed");
@@ -143,7 +146,6 @@ class eventUpdateController{
             }
         }
 
-        $is_there_errors =  false;
         if ($this->is_input_empty($name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $totalTickets, $availableTickets, $ticketPrice)){
             $_SESSION['error'] = "Fields must not be empty!";
             header("Location: event_update?id={$eventID}&eventUpdate=failed");
@@ -158,6 +160,12 @@ class eventUpdateController{
 
         if($this->is_startSellTime_invalid($startSellTime, $eventDate)){
             $_SESSION['error'] = "Start Sell Time not valid!";
+            header("Location: event_update?id={$eventID}&eventUpdate=failed");
+            die();
+        }
+
+        if($this -> is_ticketNumber_invalid($availableTickets, $totalTickets)){
+            $_SESSION['error'] = "Ticket Number is not valid!";
             header("Location: event_update?id={$eventID}&eventUpdate=failed");
             die();
         }
