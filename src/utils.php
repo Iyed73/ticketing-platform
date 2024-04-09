@@ -7,3 +7,8 @@ function hasOnGoingReservation($eventId, $userId) {
 
     return $reservationModel->getReservationId($eventId, $userId);
 }
+
+function generateRandomImageName($extension): string {
+    return uniqid('image_') . '.' . $extension;
+}
+

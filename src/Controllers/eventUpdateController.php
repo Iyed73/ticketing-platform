@@ -2,6 +2,9 @@
 
 require_once "src/Models/EventRepo.php";
 require_once "src/Models/UserRepo.php";
+require_once "src/utils.php";
+
+
 class eventUpdateController{
 
     private EventRepo $eventRepo;
@@ -111,11 +114,14 @@ class eventUpdateController{
         $ticketPrice = $_POST['ticketPrice'];
         $targetFile = $_POST['imagePath'];
 
+        $imagePath = $targetFile;
 
         if (!empty($_FILES['image']['name'])) {
             $targetDir = "Static/Images/";
             $targetFile = $targetDir . basename($_FILES["image"]["name"]);
             $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+
+            $imagePath = generateRandomImageName($imageFileType);
 
             $finfo = finfo_open(FILEINFO_MIME_TYPE);
             $fileMimeType = finfo_file($finfo, $_FILES["image"]["tmp_name"]);
@@ -139,7 +145,7 @@ class eventUpdateController{
                 die();
             }
 
-            if (!move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
+            if (!move_uploaded_file($_FILES["image"]["tmp_name"], $imagePath)) {
                 $_SESSION['error'] = "Failed to upload image.";
                 header("Location: event_update?id={$eventID}&eventUpdate=failed");
                 die();
@@ -170,7 +176,7 @@ class eventUpdateController{
             die();
         }
 
-        $this->updateEvent($eventID, $name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $totalTickets, $availableTickets, $ticketPrice, $targetFile);
+        $this->updateEvent($eventID, $name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $totalTickets, $availableTickets, $ticketPrice, $imagePath);
         header("Location: all_events?eventUpdate=success");
         die();
     }

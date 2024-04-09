@@ -20,7 +20,15 @@ class EventDeleteController {
         $userRepo = new UserRepo();
 
         if ($userRepo->isAdmin($userID)) {
-            $this->deleteEvent($eventID);
+            $imagePath = $this->eventRepo->getImagePath($eventID);
+            if ($imagePath) {
+                if (file_exists($imagePath)) {
+                    unlink($imagePath);
+                }
+            }
+            $this->eventRepo->deleteById($eventID);
+            header("Location: " . $_SERVER['HTTP_REFERER']);
+            exit();
         } else {
             http_response_code(401);
             exit();
