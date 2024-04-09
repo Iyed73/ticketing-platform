@@ -72,6 +72,34 @@ class TicketManagementModel extends Repo
         return $ticketInfo;
     }
 
+    public function getAllTicketsTable() {
+        $query = "SELECT * FROM {$this->tableName}";
+
+        $response = $this->db->query($query);
+        $tickets = $response->fetchAll(PDO::FETCH_ASSOC);
+        return $tickets;
+    }
+
+    public function getTicketInfoById($ticketId) {
+        $query = "SELECT {$this->tableName}.*, events.name AS event_name, events.venue, events.eventDate, 
+              users.firstname AS buyer_firstname, users.lastname AS buyer_lastname
+              FROM {$this->tableName}
+              INNER JOIN events ON {$this->tableName}.event_id = events.id
+              INNER JOIN users ON {$this->tableName}.buyer_id = users.id
+              WHERE {$this->tableName}.ticket_id = :ticket_id";
+
+        $response = $this->db->prepare($query);
+        $response->bindParam(':ticket_id', $ticketId, PDO::PARAM_STR);
+        $response->execute();
+        $ticketInfo = $response->fetch(PDO::FETCH_OBJ);
+        return $ticketInfo;
+    }
+
+
+
+
+
+
     public function getNearEvents($userId) {
         $query = "SELECT E.name as name, E.venue as venue
             FROM events E

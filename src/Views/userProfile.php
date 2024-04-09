@@ -38,17 +38,17 @@ $prefix = $_ENV['prefix'];
               aria-labelledby="nav-profileInfo-tab">
               <form id="updateProfileForm" action="<?= "{$prefix}/userProfile" ?>" method="post">
                 <div class="form-group row">
-                  <label for="firstname" class="col-sm-3 col-form-label">Firstname</label>
+                  <label for="firstname" class="col-sm-3 col-form-label">First Name</label>
                   <div class="col-sm-9 inputBox">
-                    <input name="firstname" type="text" readonly class="form-control-plaintext" id="firstname"
+                    <input name="firstname" type="text" readonly class="form-control" id="firstname"
                       value="<?= $_SESSION["firstName"] ?>">
                     <small id="newFirstnameError"></small>
                   </div>
                 </div>
                 <div class="form-group row">
-                  <label for="lastname" class="col-sm-3 col-form-label">Lastname</label>
+                  <label for="lastname" class="col-sm-3 col-form-label">Last Name</label>
                   <div class="col-sm-9 inputBox">
-                    <input name="lastname" type="text" readonly class="form-control-plaintext" id="lastname"
+                    <input name="lastname" type="text" readonly class="form-control" id="lastname"
                       value="<?= $_SESSION["lastName"] ?>">
                     <small id="newLastnameError"></small>
                   </div>
@@ -79,30 +79,30 @@ $prefix = $_ENV['prefix'];
               <!-- displays success message if password is changed successfully -->
               <?php if (isset($_SESSION["change_pwd_success"]) && $_SESSION["change_pwd_success"] === "true"): ?>
                 <div class="successBox">
-                  <p class="success-message">Password changed successfully!</p>
+                  <p class="success-message">Password Changed Successfully!</p>
                 </div>
               <?php unset($_SESSION["change_pwd_success"]);
                     endif; ?>
 
               <form id="changePasswordForm" action="<?= "{$prefix}/changePassword" ?>" method="post">
                 <div class="form-group mx-sm-3 mb-2 inputBox">
-                  <label for="currentpassword" class="sr-only">Your current password</label>
+                  <label for="currentpassword" class="sr-only">Current Password</label>
                   <input name="currentpassword" type="password" class="form-control" id="currentPassword"
-                    placeholder="Your current Password">
+                    placeholder="Current Password">
                   <small id="currentPasswordError"></small>
                 </div>
 
                 <div class="form-group mx-sm-3 mb-2 inputBox">
                   <label for="newpassword" class="sr-only">New Password</label>
                   <input name="newpassword" type="password" class="form-control" id="newPassword"
-                    placeholder="Enter the new password">
+                    placeholder="New Password">
                   <small id="newPasswordError"></small>
                 </div>
 
                 <div class="form-group mx-sm-3 mb-2 inputBox">
-                  <label for="confirmpassword" class="sr-only">Confirm Password</label>
+                  <label for="confirmpassword" class="sr-only">Confirm New Password</label>
                   <input name="confirmpassword" type="password" class="form-control" id="confirmPassword"
-                    placeholder="Confirm the password">
+                    placeholder="Confirm New Password">
                   <small id="newPasswordConfirmError"></small>
                 </div>
                 <button type="submit" class="btn btn-primary" id="saveNewPassword" style="color:white;">Save
@@ -125,6 +125,8 @@ $prefix = $_ENV['prefix'];
   </section>
 
 </body>
+<script src="Static\JS\editProfileScript.js"></script>
+</html>
 
 <?php
 function checkPwdChangeErrors(){

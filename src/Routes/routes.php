@@ -31,6 +31,7 @@ $routes = [
     "{$prefix}/notifications" => 'src\Controllers\NotificationController.php',
     "{$prefix}/set_currency" => 'src\Controllers\SetCurrencyController.php',
     "{$prefix}/dashboard" => 'src\Controllers\DashboardController.php',
+    "{$prefix}/all_tickets" => 'src/Controllers/AllTicketPurchasesController.php',
 
 ];
 

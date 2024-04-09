@@ -1,6 +1,6 @@
 <div class="container py-5 text-center">
     <div style="margin-top: 20vh;"></div>
-    <h1 class="mb-4">Your tickets:</h1>
+    <h1 class="mb-4">Your Tickets:</h1>
     <?php foreach ($tickets as $ticket): ?>
         <div class="card ticket-card mb-4">
             <div class="card-body">
