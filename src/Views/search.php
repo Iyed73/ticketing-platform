@@ -38,3 +38,9 @@ $pathToComponents = 'src/Views/';
 </body>
 
 </html>
+
+<?php
+
+// Unset session variables
+unset($_SESSION["searchedEvents"]);
+unset($_SESSION["categories"]);
