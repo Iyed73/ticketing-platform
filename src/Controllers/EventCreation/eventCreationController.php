@@ -70,18 +70,8 @@ class eventCreationController {
     }
 
 
-    
-    public function is_eventDate_invalid() {
-        /*TODO*/
-    }
 
-    public function is_startSellTime_invalid() {
-        /*TODO*/
-    }
 
-    public function is_endSellTime_invalid() {
-        /*TODO*/
-    }
 
     public function is_name_taken() {
         $eventTable = new EventRepo();

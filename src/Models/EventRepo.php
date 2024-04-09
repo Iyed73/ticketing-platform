@@ -5,6 +5,14 @@ class EventRepo extends Repo {
         parent::__construct('events');
     }
 
+    public function findById($eventID) {
+        $req = "SELECT * FROM {$this->tableName} where id = :eventID";
+        $response = $this->db->prepare($req);
+        $response->bindParam(':eventID', $eventID);
+        $response->execute();
+        return $response->fetch(PDO::FETCH_OBJ);
+    }
+
     public function findByName($eventName) {
         $req = "SELECT * FROM {$this->tableName} where name = :name";
         $response = $this->db->prepare($req);
@@ -39,4 +47,12 @@ class EventRepo extends Repo {
         $response->bindParam(':name', $eventName);
         return $response->execute();
     }
+
+
+
+
+
+
+
+
 }

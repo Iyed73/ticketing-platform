@@ -11,4 +11,5 @@ class CategoryRepo extends Repo {
         $response->bindParam(':name', $name);
         return $response->execute();
     }
+
 }

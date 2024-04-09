@@ -9,7 +9,7 @@
             <div class="row g-4">
 
                 <div class="col-lg-7">
-                    <? require_once "prefix.php " ?>
+                    <?php $prefix = $_ENV['prefix']; ?>
                     <form action="<?= "{$prefix}/contact" ?>" class="contact-form" method="POST">
                         <input type="text" class="w-100 form-control border-0 py-3 mb-4" name="name"
                             placeholder="Your Name" required>

@@ -12,7 +12,11 @@ $routes = [
     "{$prefix}/contact" => 'src\Controllers\ContactFormController.php',
     "{$prefix}/customerSupport" => 'src\Controllers\CustomerSupportController.php',
     "{$prefix}/deleteSubmission" => 'src\Controllers\DeleteSubmissionController.php',
-    
+    "{$prefix}/all_events" => 'src/Controllers/AllEventsBoardController.php',
+    "{$prefix}/event_addition" => 'src/Controllers/eventAdditionController.php',
+    "{$prefix}/event_update" => 'src/Controllers/eventUpdateController.php',
+    "{$prefix}/event_delete" => 'src/Controllers/eventDeleteController.php',
+    "{$prefix}/all_users" => 'src/Controllers/AllUsersBoardController.php',
     "{$prefix}/forgotPassword" => 'src/Controllers/ForgotPasswordController.php',
     "{$prefix}/recoverPassword" => 'src/Controllers/RecoverPasswordController.php',
     "{$prefix}/resetPassword" => 'src/Controllers/ResetPasswordController.php',

@@ -11,7 +11,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $_POST["totalTickets"],
         $_POST["availableTickets"],
         $_POST["startSellTime"],
-        $_POST["endSellTime"],
         $_POST["ticketPrice"],
         $_POST["category"],
         $_POST["imagePath"],

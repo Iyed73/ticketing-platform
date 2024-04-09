@@ -65,4 +65,21 @@ class UserRepo extends Repo {
         $response->bindParam(':username', $username);
         return $response->execute();
     }
+
+    public function isAdmin($id){
+        $req = "SELECT role FROM {$this -> tableName} WHERE id =:id";
+        $response = $this->db->prepare($req);
+        $response->bindParam(':id', $id);
+        $response->execute();
+        $result = $response->fetch(PDO::FETCH_ASSOC);
+
+        if($result && $result['role'] === 'admin'){
+            return true;
+        }
+        else{
+            return false;
+        }
+
+
+    }
 }
