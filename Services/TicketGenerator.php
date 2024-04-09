@@ -144,6 +144,9 @@ function outputPDF($pdf, $action) {
 }
 
 function savePDF($pdf, $filename) {
+    if (!file_exists(__DIR__ . '/../Static/attachments')) {
+        mkdir(__DIR__ . '/../Static/attachments', 0777, true);
+    }
     $filePath = __DIR__ . '/../Static/attachments/' . $filename;
     $pdf->Output($filePath, 'F');
 }
