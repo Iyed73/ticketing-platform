@@ -5,6 +5,14 @@ class EventRepo extends Repo {
         parent::__construct('events');
     }
 
+    public function findById($eventID) {
+        $req = "SELECT * FROM {$this->tableName} where id = :eventID";
+        $response = $this->db->prepare($req);
+        $response->bindParam(':eventID', $eventID);
+        $response->execute();
+        return $response->fetch(PDO::FETCH_OBJ);
+    }
+
     public function findByName($eventName) {
         $req = "SELECT * FROM {$this->tableName} where name = :name";
         $response = $this->db->prepare($req);
@@ -40,6 +48,7 @@ class EventRepo extends Repo {
         return $response->execute();
     }
 
+
     public function isEventOnSellTime($eventId) {
         $req = "SELECT startSellTime, eventDate FROM {$this->tableName} WHERE id = ?";
         $response = $this->db->prepare($req);
@@ -68,4 +77,8 @@ class EventRepo extends Repo {
         $ticketPrice = $response->fetchColumn();
         return $ticketPrice;
     }
+
+
+
+
 }
