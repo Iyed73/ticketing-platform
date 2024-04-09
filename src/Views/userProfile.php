@@ -76,6 +76,13 @@ $prefix = $_ENV['prefix'];
                   <?php checkPwdChangeErrors(); ?>
                 </div>
               <?php endif; ?>
+              <!-- displays success message if password is changed successfully -->
+              <?php if (isset($_SESSION["change_pwd_success"]) && $_SESSION["change_pwd_success"] === "true"): ?>
+                <div class="successBox">
+                  <p class="success-message">Password changed successfully!</p>
+                </div>
+              <?php unset($_SESSION["change_pwd_success"]);
+                    endif; ?>
 
               <form id="changePasswordForm" action="<?= "{$prefix}/changePassword" ?>" method="post">
                 <div class="form-group mx-sm-3 mb-2 inputBox">

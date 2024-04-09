@@ -32,4 +32,6 @@
 
 <link rel="stylesheet" href="Static\CSS\signuploginFormStylesheet.css" />
 
+<link rel="stylesheet" href="Static\CSS\profileStyleSheet.css">
+
 <link href="Static/CSS/styles.css" rel="stylesheet">

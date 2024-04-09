@@ -66,6 +66,7 @@ class ChangePasswordController
             $password = password_hash($this->newpassword, PASSWORD_BCRYPT, $options);
             try {
                 $this->userTable->updatePassword($_SESSION["user_id"], $password);
+                $_SESSION["change_pwd_success"] = "true";
             } catch (Exception $e) {
                 http_response_code(500);
                 die();

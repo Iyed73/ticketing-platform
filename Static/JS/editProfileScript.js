@@ -128,7 +128,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // open the security tab when the page is loaded if an error occured when changing the password or if password change was successful
-  console.log(window.location.search);
   if (window.location.search == "?tab=security") {
     document.querySelector("#nav-security-tab").click();
   }
