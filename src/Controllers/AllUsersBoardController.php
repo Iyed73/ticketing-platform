@@ -1,25 +1,24 @@
 <?php
-require_once("src/Models/UserRepo.php");
-require_once("src/Models/EventRepo.php");
+
 
 class AllUsersBoardController {
-    private UserRepo $userRepo;
+    private UserModel $UserModel;
     public function __construct() {
-        $this->userRepo = new UserRepo();
+        $this->UserModel = new UserModel();
     }
 
 
     public function handleRequest($userID) {
 
-        if (!$this->userRepo->isAdmin($userID)) {
+        if (!$this->UserModel->isAdmin($userID)) {
             http_response_code(401);
             exit();
         }
 
-        $totalPages = $this->userRepo->totalPagesNum();
+        $totalPages = $this->UserModel->totalPagesNum();
         $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
         $offset = ($currentPage - 1) * 5;
-        $allUsers = $this->userRepo->findWithOffset($offset, 5);
+        $allUsers = $this->UserModel->findWithOffset($offset, 5);
 
         if($allUsers == null){
             $allUsers = [];

@@ -1,17 +1,13 @@
 <?php
-
-require_once "src/Models/EventRepo.php";
-require_once "src/Models/UserRepo.php";
 require_once "src/utils.php";
-
 
 class EventAdditionController
 {
-    private EventRepo $eventRepo;
+    private EventModel $EventModel;
 
     public function __construct()
     {
-        $this->eventRepo = new EventRepo();
+        $this->EventModel = new EventModel();
     }
 
     public function isInputEmpty($name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $totalTickets, $availableTickets, $ticketPrice, $targetFile)
@@ -21,7 +17,7 @@ class EventAdditionController
 
     public function isNameTaken($name)
     {
-        $eventTable = new EventRepo();
+        $eventTable = new EventModel();
         $event = $eventTable->findByName($name);
         return $event !== null;
     }
@@ -46,7 +42,7 @@ class EventAdditionController
 
     public function addEvent($name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $totalTickets, $availableTickets, $ticketPrice, $imagePath)
     {
-        $this->eventRepo->insert([
+        $this->EventModel->insert([
             'name' => $name,
             'venue' => $venue,
             'category' => $category,
@@ -64,8 +60,8 @@ class EventAdditionController
 
     public function handleGetRequest($userID)
     {
-        $userRepo = new UserRepo();
-        if ($userRepo->isAdmin($userID)) {
+        $UserModel = new UserModel();
+        if ($UserModel->isAdmin($userID)) {
             require_once "src/Views/EventAddition/eventAdditionView.php";
             die();
         } else {
@@ -76,8 +72,8 @@ class EventAdditionController
 
     public function handlePostRequest($userID)
     {
-        $userRepo = new UserRepo();
-        if (!$userRepo->isAdmin($userID)) {
+        $UserModel = new UserModel();
+        if (!$UserModel->isAdmin($userID)) {
             header("Location: home");
             die();
         }

@@ -78,3 +78,9 @@ $pathToComponents = 'src/Views/';
 </body>
 
 </html>
+
+<?php
+// Unset session variables
+unset($_SESSION["events"]);
+unset($_SESSION["categories"]);
+unset($_SESSION["eventsByCategory"]);

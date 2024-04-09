@@ -1,7 +1,6 @@
 <?php
-require_once "Repo.php";
 
-class EventReservationModel extends Repo {
+class EventReservationModel extends AbstractModel {
     public int $reservationPeriod = 20;
 
 

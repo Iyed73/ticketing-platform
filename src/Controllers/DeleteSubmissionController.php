@@ -1,7 +1,5 @@
 <?php
 $prefix = $_ENV['prefix'];
-require_once "src/Models/FormSubmissionsRepo.php"; 
-
 
 class DeleteSubmissionController {
     public function __construct() {
@@ -10,14 +8,14 @@ class DeleteSubmissionController {
         if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
             $submissionId = $_GET['id'];
 
-            $formSubmissionsRepo = new FormSubmissionsRepo();
+            $FormSubmissionsModel = new FormSubmissionsModel();
             // Check if the submissionId is a single id or multiple ids
             if (substr_count($submissionId, ',') == 0){
-                $formSubmissionsRepo->deleteFormSubmissions($submissionId);
+                $FormSubmissionsModel->deleteFormSubmissions($submissionId);
             } else {
                 $submissionId = explode(",", $submissionId);
                 foreach ($submissionId as $id) {
-                    $formSubmissionsRepo->deleteFormSubmissions($id);
+                    $FormSubmissionsModel->deleteFormSubmissions($id);
                 }
             }
 

@@ -1,14 +1,12 @@
 <?php
-require_once("src/Models/UserRepo.php");
-
 
 class DashboardController {
 
-    private UserRepo $userModel;
+    private UserModel $userModel;
 
 
     public function __construct() {
-        $this->userModel = new UserRepo();
+        $this->userModel = new UserModel();
     }
 
     public function handleRequest() {

@@ -1,17 +1,15 @@
 <?php
-require_once "src/Models/NotificationsRepo.php";
-require_once "src/Models/TicketManagementModel.php";
 
 class notificationController {
-    private $notificationsRepo;
+    private $NotificationsModel;
     private $ticketManagementModel;
 
     public function __construct() {
-        $this->notificationsRepo = new NotificationsRepo();
+        $this->NotificationsModel = new NotificationsModel();
         $this->ticketManagementModel = new TicketManagementModel();
     }
     public function displayNumberOfUnreadNotifications($userId) {
-        $numberOfUnreadNotifications = $this->notificationsRepo->getNumberOfUnreadNotifcations($userId);
+        $numberOfUnreadNotifications = $this->NotificationsModel->getNumberOfUnreadNotifcations($userId);
         if ($numberOfUnreadNotifications > 0) {
             echo "<div class='notifNumber'>$numberOfUnreadNotifications</div>";
         }
@@ -21,7 +19,7 @@ class notificationController {
     }
     public function displayAllNotifications($userId) {
         $prefix = $_ENV['prefix'];
-        $notifications = $this->notificationsRepo->findNotificationsByUserId($userId);
+        $notifications = $this->NotificationsModel->findNotificationsByUserId($userId);
         if($notifications == null) {
             echo "<div class='notifSec'>";
             echo "<a href='#'>";
@@ -53,11 +51,11 @@ class notificationController {
     }
 
     function markNotificationAsRead($notificationId) {
-        $this->notificationsRepo->markNotificationAsRead($notificationId);
+        $this->NotificationsModel->markNotificationAsRead($notificationId);
     }
 
     function deleteNotifications($userId) {
-        $this->notificationsRepo->deleteNotifications($userId);
+        $this->NotificationsModel->deleteNotifications($userId);
     }
 
     public function addNearEventNotification($userId){
@@ -71,7 +69,7 @@ class notificationController {
                     'content' => $notificationContent,
                     'user_id' => $userId,
                 ];
-                $this->notificationsRepo->insert($data);
+                $this->NotificationsModel->insert($data);
             }
             $this->ticketManagementModel->markTicketsAsNotified($userId);
         }

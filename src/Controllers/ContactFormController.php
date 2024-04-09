@@ -1,7 +1,5 @@
 <?php
 require_once "Services\MailingService.php";
-require_once "src\Models\FormSubmissionsRepo.php";
-require_once "src\Controllers\includes\configSession.inc.php";
 
 $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
 class ContactFormController
@@ -41,7 +39,7 @@ class ContactFormController
             sendMail($this->name,"Tickety", $email, $this->subject, $this->message, $this->message);
             //inserting the form submission into the database
             $date = date('Y-m-d H:i:s');
-            $formSubmissionsTable = new FormSubmissionsRepo();
+            $formSubmissionsTable = new FormSubmissionsModel();
             $Data = [
                 'name' => $this->name,
                 'subject' => $this->subject,

@@ -1,32 +1,29 @@
 <?php
 
-require_once "src/Models/EventRepo.php";
-require_once "src/Models/UserRepo.php";
-
 class EventDeleteController {
-    private $eventRepo;
+    private $EventModel;
 
     public function __construct() {
-        $this->eventRepo = new EventRepo();
+        $this->EventModel = new EventModel();
     }
 
     public function deleteEvent($eventId) {
-        $this->eventRepo->deleteById($eventId);
+        $this->EventModel->deleteById($eventId);
         header("Location: all_events?eventDeleted=true");
         exit();
     }
 
     public function handleGetRequest($userID, $eventID) {
-        $userRepo = new UserRepo();
+        $userModel = new UserModel();
 
-        if ($userRepo->isAdmin($userID)) {
-            $imagePath = $this->eventRepo->getImagePath($eventID);
+        if ($userModel->isAdmin($userID)) {
+            $imagePath = $this->EventModel->getImagePath($eventID);
             if ($imagePath) {
                 if (file_exists($imagePath)) {
                     unlink($imagePath);
                 }
             }
-            $this->eventRepo->deleteById($eventID);
+            $this->EventModel->deleteById($eventID);
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit();
         } else {

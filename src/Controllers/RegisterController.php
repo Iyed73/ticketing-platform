@@ -1,7 +1,7 @@
 <?php
-require_once ("src\Models\UserRepo.php");
-require_once ("Services\MailingService.php");
-require_once ("Services\StatelessTokenService.php");
+
+require_once "Services\MailingService.php";
+require_once "Services\StatelessTokenService.php";
 
 
 class SignupController
@@ -21,7 +21,7 @@ class SignupController
         $this->lastName = $lastName;
         $this->email = $email;
         $this->pwd = $pwd;
-        $this->userTable = new UserRepo();
+        $this->userTable = new UserModel();
     }
 
     public function sanitizeInput()

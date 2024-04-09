@@ -1,6 +1,4 @@
 <?php
-
-require_once "src/Controllers/includes/configSession.inc.php";
 require_once "src/utils.php";
 
 // Retrieve and unserialize session variables
@@ -157,3 +155,8 @@ if (isset($_SESSION["user_id"])) {
 </body>
 
 </html>
+
+<?php
+// Unset session variables
+unset($_SESSION["event"]);
+unset($_SESSION["currentCategoryEvents"]);

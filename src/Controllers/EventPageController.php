@@ -1,8 +1,5 @@
 <?php
-require_once "src\Models\EventRepo.php";
 require_once 'Services\CurrencyConverter.php';
-
-
 
 $prefix = $_ENV['prefix'];
 class EventPageController {
@@ -12,7 +9,7 @@ class EventPageController {
     private $currencyConverter;
 
     public function __construct() {
-        $this->eventTable = new EventRepo();
+        $this->eventTable = new EventModel();
         $this->currencyConverter = new CurrencyConverter();
     }
     

@@ -1,6 +1,5 @@
 <?php
 
-require 'vendor/autoload.php';
 require 'vendor/tecnickcom/tcpdf/tcpdf.php';
 
 use Endroid\QrCode\QrCode;

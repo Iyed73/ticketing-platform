@@ -1,5 +1,4 @@
 <?php
-require_once "src\Models\TicketManagementModel.php";
 require_once "Services/ticketGenerator.php";
 
 

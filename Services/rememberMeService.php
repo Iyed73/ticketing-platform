@@ -1,5 +1,4 @@
 <?php
-require_once "src\Models\UniqueTokenRepo.php";
 //a token contains two parts selector and validator the selector is used to find the user token in the database then a validator is comaared with the hashed validator to verify the token
 //the addition of the validator is a security measure to prevent timing attacks
 //the expiry date of the token is also verified
@@ -7,7 +6,7 @@ class rememberMeService {
     private $uniqueTokenTable;
 
     public function __construct() {
-        $this->uniqueTokenTable = new UniqueTokenRepo();
+        $this->uniqueTokenTable = new UniqueTokenModel();
     }
 
     function generateToken(){
