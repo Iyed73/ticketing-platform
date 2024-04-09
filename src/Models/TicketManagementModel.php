@@ -127,7 +127,7 @@ class TicketManagementModel extends Repo
     }
 
     public function findTicketsDataWithOffset($offset, $totalPages) {
-        $req = "SELECT t.*, u.firstname AS buyer_first_name, u.lastname AS buyer_last_name, e.event_name, e.venue, e.event_date
+        $req = "SELECT t.*, u.firstname AS buyer_first_name, u.lastname AS buyer_last_name, e.name AS event_name, e.venue, e.eventDate
             FROM {$this->tableName} AS t
             LEFT JOIN users AS u ON t.buyer_id = u.id
             LEFT JOIN events AS e ON t.event_id = e.id
