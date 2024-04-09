@@ -109,7 +109,7 @@ CREATE TABLE ticket (
     price INT,
     is_notification_sent BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (buyer_id) REFERENCES users(id),
-    FOREIGN KEY (event_id) REFERENCES events(id)
+    FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE;
 );
 
 INSERT INTO users (firstname, lastname, email, pwd, role, is_verified) VALUES ('John', 'Doe', 'johndoe@gmail.com', '$2y$12$WFzkKn9UtpBWS7HYXH8n/e/c0IornFVFDrNRpEXGx4RGR7KuxK5KG', 'admin', TRUE);
