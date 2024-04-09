@@ -82,8 +82,6 @@ class UserRepo extends Repo {
         $response->execute();
         $result = $response->fetch(PDO::FETCH_ASSOC);
 
-        return $result['is_verified'] === 1;
-
         if($result && $result['role'] === 'admin'){
             return true;
         }
