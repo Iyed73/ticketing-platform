@@ -16,11 +16,11 @@ class CurrencyConverter {
 
     private function getCacheInstance() {
         $config = [
-            'host'    => 'localhost',
+            'host'    => $_ENV['DB_SERVERNAME'],
             'port'    => 3306,
-            'user'    => 'root',
-            'pass'    => $_ENV['dbPassword'],
-            'dbname'  => 'tickety',
+            'user'    => $_ENV["DB_USERNAME"],
+            'pass'    => $_ENV['DB_PASSWORD'],
+            'dbname'  => $_ENV['DATABASE_NAME'],
             'table'   => 'cache_data',
             'charset' => 'utf8mb4'
         ];
