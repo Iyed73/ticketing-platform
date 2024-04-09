@@ -40,6 +40,12 @@ class EventReservationController {
 
         $userId = $_SESSION["user_id"];
 
+        if ($this->userModel->isAdmin($userId)) {
+            $_SESSION["error"] = "Admins can't buy tickets.";
+            header("Location: event?id=" . urlencode($eventId));
+            exit();
+        }
+
         if (!$this->userModel->isUserVerified($userId)) {
             $_SESSION["error"] = "You must verify your account to make a purchase.";
             header("Location: event?id=" . urlencode($eventId));
