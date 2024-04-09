@@ -1,11 +1,13 @@
+-- Drop existing database if exists
 DROP DATABASE IF EXISTS tickety;
 
-
+-- Create new database
 CREATE DATABASE tickety;
 
+-- Use the tickety database
 USE tickety;
 
-
+-- Define table for storing form submissions
 CREATE TABLE form_submissions (
   id INT AUTO_INCREMENT,
   name VARCHAR(255),
@@ -15,7 +17,8 @@ CREATE TABLE form_submissions (
   PRIMARY KEY (id)
 );
 
-CREATE TABLE users ( 
+-- Define table for storing users
+CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     firstname VARCHAR(255) NOT NULL,
     lastname VARCHAR(255) NOT NULL,
@@ -27,8 +30,8 @@ CREATE TABLE users (
     is_verified BOOLEAN DEFAULT FALSE
 );
 
-CREATE TABLE unique_tokens
-(
+-- Define table for storing unique tokens
+CREATE TABLE unique_tokens (
   id INT AUTO_INCREMENT PRIMARY KEY,
   selector VARCHAR(255) NOT NULL,
   hashed_validator VARCHAR(255) NOT NULL,
@@ -39,11 +42,12 @@ CREATE TABLE unique_tokens
           REFERENCES users (id) ON DELETE CASCADE
 );
 
+-- Define table for storing categories
 CREATE TABLE categories (
   name VARCHAR(255) NOT NULL PRIMARY KEY
 );
 
-
+-- Define table for storing events
 CREATE TABLE events (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(255) UNIQUE NOT NULL,
@@ -53,17 +57,17 @@ CREATE TABLE events (
   organizer VARCHAR(255) NOT NULL,
   totalTickets INT NOT NULL,
   availableTickets INT NOT NULL,
-
   startSellTime DATE NOT NULL,
   eventDate DATE NOT NULL,
-
-  # Ticket Price is an integer in cents to prevent floating point errors
   ticketPrice INT NOT NULL,
   imagePath VARCHAR(255) NOT NULL,
-  FULLTEXT KEY(shortDescription, longDescription, name, venue, organizer)
+  category VARCHAR(255) NOT NULL,
+  FULLTEXT KEY(shortDescription, longDescription, name, venue, organizer),
+  CONSTRAINT fk_category
+      FOREIGN KEY (category) REFERENCES categories(name)
 );
 
-
+-- Define table for storing notifications
 CREATE TABLE notifications (
   id INT AUTO_INCREMENT PRIMARY KEY,
   sender VARCHAR(255) NOT NULL,
@@ -75,18 +79,7 @@ CREATE TABLE notifications (
       FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
-ALTER TABLE events ADD category VARCHAR(255) NOT NULL;
-ALTER TABLE events ADD CONSTRAINT fk_category FOREIGN KEY (category) REFERENCES categories(name);
-
-
-DROP TABLE IF EXISTS reservation;
-
-/*
-   The reservation table stores temporary reservations made by users.
-   Unpaid reservations for events automatically expire after a specific time.
-   A scheduled cron job then cleans up these expired reservations,
-   freeing up the reserved tickets for others to purchase.
-*/
+-- Define table for storing reservations
 CREATE TABLE reservation (
      id INT AUTO_INCREMENT PRIMARY KEY,
      event_id INT,
@@ -98,6 +91,7 @@ CREATE TABLE reservation (
      FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
+-- Define table for storing tickets
 CREATE TABLE ticket (
     ticket_id CHAR(36) PRIMARY KEY,
     buyer_id INT,
@@ -112,61 +106,3 @@ CREATE TABLE ticket (
     FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
 );
 
-INSERT INTO users (firstname, lastname, email, pwd, role, is_verified) VALUES ('John', 'Doe', 'johndoe@gmail.com', '$2y$12$WFzkKn9UtpBWS7HYXH8n/e/c0IornFVFDrNRpEXGx4RGR7KuxK5KG', 'admin', TRUE);
-INSERT INTO users (firstname, lastname, email, pwd, role, is_verified) VALUES ('Jan', 'Doe', 'jandoe@gmail.com', '$2y$12$WFzkKn9UtpBWS7HYXH8n/e/c0IornFVFDrNRpEXGx4RGR7KuxK5KG', 'customer', TRUE);
-
-INSERT INTO categories (name) VALUES
-('Concerts'),
-('Sports'),
-('Theater');
-
-INSERT INTO events (name, venue, shortDescription, longDescription, organizer, totalTickets, availableTickets, startSellTime, eventDate, ticketPrice, imagePath, category)
-VALUES 
-    ('Rock Concert', 'Arena Stadium', 'Rock concert with famous bands', 'A night of rock music featuring top bands from around the world.', 'Rock Events LLC', 1000, 500, '2024-04-01', '2024-05-15', 2500, 'rock_concert.jpg', 'Concerts'),
-    ('Basketball Game', 'City Arena', 'Exciting basketball game', 'Watch two top teams battle it out on the court in an intense basketball game.', 'City Sports Association', 2000, 1000, '2024-03-25', '2024-04-20', 1500, 'basketball_game.jpg', 'Sports'),
-    ('Shakespeare Play', 'Royal Theater', 'Classic Shakespearean play', 'Experience the timeless tale of love and tragedy in this Shakespearean masterpiece.', 'Royal Theater Company', 500, 300, '2024-05-01', '2024-06-10', 2000, 'shakespeare_play.jpg', 'Theater'),
-    ('Concert', 'Gammarth', 
-    'Experience the electrifying energy of live music at our concert! Immerse in the rhythm, lights, and the unforgettable atmosphere.',
-    'Immerse yourself in the electrifying atmosphere of our live concert. Feel the rhythm pulsate through the crowd as the stage lights dance. Witness the raw energy of the performers, their music resonating in perfect harmony with the audience’s excitement. It’s not just a concert, it’s an unforgettable experience of a lifetime.',
-    'Music Events LLC', 500, 336, '2023-03-09', '2024-05-09', '337', 'Static/Images/event-1.jpg', 'Concerts');
-
-INSERT INTO notifications (sender, content, user_id, is_read, created_at)
-VALUES
-('Sender 1', 'Notification message 1', 2, 'unread', NOW()),
-('Sender 2', 'Notification message 2', 2, 'unread', NOW()),
-('Sender 3', 'Notification message 3', 2, 'read', NOW() - INTERVAL 1 DAY),
-('Sender 4', 'Notification message 4', 2, 'unread', NOW()),
-('Sender 5', 'Notification message 5', 2, 'read', NOW() - INTERVAL 2 DAY);
-
-INSERT INTO form_submissions (name, subject, message, date)
-VALUES
-    ('John Doe', 'Inquiry', 'This is a sample message 1.', NOW()),
-    ('Alice Smith', 'Feedback', 'This is a sample message 2.', NOW()),
-    ('Bob Johnson', 'Support Request', 'This is a sample message 3.', NOW()),
-    ('Emily Brown', 'Question', 'This is a sample message 4.', NOW()),
-    ('Michael Lee', 'Comment', 'This is a sample message 5.', NOW()),
-    ('Jessica Taylor', 'Complaint', 'This is a sample message 6.', NOW()),
-    ('David Wilson', 'Inquiry', 'This is a sample message 7.', NOW()),
-    ('Jennifer Anderson', 'Feedback', 'This is a sample message 8.', NOW()),
-    ('Daniel Martinez', 'Support Request', 'This is a sample message 9.', NOW()),
-    ('Sophia Garcia', 'Question', 'This is a sample message 10.', NOW()),
-    ('Matthew Rodriguez', 'Comment', 'This is a sample message 11.', NOW()),
-    ('Olivia Hernandez', 'Complaint', 'This is a sample message 12.', NOW()),
-    ('Andrew Smith', 'Inquiry', 'This is a sample message 13.', NOW()),
-    ('Isabella Johnson', 'Feedback', 'This is a sample message 14.', NOW()),
-    ('Ethan Brown', 'Support Request', 'This is a sample message 15.', NOW()),
-    ('Ava Lee', 'Question', 'This is a sample message 16.', NOW()),
-    ('William Taylor', 'Comment', 'This is a sample message 17.', NOW()),
-    ('Mia Wilson', 'Complaint', 'This is a sample message 18.', NOW()),
-    ('James Garcia', 'Inquiry', 'This is a sample message 19.', NOW()),
-    ('Charlotte Rodriguez', 'Feedback', 'This is a sample message 20.', NOW()),
-    ('Benjamin Hernandez', 'Support Request', 'This is a sample message 21.', NOW()),
-    ('Amelia Smith', 'Question', 'This is a sample message 22.', NOW()),
-    ('Lucas Johnson', 'Comment', 'This is a sample message 23.', NOW()),
-    ('Harper Brown', 'Complaint', 'This is a sample message 24.', NOW()),
-    ('Alexander Martinez', 'Inquiry', 'This is a sample message 25.', NOW()),
-    ('Evelyn Garcia', 'Feedback', 'This is a sample message 26.', NOW()),
-    ('Daniel Rodriguez', 'Support Request', 'This is a sample message 27.', NOW()),
-    ('Victoria Taylor', 'Question', 'This is a sample message 28.', NOW()),
-    ('Michael Wilson', 'Comment', 'This is a sample message 29.', NOW()),
-    ('Sophia Hernandez', 'Complaint', 'This is a sample message 30.', NOW());
