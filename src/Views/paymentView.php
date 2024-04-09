@@ -1,6 +1,6 @@
 <?php
 $pathToComponents = "src/Views/";
-include 'prefix.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
