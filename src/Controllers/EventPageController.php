@@ -28,11 +28,17 @@ class EventPageController {
             header("Location: home");
             die();
         }
-        if (isset($_SESSION['currency']) && $_SESSION['currency'] !== 'USD') {
-            $this->event->ticketPrice = $this->currencyConverter->convertPrice($this->event->ticketPrice, $_SESSION['currency']);
-        }
 
         $this->currentCategoryEvents = $this->eventTable->getSimilarEvents($this->event->category, $this->event->id, 7);
+
+
+        if (isset($_SESSION['currency']) && $_SESSION['currency'] !== 'USD') {
+            $this->event->ticketPrice = $this->currencyConverter->convertPrice($this->event->ticketPrice, $_SESSION['currency']);
+            foreach ($this->currentCategoryEvents as $event) {
+                $event->ticketPrice = $this->currencyConverter->convertPrice($event->ticketPrice, $_SESSION['currency']);
+            }
+        }
+
     }
     
     public function handleRequest($prefix){
