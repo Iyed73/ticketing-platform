@@ -1,4 +1,5 @@
 <?php
+require_once "src/utils.php";
 
 class EventAdditionController
 {
@@ -99,6 +100,7 @@ class EventAdditionController
         $targetFile = $targetDir . basename($_FILES["image"]["name"]);
         $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
 
+        $imagePath = $targetDir . generateRandomImageName($imageFileType);
 
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         $fileMimeType = finfo_file($finfo, $_FILES["image"]["tmp_name"]);
@@ -155,8 +157,8 @@ class EventAdditionController
             die();
         }
 
-        if (!$is_there_errors && move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile)) {
-            $this->addEvent($name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $totalTickets, $availableTickets, $ticketPrice, $targetFile);
+        if (!$is_there_errors && move_uploaded_file($_FILES["image"]["tmp_name"], $imagePath)) {
+            $this->addEvent($name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $totalTickets, $availableTickets, $ticketPrice, $imagePath);
             header("Location: all_events?eventAddition=success");
             die();
         }

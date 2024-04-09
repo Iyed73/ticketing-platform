@@ -14,10 +14,18 @@ class EventDeleteController {
     }
 
     public function handleGetRequest($userID, $eventID) {
-        $UserModel = new UserModel();
+        $userModel = new UserModel();
 
-        if ($UserModel->isAdmin($userID)) {
-            $this->deleteEvent($eventID);
+        if ($userModel->isAdmin($userID)) {
+            $imagePath = $this->EventModel->getImagePath($eventID);
+            if ($imagePath) {
+                if (file_exists($imagePath)) {
+                    unlink($imagePath);
+                }
+            }
+            $this->EventModel->deleteById($eventID);
+            header("Location: " . $_SERVER['HTTP_REFERER']);
+            exit();
         } else {
             http_response_code(401);
             exit();

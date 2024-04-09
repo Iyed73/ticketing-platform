@@ -77,7 +77,12 @@ class EventModel extends AbstractModel {
         return $ticketPrice;
     }
 
-
-
+    public function getImagePath($eventId) {
+        $query = "SELECT imagePath FROM {$this->tableName} WHERE id = ?";
+        $response = $this->db->prepare($query);
+        $response->execute([$eventId]);
+        $imagePath = $response->fetchColumn();
+        return $imagePath;
+    }
 
 }
