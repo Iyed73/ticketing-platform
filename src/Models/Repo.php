@@ -63,12 +63,12 @@ abstract class Repo {
         }
     }
 
-    public function totalPagesNum(){
+    public function totalPagesNum($x = 5){
         $req = "SELECT COUNT(*) FROM {$this -> tableName}";
         $response = $this -> db -> prepare($req);
         $response -> execute();
         $count = $response -> fetchColumn();
-        $totalPages = ceil($count / 5);
+        $totalPages = ceil($count / $x);
         return $totalPages;
     }
 
