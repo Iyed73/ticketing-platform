@@ -1,6 +1,5 @@
 <?php 
-require_once "src\Models\Repo.php";
-class UniqueTokenRepo extends Repo {
+class UniqueTokenModel extends AbstractModel {
     public function __construct() {
         parent::__construct('unique_tokens');
     }

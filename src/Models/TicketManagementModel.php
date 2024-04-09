@@ -1,8 +1,6 @@
 <?php
 
-require_once "Repo.php";
-
-class TicketManagementModel extends Repo
+class TicketManagementModel extends AbstractModel
 {
     public function __construct() {
         parent::__construct("ticket");

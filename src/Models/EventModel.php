@@ -1,6 +1,5 @@
 <?php 
-require_once "src\Models\Repo.php";
-class EventRepo extends Repo {
+class EventModel extends AbstractModel {
     public function __construct() {
         parent::__construct('events');
     }

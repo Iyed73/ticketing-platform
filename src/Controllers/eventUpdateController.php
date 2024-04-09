@@ -1,13 +1,11 @@
 <?php
 
-require_once "src/Models/EventRepo.php";
-require_once "src/Models/UserRepo.php";
 class eventUpdateController{
 
-    private EventRepo $eventRepo;
+    private EventModel $EventModel;
 
     public function __construct(){
-        $this -> eventRepo = new EventRepo();
+        $this -> EventModel = new EventModel();
     }
 
     public function is_input_empty($name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $totalTickets, $availableTickets, $ticketPrice)
@@ -16,7 +14,7 @@ class eventUpdateController{
     }
 
     public function is_name_taken($name) {
-        $eventTable = new EventRepo();
+        $eventTable = new EventModel();
         $event = $eventTable->findByName($name);
         if ($event) {
             return true;
@@ -52,7 +50,7 @@ class eventUpdateController{
 
 
     public function updateEvent($Id, $name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $totalTickets, $availableTickets, $ticketPrice, $imagePath) {
-        $eventTable = new EventRepo();
+        $eventTable = new EventModel();
 
         $eventTable->update([
             'name' => $name,
@@ -73,11 +71,11 @@ class eventUpdateController{
 
     public function handleGetRequest($userID, $eventID){
 
-        $userRepo = new UserRepo();
+        $UserModel = new UserModel();
 
-        if($userRepo->isAdmin($userID) === true){
+        if($UserModel->isAdmin($userID) === true){
 
-            $_SESSION['eventData'] = $this -> eventRepo -> findById($eventID);
+            $_SESSION['eventData'] = $this -> EventModel -> findById($eventID);
 
             require_once "src/Views/EventUpdate/eventUpdateView.php";
 
@@ -90,9 +88,9 @@ class eventUpdateController{
     }
 
     public function handlePostRequest($userID){
-        $userRepo = new UserRepo();
+        $UserModel = new UserModel();
 
-        if(!$userRepo->isAdmin($userID)){
+        if(!$UserModel->isAdmin($userID)){
             http_response_code(401);
             die();
         }

@@ -1,7 +1,5 @@
 <?php
 
-require_once("src/Models/UserRepo.php");
-require_once("src/Models/TicketManagementModel.php");
 require_once 'Services\CurrencyConverter.php';
 
 
@@ -16,9 +14,9 @@ class AllTicketPurchasesController {
 
     public function handleRequest($userID) {
 
-        $userRepo = new UserRepo();
+        $UserModel = new UserModel();
 
-        if (!$userRepo->isAdmin($userID)) {
+        if (!$UserModel->isAdmin($userID)) {
             http_response_code(401);
             exit();
         }

@@ -1,18 +1,15 @@
 <?php
 
-require_once "src\Models\FormSubmissionsRepo.php";
-require_once "src\Controllers\includes\configSession.inc.php";
-
 $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
 class CustomerSupportController
 {
 
     private $contactForms;
-    private FormSubmissionsRepo $contactFormTable;
+    private FormSubmissionsModel $contactFormTable;
 
     public function __construct()
     {
-        $this->contactFormTable = new FormSubmissionsRepo();
+        $this->contactFormTable = new FormSubmissionsModel();
     }
 
     public function handleRequest()

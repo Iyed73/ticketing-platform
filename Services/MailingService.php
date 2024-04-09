@@ -5,10 +5,6 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-//Load Composer's autoloader
-require_once 'vendor\autoload.php';
-
-
 function sendMail($sendorName, $receiverName, $email, $subject, $messageHtml, $messageText, $attachementPaths = null)
 {
     //Create an instance; passing `true` enables exceptions

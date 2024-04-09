@@ -1,6 +1,6 @@
 <?php 
-require_once "src\Models\Repo.php";
-class CategoryRepo extends Repo {
+
+class CategoryModel extends AbstractModel {
     public function __construct() {
         parent::__construct('categories');
     }

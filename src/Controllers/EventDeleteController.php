@@ -1,25 +1,22 @@
 <?php
 
-require_once "src/Models/EventRepo.php";
-require_once "src/Models/UserRepo.php";
-
 class EventDeleteController {
-    private $eventRepo;
+    private $EventModel;
 
     public function __construct() {
-        $this->eventRepo = new EventRepo();
+        $this->EventModel = new EventModel();
     }
 
     public function deleteEvent($eventId) {
-        $this->eventRepo->deleteById($eventId);
+        $this->EventModel->deleteById($eventId);
         header("Location: all_events?eventDeleted=true");
         exit();
     }
 
     public function handleGetRequest($userID, $eventID) {
-        $userRepo = new UserRepo();
+        $UserModel = new UserModel();
 
-        if ($userRepo->isAdmin($userID)) {
+        if ($UserModel->isAdmin($userID)) {
             $this->deleteEvent($eventID);
         } else {
             http_response_code(401);

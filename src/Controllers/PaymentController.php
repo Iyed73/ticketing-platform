@@ -1,24 +1,19 @@
 <?php
-require_once "src/Models/EventReservationModel.php";
-require_once "src/Models/TicketManagementModel.php";
-require_once "src/Models/EventRepo.php";
-require_once "src/Models/UserRepo.php";
 require_once "Services/ticketGenerator.php";
 require_once "Services/MailingService.php";
-
 
 class PaymentController {
 
     private EventReservationModel $eventReservationModel;
     private TicketManagementModel $ticketModel;
-    private EventRepo $eventModel;
-    private UserRepo $userModel;
+    private EventModel $eventModel;
+    private UserModel $userModel;
 
     public function __construct() {
         $this->eventReservationModel= new EventReservationModel();
         $this->ticketModel = new TicketManagementModel();
-        $this->eventModel = new EventRepo();
-        $this->userModel = new UserRepo();
+        $this->eventModel = new EventModel();
+        $this->userModel = new UserModel();
     }
 
     private function getTotalPrice($price, $quantity) {

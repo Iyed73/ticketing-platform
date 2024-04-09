@@ -1,7 +1,5 @@
 <?php
-require_once "src\Models\UserRepo.php";
 require_once "Services/StatelessTokenService.php";
-require_once("src\Controllers\includes\configSession.inc.php");
 
 /**
  This class is responsible for handling the request to reset the password.
@@ -13,7 +11,7 @@ class VerifyAccountController {
     private $token;
 
     public function __construct() {
-        $this->userTable = new UserRepo();
+        $this->userTable = new UserModel();
     }
     
     private function sanitize($input){

@@ -1,8 +1,8 @@
 <?php $prefix = $_ENV['prefix'];
 
-    require "src/Models/CategoryRepo.php";
+    require "src/Models/CategoryModel.php";
 
-    $categoryRepo = new CategoryRepo();
+    $categoryRepo = new CategoryModel();
     $categories = $categoryRepo->findAll();
 
     $error = $_SESSION['error'] ?? null;

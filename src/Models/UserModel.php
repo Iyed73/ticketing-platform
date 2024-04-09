@@ -1,6 +1,5 @@
 <?php 
-require_once "src\Models\Repo.php";
-class UserRepo extends Repo {
+class UserModel extends AbstractModel {
     public function __construct() {
         parent::__construct('users');
     }
