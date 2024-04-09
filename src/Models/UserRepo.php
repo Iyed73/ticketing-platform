@@ -66,11 +66,12 @@ class UserRepo extends Repo {
         return $response->execute();
     }
 
-
-    public function isUserVerified($id)
-    {
+    public function isUserVerified($id) {
         $query = "SELECT is_verified FROM {$this->tableName} WHERE id = :id";
         $response = $this->db->prepare($query);
+        $response->execute(['id' => $id]);
+        $result = $response->fetch(PDO::FETCH_ASSOC);
+        return $result['is_verified'] === 1;
     }
 
     public function isAdmin($id){
