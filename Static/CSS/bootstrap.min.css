@@ -2083,9 +2083,9 @@ textarea.form-control-lg {
   filter: brightness(90%);
 }
 .form-check-input:focus {
-  border-color: #c0e284;
+  border-color: #f75c7d;
   outline: 0;
-  box-shadow: 0 0 0 0.25rem rgba(129, 196, 8, 0.25);
+  box-shadow: 0 0 0 0.25rem rgba(247, 92, 125, 0.25);
 }
 .form-check-input:checked {
   background-color: #293049;
@@ -2608,13 +2608,13 @@ fieldset:disabled .btn {
 .btn-primary:hover {
   color: #000;
   background-color: #f75c7d;
-  border-color: #8eca21;
+  border-color: #f75c7d;
 }
 .btn-check:focus + .btn-primary,
 .btn-primary:focus {
   color: #000;
   background-color: #f75c7d;
-  border-color: #8eca21;
+  border-color: #f75c7d;
   box-shadow: 0 0 0 0.25rem rgba(247, 92, 125, 1);
 }
 .btn-check:checked + .btn-primary,
@@ -2624,7 +2624,7 @@ fieldset:disabled .btn {
 .show > .btn-primary.dropdown-toggle {
   color: #000;
   background-color: #f75c7d;
-  border-color: #8eca21;
+  border-color: #f75c7d;
 }
 .btn-check:checked + .btn-primary:focus,
 .btn-check:active + .btn-primary:focus,

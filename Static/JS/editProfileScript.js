@@ -36,8 +36,8 @@ document.addEventListener("DOMContentLoaded", function () {
     if (firstNameError.innerHTML === "" && lastNameError.innerHTML === "") {
       firstName.setAttribute("readonly", "");
       lastName.setAttribute("readonly", "");
-      firstName.className = "form-control-plaintext";
-      lastName.className = "form-control-plaintext";
+      firstName.className = "form-control";
+      lastName.className = "form-control";
       updateBtn.style.display = "inline";
       saveBtn.style.display = "none";
       cancelBtn.style.display = "none";
@@ -48,8 +48,8 @@ document.addEventListener("DOMContentLoaded", function () {
   cancelBtn.addEventListener("click", function () {
     firstName.setAttribute("readonly", "");
     lastName.setAttribute("readonly", "");
-    firstName.className = "form-control-plaintext";
-    lastName.className = "form-control-plaintext";
+    firstName.className = "form-control";
+    lastName.className = "form-control";
     firstName.value = currFirstname;
     lastName.value = currLastname;
     firstNameError.innerHTML = "";

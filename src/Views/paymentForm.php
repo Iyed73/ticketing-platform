@@ -12,8 +12,10 @@ unset($_SESSION["error"]);
         </div>
     <?php endif; ?>
     <div class="text-center mb-3">
-        <h3>Total Price: $<?php echo number_format($totalPrice, 2); ?></h3>
-        <h3 id="countdown"></h3>
+        <h3>Total Price: </h3> 
+        <p class="fs-2 text-secondary">$<?php echo number_format($totalPrice, 2); ?></p>
+        <h3>Expires After:</h3>
+        <p class="fs-2 text-danger" id="countdown"></p>
     </div>
     <form method="post" action="cancel"  class="text-center mb-5">
         <input type="hidden" name="reservation_id" value="<?php echo $reservation_id; ?>">
@@ -76,7 +78,7 @@ unset($_SESSION["error"]);
         let minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
         let seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
         
-        let text = "Expires After: " + hours + "h " + minutes + "m " + seconds + "s ";
+        let text = hours + "h " + minutes + "m " + seconds + "s ";
 
         countdown.innerHTML = text;
 
