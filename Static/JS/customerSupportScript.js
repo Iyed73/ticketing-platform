@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (confirmation) {
         // Redirect to DeleteSubmissionController.php with submission ID
         window.location.href =
-          "./deleteSubmission?id=" + submissionId;
+          "./deleteSubmission?id=" + submissionId+"&"+(window.location.search).substring(1);
       }
     });
   });
@@ -74,10 +74,10 @@ document.addEventListener("DOMContentLoaded", function () {
       "Are you sure you want to delete the selected submissions?"
     );
     if (confirmation) {
-      // Redirect to delete_submission.php with submission IDs
-      window.location.href =
+        // Redirect to DeleteSubmissionController.php with submission IDs
+        window.location.href =
         "./deleteSubmission?id=" +
-        selectedSubmissionIds.join(",");
+        selectedSubmissionIds.join(",")+"&"+(window.location.search).substring(1);
     }
   });
 });

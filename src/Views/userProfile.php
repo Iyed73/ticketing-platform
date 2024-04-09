@@ -125,6 +125,8 @@ $prefix = $_ENV['prefix'];
   </section>
 
 </body>
+<script src="Static\JS\editProfileScript.js"></script>
+</html>
 
 <?php
 function checkPwdChangeErrors(){
