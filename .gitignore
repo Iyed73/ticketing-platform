@@ -4,3 +4,5 @@ composer.phar
 .htaccess
 .env
 .idea
+Static/Images/*
+qodana.yaml
