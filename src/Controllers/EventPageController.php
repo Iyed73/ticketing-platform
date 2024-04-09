@@ -1,13 +1,19 @@
 <?php
 require_once "src\Models\EventRepo.php";
+require_once 'Services\CurrencyConverter.php';
+
+
+
 $prefix = $_ENV['prefix'];
 class EventPageController {
     private $event;
     private $currentCategoryEvents;
     private $eventTable;
+    private $currencyConverter;
 
     public function __construct() {
         $this->eventTable = new EventRepo();
+        $this->currencyConverter = new CurrencyConverter();
     }
     
     private function getData($prefix){
@@ -22,14 +28,16 @@ class EventPageController {
             header("Location: home");
             die();
         }
+        if (isset($_SESSION['currency']) && $_SESSION['currency'] !== 'USD') {
+            $this->event->ticketPrice = $this->currencyConverter->convertPrice($this->event->ticketPrice, $_SESSION['currency']);
+        }
 
         $this->currentCategoryEvents = $this->eventTable->getSimilarEvents($this->event->category, $this->event->id, 7);
     }
     
     public function handleRequest($prefix){
         $this->getData($prefix);
-        require_once "src/Controllers/includes/configSession.inc.php";
-        
+                
         $_SESSION["event"] = serialize($this->event);
         $_SESSION["currentCategoryEvents"] = serialize($this->currentCategoryEvents);
         

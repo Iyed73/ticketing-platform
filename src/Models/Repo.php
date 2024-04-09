@@ -45,5 +45,4 @@ abstract class Repo {
         $response = $this->db->prepare($req);
         return $response->execute([$id]);
     }
-
 }

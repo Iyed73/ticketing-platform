@@ -1,6 +1,8 @@
 <?php
+
 require_once "src/Controllers/includes/configSession.inc.php";
 require_once "src/utils.php";
+
 // Retrieve and unserialize session variables
 $event = unserialize($_SESSION["event"]) ?? [];
 $currentCategoryEvents = unserialize($_SESSION["currentCategoryEvents"]) ?? [];
@@ -66,8 +68,8 @@ include 'prefix.php';
                                 <p class="fs-4 fw-bold mb-4 text-primary">
                                     <?= $event->eventDate ?>
                                 </p>
-                                <p class="fs-3 fw-bold mb-3 text-primary">$
-                                    <?= $event->ticketPrice / 100 ?>
+                                <p class="fs-3 fw-bold mb-3 text-primary">
+                                    <?=  $currencySymbol . $event->ticketPrice / 100 ?>
                                 </p>
                                 <p class="mb-4">
                                     <?= $event->shortDescription ?>

@@ -28,8 +28,7 @@ class SearchController {
     
     public function handleRequest(){
         $this->getData();
-        require_once "src/Controllers/includes/configSession.inc.php";
-        
+                
         $_SESSION["categories"] = serialize($this->categories);
         $_SESSION["searchedEvents"] = serialize($this->searchedEvents);
         

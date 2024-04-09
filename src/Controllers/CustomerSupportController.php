@@ -4,23 +4,28 @@ require_once "src\Models\FormSubmissionsRepo.php";
 require_once "src\Controllers\includes\configSession.inc.php";
 
 $role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
-class CustomerSupportController {
+class CustomerSupportController
+{
 
-    public $contactForms;
-    public $contactFormTable;
+    private $contactForms;
+    private FormSubmissionsRepo $contactFormTable;
 
-    public function __construct() {
-        $this->contactFormTable= new FormSubmissionsRepo();
+    public function __construct()
+    {
+        $this->contactFormTable = new FormSubmissionsRepo();
     }
-    
-    public function getData(){
-        $this->contactForms = $this->contactFormTable->findAll();
-    }
-    
-    public function handleRequest(){
-        $this->getData();
-        require_once "src\Controllers\includes\configSession.inc.php";
-        $_SESSION["contactForms"] = serialize($this->contactForms);
+
+    public function handleRequest()
+    {
+        $maxPerPage = 10;
+        $totalPages = $this->contactFormTable->totalPagesNum($maxPerPage);
+        $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
+        $offset = ($currentPage - 1) * $maxPerPage;
+        $contactForms = $this->contactFormTable->findWithOffset($offset, $maxPerPage);
+
+        if ($contactForms == null) {
+            $contactForms = [];
+        }
         require_once "src\Views\customerSupport.php";
         die();
     }

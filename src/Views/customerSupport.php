@@ -27,9 +27,6 @@ $pathToComponents = "src/Views/";
         <?php include "{$pathToComponents}CustomerSupportPage/formSubmissionsView.php" ?>
 
         <?php
-        require_once "{$pathToComponents}Home/facts.php";
-
-        require_once "{$pathToComponents}Home/testimonialSection.php";
 
         require_once "{$pathToComponents}Common/footer.php";
 

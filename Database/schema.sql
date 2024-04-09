@@ -64,6 +64,17 @@ CREATE TABLE events (
 );
 
 
+CREATE TABLE notifications (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  sender VARCHAR(255) NOT NULL,
+  content TEXT NOT NULL,
+  user_id INT NOT NULL,
+  is_read ENUM('read', 'unread') DEFAULT 'unread',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_user_id
+      FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+);
+
 ALTER TABLE events ADD category VARCHAR(255) NOT NULL;
 ALTER TABLE events ADD CONSTRAINT fk_category FOREIGN KEY (category) REFERENCES categories(name);
 
@@ -101,7 +112,7 @@ CREATE TABLE ticket (
 );
 
 INSERT INTO users (firstname, lastname, email, pwd, role, is_verified) VALUES ('John', 'Doe', 'johndoe@gmail.com', '$2y$12$WFzkKn9UtpBWS7HYXH8n/e/c0IornFVFDrNRpEXGx4RGR7KuxK5KG', 'admin', TRUE);
-
+INSERT INTO users (firstname, lastname, email, pwd, role, is_verified) VALUES ('Jan', 'Doe', 'jandoe@gmail.com', '$2y$12$WFzkKn9UtpBWS7HYXH8n/e/c0IornFVFDrNRpEXGx4RGR7KuxK5KG', 'customer', TRUE);
 
 INSERT INTO categories (name) VALUES
 ('Concerts'),
@@ -117,3 +128,11 @@ VALUES
     'Experience the electrifying energy of live music at our concert! Immerse in the rhythm, lights, and the unforgettable atmosphere.',
     'Immerse yourself in the electrifying atmosphere of our live concert. Feel the rhythm pulsate through the crowd as the stage lights dance. Witness the raw energy of the performers, their music resonating in perfect harmony with the audience’s excitement. It’s not just a concert, it’s an unforgettable experience of a lifetime.',
     'Music Events LLC', 500, 336, '2023-03-09', '2024-05-09', '337', 'Static/Images/event-1.jpg', 'Concerts');
+
+INSERT INTO notifications (sender, content, user_id, is_read, created_at)
+VALUES
+('Sender 1', 'Notification message 1', 2, 'unread', NOW()),
+('Sender 2', 'Notification message 2', 2, 'unread', NOW()),
+('Sender 3', 'Notification message 3', 2, 'read', NOW() - INTERVAL 1 DAY),
+('Sender 4', 'Notification message 4', 2, 'unread', NOW()),
+('Sender 5', 'Notification message 5', 2, 'read', NOW() - INTERVAL 2 DAY);
