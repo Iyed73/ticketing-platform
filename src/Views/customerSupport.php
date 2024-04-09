@@ -36,10 +36,6 @@ $pathToComponents = "src/Views/";
 
         require_once "{$pathToComponents}Common/scripts.php"; 
         ?>
-
-
     </section>
-
 </body>
-
 </html>

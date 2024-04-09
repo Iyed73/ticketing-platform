@@ -17,7 +17,6 @@ if (isset($_SESSION["user_id"])) {
     $reservationId = null;
 }
 
-include 'prefix.php';
 ?>
 
 <!DOCTYPE html>
@@ -104,7 +103,7 @@ include 'prefix.php';
                                             </button>
                                         </form>
                                     <?php else: ?>
-                                        <p class="text-primary fs-5 fw-bold">Stay Tuned for Ticket Sales</p>
+                                        <p class="text-primary fs-5 fw-bold">Stay Tuned For Ticket Sales</p>
                                     <?php endif; ?>
                                 <?php endif; ?>
                                 <?php if ($error): ?>

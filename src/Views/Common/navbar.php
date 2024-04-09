@@ -46,6 +46,13 @@ $currencySymbol = match ($_SESSION['currency']) {
                     <a href="<?= "{$prefix}/contact" ?>" class="nav-item nav-link ">Contact</a>
                 <?php endif; ?>
 
+                
+                <?php if ($role === "customer"): ?>
+                    <a href="view-tickets" class="nav-item nav-link">Manage Tickets</a>
+                <?php elseif ($role === "admin"): ?>
+                    <a href="#" class="nav-item nav-link">Dashboard</a>
+                    <a href="<?= "{$prefix}/customerSupport" ?>" class="nav-item nav-link">Customer Support</a>
+                <?php endif; ?>
                 <form id="currencyForm" method="post" action="set_currency" class="me-3 d-inline-block">
                     <select class="currency-select" name="currency" id="currency" onchange="submitCurrencyForm()">
                         <option value="USD" <?php if ($_SESSION['currency'] == 'USD')
@@ -59,12 +66,6 @@ $currencySymbol = match ($_SESSION['currency']) {
                             (£)</option>
                     </select>
                 </form>
-                <?php if ($role === "customer"): // If user is logged in as a customer               ?>
-                    <a href="view-tickets" class="nav-item nav-link">Manage Tickets</a>
-                <?php elseif ($role === "admin"): // If user is logged in as an admin              ?>
-                    <a href="dashboard" class="nav-item nav-link">Dashboard</a>
-                    <a href="<?= "{$prefix}/customerSupport" ?>" class="nav-item nav-link">Customer Support</a>
-                <?php endif; ?>
 
             </div>
             <div class="collapse navbar-collapse bg-white justify-content-end" id="navbarCollapse">
@@ -77,7 +78,7 @@ $currencySymbol = match ($_SESSION['currency']) {
                         <button class="button" id="logout-btn">Logout</button>
                     </form>
                 </div>
-                <?php if ($role === "customer"): // If its a simple customer            ?>
+                <?php if ($role === "customer"):            ?>
                     <?php $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);?>
                     <?php $notificationController = new notificationController(); ?>
                     <div class="notification">
