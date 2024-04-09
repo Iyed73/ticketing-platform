@@ -67,9 +67,11 @@ class UserRepo extends Repo {
     }
 
 
-    public function isUserVerified($id) {
+    public function isUserVerified($id)
+    {
         $query = "SELECT is_verified FROM {$this->tableName} WHERE id = :id";
         $response = $this->db->prepare($query);
+    }
 
     public function isAdmin($id){
         $req = "SELECT role FROM {$this -> tableName} WHERE id =:id";

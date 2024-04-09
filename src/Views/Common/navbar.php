@@ -60,7 +60,7 @@ $currencySymbol = match ($_SESSION['currency']) {
                     </select>
                 </form>
                 <?php if ($role === "customer"): // If user is logged in as a customer               ?>
-                    <a href="#" class="nav-item nav-link">Manage Tickets</a>
+                    <a href="view-tickets" class="nav-item nav-link">Manage Tickets</a>
                 <?php elseif ($role === "admin"): // If user is logged in as an admin              ?>
                     <a href="#" class="nav-item nav-link">Dashboard</a>
                     <a href="<?= "{$prefix}/customerSupport" ?>" class="nav-item nav-link">Customer Support</a>
