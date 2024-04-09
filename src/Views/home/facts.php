@@ -7,8 +7,8 @@
                         <i class="fas fa-user-shield fa-3x text-white"></i>
                     </div>
                     <div class="featurs-content text-center">
-                        <h5>Security Payment</h5>
-                        <p class="mb-0">100% security payment</p>
+                        <h5>Secure Payment</h5>
+                        <p class="mb-0">Secure And Encrypted Payment Options</p>
                     </div>
                 </div>
             </div>
@@ -19,7 +19,7 @@
                     </div>
                     <div class="featurs-content text-center">
                         <h5>Refundable Tickets</h5>
-                        <p class="mb-0">Get your money back</p>
+                        <p class="mb-0">Flexible Ticket Options</p>
                     </div>
                 </div>
             </div>
@@ -30,7 +30,7 @@
                     </div>
                     <div class="featurs-content text-center">
                         <h5>24/7 Support</h5>
-                        <p class="mb-0">Support every time fast</p>
+                        <p class="mb-0">24/7 Customer Support Available.</p>
                     </div>
                 </div>
             </div>

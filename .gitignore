@@ -4,3 +4,4 @@ composer.phar
 .htaccess
 .env
 .idea
+Static/Images/*

@@ -39,8 +39,12 @@
             <div class="col-lg-3 col-md-6">
                 <div class="d-flex flex-column text-start footer-item">
                     <h4 class="text-light mb-3">Account</h4>
-                    <a class="btn-link" href="">My Account</a>
-                    <a class="btn-link" href="">Order History</a>
+                    <a class="btn-link" href=<?= "{$prefix}/userProfile" ?>>My Account</a>
+                    <?php 
+                        if(isset($_SESSION['role']) && $_SESSION['role'] === 'customer'):
+                    ?>
+                    <a class="btn-link" href=<?= "{$prefix}/view-tickets"?>>Order History</a>
+                    <?php endif; ?>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6">
@@ -49,7 +53,6 @@
                     <p>Address: 676 Centre Urbain Nord BP, Tunis 1080</p>
                     <p>Email: tickety@gmail.com</p>
                     <p>Phone: (+216) 56 354 698</p>
-                    <img src="img/payment.png" class="img-fluid" alt="">
                 </div>
             </div>
         </div>

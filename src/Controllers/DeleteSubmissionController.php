@@ -22,10 +22,10 @@ class DeleteSubmissionController {
             }
 
             // Redirect back to the form submissions page
-            header("Location:  {$prefix}/customerSupport?submissionDeleted");
+            header("Location:  /customerSupport?submissionDeleted");
             exit();
         } else {
-            header("Location:  {$prefix}/customerSupport?invalidSubmissionId");
+            header("Location:  /customerSupport?invalidSubmissionId");
             exit();
         }
     }
