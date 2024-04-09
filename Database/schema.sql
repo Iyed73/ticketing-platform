@@ -53,7 +53,7 @@ CREATE TABLE events (
   organizer VARCHAR(255) NOT NULL,
   totalTickets INT NOT NULL,
   availableTickets INT NOT NULL,
-  
+
   startSellTime DATE NOT NULL,
   eventDate DATE NOT NULL,
 
@@ -63,15 +63,6 @@ CREATE TABLE events (
   FULLTEXT KEY(shortDescription, longDescription, name, venue, organizer)
 );
 
-CREATE TABLE orders (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  totalPrice INT NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE tickets (
-  id INT AUTO_INCREMENT PRIMARY KEY
-);
 
 CREATE TABLE notifications (
   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -87,13 +78,38 @@ CREATE TABLE notifications (
 ALTER TABLE events ADD category VARCHAR(255) NOT NULL;
 ALTER TABLE events ADD CONSTRAINT fk_category FOREIGN KEY (category) REFERENCES categories(name);
 
-ALTER TABLE orders ADD userID INT NOT NULL;
-ALTER TABLE orders ADD CONSTRAINT fk_userID FOREIGN KEY (userID) REFERENCES users(id);
 
-ALTER TABLE tickets ADD eventID INT NOT NULL;
-ALTER TABLE tickets ADD orderID INT NOT NULL;
-ALTER TABLE tickets ADD CONSTRAINT fk_eventID FOREIGN KEY (eventID) REFERENCES events(id);
-ALTER TABLE tickets ADD CONSTRAINT fk_orderID FOREIGN KEY (orderID) REFERENCES orders(id);
+DROP TABLE IF EXISTS reservation;
+
+/*
+   The reservation table stores temporary reservations made by users.
+   Unpaid reservations for events automatically expire after a specific time.
+   A scheduled cron job then cleans up these expired reservations,
+   freeing up the reserved tickets for others to purchase.
+*/
+CREATE TABLE reservation (
+     id INT AUTO_INCREMENT PRIMARY KEY,
+     event_id INT,
+     user_id INT,
+     quantity INT,
+     expiration DATETIME,
+     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+     FOREIGN KEY (event_id) REFERENCES events(id),
+     FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+CREATE TABLE ticket (
+    ticket_id CHAR(36) PRIMARY KEY,
+    buyer_id INT,
+    event_id INT,
+    first_name VARCHAR(255),
+    last_name VARCHAR(255),
+    phone_number VARCHAR(255),
+    buy_date TIMESTAMP,
+    price INT,
+    FOREIGN KEY (buyer_id) REFERENCES users(id),
+    FOREIGN KEY (event_id) REFERENCES events(id)
+);
 
 INSERT INTO users (firstname, lastname, email, pwd, role, is_verified) VALUES ('John', 'Doe', 'johndoe@gmail.com', '$2y$12$WFzkKn9UtpBWS7HYXH8n/e/c0IornFVFDrNRpEXGx4RGR7KuxK5KG', 'admin', TRUE);
 INSERT INTO users (firstname, lastname, email, pwd, role, is_verified) VALUES ('Jan', 'Doe', 'jandoe@gmail.com', '$2y$12$WFzkKn9UtpBWS7HYXH8n/e/c0IornFVFDrNRpEXGx4RGR7KuxK5KG', 'customer', TRUE);

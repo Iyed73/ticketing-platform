@@ -18,16 +18,18 @@ class EventPageController {
     
     private function getData($prefix){
         if(!isset($_GET['id'])){
-            $prefix = $_ENV['prefix'];
-            header("Location: {$prefix}/");
+            header("Location: home");
             die();
         }
 
         $this->event = $this->eventTable->findById($_GET['id']);
 
+        if ($this->event === false) {
+            header("Location: home");
+            die();
+        }
         if (isset($_SESSION['currency']) && $_SESSION['currency'] !== 'USD') {
             $this->event->ticketPrice = $this->currencyConverter->convertPrice($this->event->ticketPrice, $_SESSION['currency']);
-
         }
 
         $this->currentCategoryEvents = $this->eventTable->getSimilarEvents($this->event->category, $this->event->id, 7);

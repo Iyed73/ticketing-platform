@@ -1,14 +1,27 @@
 <?php
 
+require_once "src/Controllers/includes/configSession.inc.php";
+require_once "src/utils.php";
+
 // Retrieve and unserialize session variables
 $event = unserialize($_SESSION["event"]) ?? [];
 $currentCategoryEvents = unserialize($_SESSION["currentCategoryEvents"]) ?? [];
 $pathToComponents = "src/Views/";
+$error = $_SESSION["error"] ?? null;
+unset($_SESSION["error"]);
+
+// when logged-in user opens the event page, we will check whether he has an ongoing reservation
+if (isset($_SESSION["user_id"])) {
+    $reservationId = hasOnGoingReservation($event->id, $_SESSION["user_id"]);
+} else {
+    $reservationId = null;
+}
+
+include 'prefix.php';
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <title>
         <?= $event->name ?>
@@ -27,7 +40,6 @@ $pathToComponents = "src/Views/";
 
 
         require_once "{$pathToComponents}Common/modalSearch.php";
-
         ?>
 
 
@@ -62,26 +74,42 @@ $pathToComponents = "src/Views/";
                                 <p class="mb-4">
                                     <?= $event->shortDescription ?>
                                 </p>
-                                <div class="input-group quantity mb-5" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-minus rounded-circle bg-light border">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text" class="form-control form-control-sm text-center border-0"
-                                        value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-plus rounded-circle bg-light border">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <p class="fs-4 fw-bold mb-3 text-danger">Remaining Tickets:
-                                    <?= $event->availableTickets ?>
-                                </p>
-                                <a href="#"
-                                    class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i
-                                        class="fa fa-shopping-bag me-2 text-primary"></i> Buy Tickets </a>
+                                <?php if ($reservationId != null): ?>
+                                    <a href="<?= $prefix ?>/payment?reservation_id=<?= $reservationId ?>" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
+                                        <i class="fa fa-credit-card me-2 text-primary"></i> Proceed to Payment
+                                    </a>
+                                <?php else: ?>
+                                    <?php
+                                    $canBuyTickets = $event->availableTickets > 0 && strtotime($event->startSellTime) <= time();
+                                    ?>
+                                    <?php if ($canBuyTickets): ?>
+                                        <form id="buyTicketsForm" action="<?= $prefix ?>/reserve" method="post">
+                                            <div class="input-group quantity mb-5" style="width: 100px;">
+                                                <div class="input-group-btn">
+                                                    <button type="button" id="minusBtn" class="btn btn-sm btn-minus rounded-circle bg-light border">
+                                                        <i class="fa fa-minus"></i>
+                                                    </button>
+                                                </div>
+                                                <input id="ticketQuantity" name="quantity" type="text" class="form-control form-control-sm text-center border-0" value="1">
+                                                <div class="input-group-btn">
+                                                    <button type="button" id="plusBtn" class="btn btn-sm btn-plus rounded-circle bg-light border">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <p class="fs-4 fw-bold mb-3 text-danger">Remaining Tickets: <?= $event->availableTickets ?></p>
+                                            <input type="hidden" name="event_id" value="<?= $event->id ?>">
+                                            <button type="submit" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
+                                                <i class="fa fa-shopping-bag me-2 text-primary"></i> Buy Tickets
+                                            </button>
+                                        </form>
+                                    <?php else: ?>
+                                        <p class="text-primary fs-5 fw-bold">Stay Tuned for Ticket Sales</p>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                                <?php if ($error): ?>
+                                <div id="error-message" class="text-danger mt-2"><?= $error ?></div>
+                                <?php endif; ?>
                             </div>
                             <div class="col-lg-12">
                                 <nav>

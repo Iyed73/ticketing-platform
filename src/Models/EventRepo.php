@@ -49,8 +49,34 @@ class EventRepo extends Repo {
     }
 
 
+    public function isEventOnSellTime($eventId) {
+        $req = "SELECT startSellTime, eventDate FROM {$this->tableName} WHERE id = ?";
+        $response = $this->db->prepare($req);
+        $response->execute([$eventId]);
+        $event = $response->fetch(PDO::FETCH_OBJ);
 
+        if (!$event) {
+            return false;
+        }
 
+        $currentDateTime = date('Y-m-d H:i:s');
+        $startSellTime = $event->startSellTime;
+        $eventDate = $event->eventDate;
+
+        if ($currentDateTime >= $startSellTime && $currentDateTime <= $eventDate) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function getTicketPrice($eventId) {
+        $req = "SELECT ticketPrice FROM {$this->tableName} WHERE id = ?";
+        $response = $this->db->prepare($req);
+        $response->execute([$eventId]);
+        $ticketPrice = $response->fetchColumn();
+        return $ticketPrice;
+    }
 
 
 
