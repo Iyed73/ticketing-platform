@@ -80,7 +80,9 @@ $currencySymbol = match ($_SESSION['currency']) {
                 </div>
                 <?php if ($role === "customer"):            ?>
                     <?php $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);?>
-                    <?php $notificationController = new notificationController(); ?>
+                    <?php $notificationController = new notificationController();
+                          $notificationController->addNearEventNotification($user_id);
+                    ?>
                     <div class="notification">
                         <a href="#">
                             <div class="notBtn" href="#">

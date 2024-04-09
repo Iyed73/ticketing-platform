@@ -99,6 +99,32 @@ class TicketManagementModel extends Repo
 
 
 
+
+    public function getNearEvents($userId) {
+        $query = "SELECT E.name as name, E.venue as venue
+            FROM events E
+            INNER JOIN {$this->tableName} T ON E.id = T.event_id
+            WHERE T.buyer_id = :buyer_id 
+            AND E.eventDate BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 1 DAY)
+            AND T.is_notification_sent = 0
+            GROUP BY E.id";
+        $response = $this->db->prepare($query);
+        $response->bindParam(':buyer_id', $userId, PDO::PARAM_INT);
+        $response->execute();
+        return $response->fetchAll(PDO::FETCH_OBJ);
+    }
+    
+
+    public function markTicketsAsNotified($userId) {
+        $query = "UPDATE {$this->tableName} T
+            INNER JOIN events E ON T.event_id = E.id
+            SET T.is_notification_sent = 1
+            WHERE T.buyer_id = :buyer_id
+            AND E.eventDate BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 1 DAY)";
+        $response = $this->db->prepare($query);
+        $response->bindParam(':buyer_id', $userId, PDO::PARAM_INT);
+        return $response->execute();
+    }
 }
 
 

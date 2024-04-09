@@ -107,6 +107,7 @@ CREATE TABLE ticket (
     phone_number VARCHAR(255),
     buy_date TIMESTAMP,
     price INT,
+    is_notification_sent BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (buyer_id) REFERENCES users(id),
     FOREIGN KEY (event_id) REFERENCES events(id)
 );

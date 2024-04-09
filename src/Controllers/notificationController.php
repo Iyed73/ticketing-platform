@@ -1,10 +1,14 @@
 <?php
 require_once "src/Models/NotificationsRepo.php";
+require_once "src/Models/TicketManagementModel.php";
+
 class notificationController {
     private $notificationsRepo;
+    private $ticketManagementModel;
 
     public function __construct() {
         $this->notificationsRepo = new NotificationsRepo();
+        $this->ticketManagementModel = new TicketManagementModel();
     }
     public function displayNumberOfUnreadNotifications($userId) {
         $numberOfUnreadNotifications = $this->notificationsRepo->getNumberOfUnreadNotifcations($userId);
@@ -54,6 +58,23 @@ class notificationController {
 
     function deleteNotifications($userId) {
         $this->notificationsRepo->deleteNotifications($userId);
+    }
+
+    public function addNearEventNotification($userId){
+        //add notification for events that are happening in th next 24 hours
+        $result = $this->ticketManagementModel->getNearEvents($userId);
+        if($result !== null) {
+            foreach ($result as $event) {
+                $notificationContent = $event->name . " is happening soon at ".$event->venue." don't miss it!";
+                $data = [
+                    'sender' => 'System',
+                    'content' => $notificationContent,
+                    'user_id' => $userId,
+                ];
+                $this->notificationsRepo->insert($data);
+            }
+            $this->ticketManagementModel->markTicketsAsNotified($userId);
+        }
     }
 }
 

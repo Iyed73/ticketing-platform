@@ -41,4 +41,5 @@ class NotificationsRepo extends Repo {
         $response->bindParam(':userId', $userId);
         return $response->execute();
     }
+
 }
