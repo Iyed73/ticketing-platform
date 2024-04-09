@@ -23,7 +23,7 @@
                     if ($ticketInfo !== null) {
                         ?>
                         <td><?php echo $ticketInfo->buy_date; ?></td>
-                        <td><?php echo $ticketInfo->price; ?></td>
+                        <td><?php echo $ticketInfo->price / 100; ?></td>
                         <td><?php echo $ticketInfo->buyer_firstname; ?></td>
                         <td><?php echo $ticketInfo->buyer_lastname; ?></td>
 

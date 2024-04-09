@@ -50,7 +50,7 @@ $currencySymbol = match ($_SESSION['currency']) {
                 <?php if ($role === "customer"): ?>
                     <a href="view-tickets" class="nav-item nav-link">Manage Tickets</a>
                 <?php elseif ($role === "admin"): ?>
-                    <a href="#" class="nav-item nav-link">Dashboard</a>
+                    <a href="dashboard" class="nav-item nav-link">Dashboard</a>
                     <a href="<?= "{$prefix}/customerSupport" ?>" class="nav-item nav-link">Customer Support</a>
                 <?php endif; ?>
                 <form id="currencyForm" method="post" action="set_currency" class="me-3 d-inline-block">
