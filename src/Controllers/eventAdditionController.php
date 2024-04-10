@@ -15,11 +15,13 @@ class EventAdditionController
         return (empty($name) || empty($venue) || empty($category) || empty($eventDate) || empty($shortDescription) || empty($longDescription) || empty($organizer) || empty($startSellTime) || empty($totalTickets) || empty($availableTickets) || empty($ticketPrice) || empty($targetFile));
     }
 
-    public function is_name_taken($name)
-    {
+    public function is_name_taken($name) {
         $eventTable = new EventModel();
         $event = $eventTable->findByName($name);
-        return $event !== null;
+        if ($event) {
+            return true;
+        }
+        return false;
     }
 
     public function isEventDateInvalid($eventDate, $startSellTime)
