@@ -56,7 +56,7 @@ CREATE TABLE events (
   longDescription VARCHAR(10000) NOT NULL,
   organizer VARCHAR(255) NOT NULL,
   totalTickets INT NOT NULL,
-  availableTickets INT NOT NULL,
+  availableTickets INT NOT NULL CHECK (availableTickets >= 0),
   startSellTime DATE NOT NULL,
   eventDate DATE NOT NULL,
   ticketPrice INT NOT NULL,
