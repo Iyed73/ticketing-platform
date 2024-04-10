@@ -11,6 +11,19 @@
   transform: scale(0.98);
 }
 
+#login-open, 
+#signup-open,
+#logout-btn{
+  color: #fff;
+  padding: 6px 24px;
+  border: 2px solid #fff;
+  background: #293049;
+  border-radius: 6px;
+  cursor: pointer;
+  margin: 0px 15px;
+
+}
+
 /* Form */
 .all {
   position: relative;
