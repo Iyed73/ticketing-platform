@@ -46,7 +46,16 @@ class eventUpdateController{
     }
 
     public function is_ticketNumber_invalid($availableTickets, $totalTickets){
-        return $availableTickets > $totalTickets;
+        return $availableTickets > $totalTickets || $availableTickets < 0 || $totalTickets < 0;
+    }
+
+    public function categoryExists($categoryName){
+        $categoryModel = new CategroyModel();
+        return $categoryModel -> categoryExists($categoryName);
+    }
+
+    public function is_price_invalid($ticketPrice){
+        return $ticketPrice <= 0;
     }
 
 
@@ -168,6 +177,18 @@ class eventUpdateController{
 
         if($this -> is_ticketNumber_invalid($availableTickets, $totalTickets)){
             $_SESSION['error'] = "Ticket Number is not valid!";
+            header("Location: event_update?id={$eventID}&eventUpdate=failed");
+            die();
+        }
+
+        if(!$this -> categoryExists($category)){
+            $_SESSION['error'] = "Category not valid";
+            header("Location: event_update?id={$eventID}&eventUpdate=failed");
+            die();
+        }
+
+        if($this -> is_price_invalid($ticketPrice)){
+            $_SESSION['error'] = "Price not valid";
             header("Location: event_update?id={$eventID}&eventUpdate=failed");
             die();
         }

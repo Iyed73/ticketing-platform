@@ -37,7 +37,16 @@ class EventAdditionController
     }
 
     public function is_ticketNumber_invalid($availableTickets, $totalTickets){
-        return $availableTickets > $totalTickets;
+        return $availableTickets > $totalTickets || $availableTickets < 0 || $totalTickets < 0;
+    }
+
+    public function categoryExists($categoryName){
+        $categoryModel = new CategroyModel();
+        return $categoryModel -> categoryExists($categoryName);
+    }
+
+    public function is_price_invalid($ticketPrice){
+        return $ticketPrice <= 0;
     }
 
     public function addEvent($name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $totalTickets, $availableTickets, $ticketPrice, $imagePath)
@@ -131,6 +140,20 @@ class EventAdditionController
 
         if($this -> is_ticketNumber_invalid($availableTickets, $totalTickets)){
             $_SESSION['error'] = "Tickets Number not valid!";
+            $is_there_errors =  true;
+            header("Location: event_addition?eventAddition=failed");
+            die();
+        }
+
+        if(!$this -> categoryExists($category)){
+            $_SESSION['error'] = "Category not valid";
+            $is_there_errors =  true;
+            header("Location: event_addition?eventAddition=failed");
+            die();
+        }
+
+        if($this -> is_price_invalid($ticketPrice)){
+            $_SESSION['error'] = "Price not valid";
             $is_there_errors =  true;
             header("Location: event_addition?eventAddition=failed");
             die();

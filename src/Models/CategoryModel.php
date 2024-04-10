@@ -12,4 +12,17 @@ class CategoryModel extends AbstractModel {
         return $response->execute();
     }
 
+    public function categoryExists($categoryName) {
+        $req = "SELECT COUNT(*) FROM categories WHERE name = :name";
+        $stmt = $this->db->prepare($req);
+        $stmt->bindParam(':name', $categoryName);
+        $stmt->execute();
+        $count = $stmt->fetchColumn();
+        if ($count > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
