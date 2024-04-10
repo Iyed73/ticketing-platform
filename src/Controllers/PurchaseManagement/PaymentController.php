@@ -1,5 +1,5 @@
 <?php
-require_once "Services/ticketGenerator.php";
+require_once "Services/TicketGenerator.php";
 require_once "Services/MailingService.php";
 
 class PaymentController {
@@ -31,7 +31,15 @@ class PaymentController {
     }
 
     private function generateTicketId(): string {
-        return uniqid('INSAT', true);
+        $prefix = "INSAT_";
+        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $random_string = $prefix;
+
+        for ($i = 0; $i < 15; $i++) {
+            $random_string .= $characters[rand(0, strlen($characters) - 1)];
+        }
+
+        return $random_string;
     }
 
     private function parseTicketData($ticketDataArray, $event, $buyer): array {
@@ -77,8 +85,7 @@ class PaymentController {
         $fileName = $this->createRandomCombinatedTicketsName();
         generateCombinedTickets($ticketData, $fileName);
 
-        $attachmentPath = __DIR__ . '\..\..\Static\attachments\\' . $fileName . '.pdf';
-
+        $attachmentPath = __DIR__ . '\..\..\..\Static\attachments\\' . $fileName . '.pdf';
 
         $attachmentPaths = array($attachmentPath);
         sendMail($senderName, $receiverName, $receiverEmail, $subject, $messageHtml, $messageText, $attachmentPaths);
@@ -123,7 +130,7 @@ class PaymentController {
         $totalPrice = $this->getTotalPrice($price, $quantity);
         $expiration = $reservation->expiration;
 
-        require_once "src/Views/paymentView.php";
+        require_once "src/Views/Payment/paymentView.php";
 
         exit();
     }

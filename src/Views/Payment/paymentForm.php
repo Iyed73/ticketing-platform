@@ -49,11 +49,11 @@ unset($_SESSION["error"]);
         <div class="row mb-3">
             <div class="col-sm-6">
                 <label for="credit_card">Credit Card Number</label>
-                <input type="text" class="form-control" name="credit_card" id="credit_card" placeholder="Enter Credit Card Number" required>
+                <input type="text" class="form-control" name="credit_card" id="credit_card" placeholder="Enter Credit Card Number (15/16 digits)" required>
             </div>
             <div class="col-sm-3">
                 <label for="expiration_date">Expiration Date</label>
-                <input type="text" class="form-control" name="expiration_date" id="expiration_date" placeholder="MM/YYYY" required>
+                <input type="text" class="form-control" name="expiration_date" id="expiration_date" placeholder="MM/YY" required>
             </div>
             <div class="col-sm-3">
                 <label for="cvv">CVV</label>

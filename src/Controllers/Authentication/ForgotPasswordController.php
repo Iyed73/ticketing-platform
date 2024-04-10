@@ -42,7 +42,7 @@ class ForgotPasswordController {
     public function handleRequest(){
         $prefix = $_ENV['prefix'];
         if(!isset($_POST['email'])){
-            require_once "src/Views/forgotPassword.php";
+            require_once "src/Views/Authentication/forgotPassword.php";
             die();
         } 
         
@@ -61,7 +61,7 @@ class ForgotPasswordController {
         
         //if user does not exist or is rate limited show the email form
         if(!$this->user){
-            require_once "src/Views/forgotPassword.php";
+            require_once "src/Views/Authentication/forgotPassword.php";
             die();
         }
         
@@ -72,7 +72,7 @@ class ForgotPasswordController {
         if($this->user->last_recovery_token_sent_at 
         && ((time() - strtotime($this->user->last_recovery_token_sent_at) - 3600) < $GLOBALS["MAIL_RATE_LIMIT"])){
             $response = "You've tried too many times, please try again later!";
-            require_once "src/Views/forgotPassword.php";
+            require_once "src/Views/Authentication/forgotPassword.php";
             die();
         }
         
@@ -88,7 +88,7 @@ class ForgotPasswordController {
 
         if(!$oldPasswordHash) {
             $response = "An error occurred, please try again!";
-            require_once "src/Views/forgotPassword.php";
+            require_once "src/Views/Authentication/forgotPassword.php";
             die();
         }
 
@@ -104,7 +104,7 @@ class ForgotPasswordController {
         }
 
         
-        require_once "src/Views/forgotPassword.php";
+        require_once "src/Views/Authentication/forgotPassword.php";
         die();
     }
 }

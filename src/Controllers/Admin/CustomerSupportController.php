@@ -23,7 +23,7 @@ class CustomerSupportController
         if ($contactForms == null) {
             $contactForms = [];
         }
-        require_once "src\Views\customerSupport.php";
+        require_once "src\Views\CustomerSupportPage\customerSupport.php";
         die();
     }
 }

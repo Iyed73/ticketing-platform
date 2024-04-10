@@ -19,7 +19,7 @@ class DashboardController {
             http_response_code(401);
             exit();
         }
-        require_once "src/Views/dashboardView.php";
+        require_once "src/Views/Dashboard/dashboardView.php";
         exit();
     }
 }

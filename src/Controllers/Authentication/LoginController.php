@@ -1,63 +1,76 @@
-<?php 
+<?php
+
+namespace Authentication;
+use rememberMeService;
+use UserModel;
+
 require_once 'Services\rememberMeService.php';
 
-class loginController {
+class loginController
+{
     private $email;
     private $pwd;
     private $userTable;
 
-    public function __construct($email, $pwd) {
+    public function __construct($email, $pwd)
+    {
         $this->email = $email;
         $this->pwd = $pwd;
         $this->userTable = new UserModel();
     }
-    
-    public function sanitizeInput() {
+
+    public function sanitizeInput()
+    {
         $this->email = htmlspecialchars($this->email);
         $this->pwd = htmlspecialchars($this->pwd);
     }
 
-    public function isInputEmpty() {
+    public function isInputEmpty()
+    {
         return empty($this->email) || empty($this->pwd);
     }
 
-    public function isUserInDB() {
+    public function isUserInDB()
+    {
         $user = $this->userTable->findByEmail($this->email);
-        if($user) {
+        if ($user) {
             return true;
         }
         return false;
     }
 
-    public function isPasswordIncorrect() {
+    public function isPasswordIncorrect()
+    {
         $user = $this->userTable->findByEmail($this->email);
-        if(!empty($user)){
-            if(password_verify($this->pwd, $user->pwd)) {
+        if (!empty($user)) {
+            if (password_verify($this->pwd, $user->pwd)) {
                 return false;
-            }
-            else{
+            } else {
                 return true;
             }
         }
         return true;
     }
 
-    public function isUserLoggedIn(){
-        if(isset($_SESSION["user_id"])&&isset($_SESSION["role"])){
+    public function isUserLoggedIn()
+    {
+        if (isset($_SESSION["user_id"]) && isset($_SESSION["role"])) {
             return true;
         }
         return false;
     }
 
-    public function getUser(){
+    public function getUser()
+    {
         $user = $this->userTable->findByEmail($this->email);
         return $user;
     }
 
-    public function handleLoginForm($prefix) {
+    public function handleLoginForm($prefix)
+    {
         $prefix = $_ENV['prefix'];
         //check if the user is already logged in for security reasons
-        if($this->isUserLoggedIn()){
+        if ($this->isUserLoggedIn()) {
             header("Location: {$prefix}/home?alreadyloggedin");
             die();
         }
@@ -87,9 +100,9 @@ class loginController {
         $_SESSION["user_id"] = $user->id;
         $_SESSION["email"] = $user->email;
         $_SESSION["role"] = $user->role;
-        
+
         // Check if the the user chose to be remembered
-        if(isset($_POST['remember_me'])) {
+        if (isset($_POST['remember_me'])) {
             $rememberMeService = new rememberMeService();
             $rememberMeService->rememberMe($user->id);
         }

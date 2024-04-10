@@ -63,5 +63,5 @@ if ($role == 'admin') {
     header("Location: {$prefix}/home");
     exit;
 } else {
-    require_once "src\Views\contactForm.php";
+    require_once "src\Views\ContactPage\contactForm.php";
 }

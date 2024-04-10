@@ -57,7 +57,7 @@ class ChangeAccountInfoController{
         $user = $this->userTable->findById($_SESSION["user_id"]);
         $_SESSION["firstName"] = $user->firstname;
         $_SESSION["lastName"] = $user->lastname;
-        include "src\Views\userProfile.php";
+        include "src\Views\Authentication\userProfile.php";
     }
 }
 

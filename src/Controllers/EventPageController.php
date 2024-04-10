@@ -44,7 +44,7 @@ class EventPageController {
         $_SESSION["event"] = serialize($this->event);
         $_SESSION["currentCategoryEvents"] = serialize($this->currentCategoryEvents);
         
-        require_once "src/Views/eventPage.php";
+        require_once "src/Views/EventPage/eventPage.php";
         die();
     }
 }

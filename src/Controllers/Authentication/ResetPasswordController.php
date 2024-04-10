@@ -54,7 +54,7 @@ class ResetPasswordController {
 
             return $payload["userId"];
         } catch (Exception $e) {
-            require_once "src/Views/invalidToken.php";
+            require_once "src/Views/Authentication/invalidToken.php";
             die();  
         }
 
@@ -74,7 +74,7 @@ class ResetPasswordController {
         $newPasswordConfirm = $this->sanitize($_POST['newPasswordConfirm']);
         
         if($newPassword !== $newPasswordConfirm){
-            require_once "src/Views/passwordMismatch.php";
+            require_once "src/Views/Authentication/passwordMismatch.php";
             die();
         }
 

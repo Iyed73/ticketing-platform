@@ -30,7 +30,7 @@ class SearchController {
         $_SESSION["categories"] = serialize($this->categories);
         $_SESSION["searchedEvents"] = serialize($this->searchedEvents);
         
-        require_once "src/Views/search.php";
+        require_once "src/Views/Search/search.php";
         die();
     }
 }

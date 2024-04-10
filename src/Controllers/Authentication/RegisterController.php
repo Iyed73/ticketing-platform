@@ -157,8 +157,6 @@ class SignupController
         //other error handling can be added here
 
 
-        require_once ("src\Controllers\includes\configSession.inc.php");
-
         if (!empty($errors)) {
             $_SESSION["signup_errors"] = $errors;
 

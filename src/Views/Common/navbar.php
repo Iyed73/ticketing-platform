@@ -1,5 +1,5 @@
 <?php
-require_once 'src\Controllers\notificationController.php';
+require_once 'src\Controllers\NotificationController.php';
 
 if (!isset($_SESSION['currency'])) {
     $_SESSION['currency'] = 'USD';

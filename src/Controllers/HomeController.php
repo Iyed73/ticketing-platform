@@ -57,7 +57,7 @@ class HomeController {
             $rememberMeService->LoginWithToken($_COOKIE['remember_me']);
         }
         
-        require_once "src/Views/home.php";
+        require_once "src/Views/Home/home.php";
         die();
     }
 }

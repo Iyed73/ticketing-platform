@@ -15,7 +15,7 @@ class TicketsPageController {
         $tickets = $this->ticketModel->getAllTickets($userId);
 
 
-        require_once "src/Views/ticketsView.php";
+        require_once "src/Views/Ticket/ticketsView.php";
     }
 }
 

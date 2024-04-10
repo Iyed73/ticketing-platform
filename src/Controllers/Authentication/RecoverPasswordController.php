@@ -14,7 +14,7 @@ class RecoverPasswordController {
             die();
         }
         
-        require_once "src/Views/recoverPassword.php";
+        require_once "src/Views/Authentication/recoverPassword.php";
         die();
     }
 }

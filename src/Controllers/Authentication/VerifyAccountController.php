@@ -39,7 +39,7 @@ class VerifyAccountController {
             $JWT = new JwtService();
             $this->token = $JWT->decode($this->token, $_ENV['SECRET_KEY']);
         } catch (Exception $e) {
-            require_once "src/Views/invalidToken.php";
+            require_once "src/Views/Authentication/invalidToken.php";
             die();  
         }
 
@@ -51,7 +51,7 @@ class VerifyAccountController {
         $this->getData();
 
         if($this->isTokenInvalid()){
-            require_once "src/Views/invalidToken.php";
+            require_once "src/Views/Authentication/invalidToken.php";
             die();
         }
         
@@ -60,7 +60,7 @@ class VerifyAccountController {
             die();
         }
 
-        require_once "src/Views/accountVerified.php";
+        require_once "src/Views/Authentication/accountVerified.php";
         die();
     }
 }
