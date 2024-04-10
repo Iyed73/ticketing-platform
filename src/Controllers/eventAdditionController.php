@@ -41,7 +41,7 @@ class EventAdditionController
     }
 
     public function categoryExists($categoryName){
-        $categoryModel = new CategroyModel();
+        $categoryModel = new CategoryModel();
         return $categoryModel -> categoryExists($categoryName);
     }
 
