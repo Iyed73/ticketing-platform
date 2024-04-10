@@ -200,7 +200,6 @@ class eventUpdateController{
     }
 }
 
-require_once "src/Controllers/includes/configSession.inc.php";
 
 if (!isset($_SESSION["user_id"])) {
     http_response_code(401);
