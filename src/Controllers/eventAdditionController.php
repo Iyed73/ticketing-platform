@@ -15,7 +15,7 @@ class EventAdditionController
         return (empty($name) || empty($venue) || empty($category) || empty($eventDate) || empty($shortDescription) || empty($longDescription) || empty($organizer) || empty($startSellTime) || empty($totalTickets) || empty($availableTickets) || empty($ticketPrice) || empty($targetFile));
     }
 
-    public function isNameTaken($name)
+    public function is_name_taken($name)
     {
         $eventTable = new EventModel();
         $event = $eventTable->findByName($name);
@@ -116,6 +116,13 @@ class EventAdditionController
         finfo_close($finfo);
 
         $is_there_errors =  false;
+
+        if($this -> is_name_taken($name)){
+            $_SESSION['error'] = "Name already taken!";
+            $is_there_errors =  true;
+            header("Location: event_addition?eventAddition=failed");
+            die();
+        }
 
         if ($this->isInputEmpty($name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $totalTickets, $availableTickets, $ticketPrice, $targetFile)) {
             $_SESSION['error'] = "Fields must not be empty!";

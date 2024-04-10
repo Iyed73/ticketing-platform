@@ -50,7 +50,7 @@ class eventUpdateController{
     }
 
     public function categoryExists($categoryName){
-        $categoryModel = new CategroyModel();
+        $categoryModel = new CategoryModel();
         return $categoryModel -> categoryExists($categoryName);
     }
 
@@ -155,6 +155,12 @@ class eventUpdateController{
                 header("Location: event_update?id={$eventID}&eventUpdate=failed");
                 die();
             }
+        }
+
+        if($this -> is_name_taken($name)){
+            $_SESSION['error'] = "Name already taken!";
+            header("Location: event_update?id={$eventID}&eventUpdate=failed");
+            die();
         }
 
         if ($this->is_input_empty($name, $venue, $category, $eventDate, $shortDescription, $longDescription, $organizer, $startSellTime, $totalTickets, $availableTickets, $ticketPrice)){
