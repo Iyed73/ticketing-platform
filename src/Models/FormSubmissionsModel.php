@@ -1,6 +1,6 @@
 <?php
-require_once "src\Models\Repo.php";
-class FormSubmissionsRepo extends Repo
+
+class FormSubmissionsModel extends AbstractModel
 {
     public function __construct()
     {

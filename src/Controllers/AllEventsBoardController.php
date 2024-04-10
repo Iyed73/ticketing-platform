@@ -1,27 +1,25 @@
 <?php
-require_once("src/Models/UserRepo.php");
-require_once("src/Models/EventRepo.php");
 
 class AllEventsBoardController {
-    private UserRepo $userRepo;
-    private EventRepo $eventRepo;
+    private UserModel $UserModel;
+    private EventModel $EventModel;
     public function __construct() {
-        $this->userRepo = new UserRepo();
-        $this->eventRepo = new EventRepo();
+        $this->UserModel = new UserModel();
+        $this->EventModel = new EventModel();
     }
 
 
     public function handleRequest($userID) {
 
-        if (!$this->userRepo->isAdmin($userID)) {
+        if (!$this->UserModel->isAdmin($userID)) {
             http_response_code(401);
             exit();
         }
 
-        $totalPages = $this->eventRepo->totalPagesNum();
+        $totalPages = $this->EventModel->totalPagesNum();
         $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
         $offset = ($currentPage - 1) * 5;
-        $allEvents = $this->eventRepo->findWithOffset($offset, 5);
+        $allEvents = $this->EventModel->findWithOffset($offset, 5);
 
         if($allEvents == null){
             $allEvents = [];

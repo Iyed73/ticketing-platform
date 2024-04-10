@@ -1,8 +1,5 @@
 <?php
-require_once "src\Models\EventRepo.php";
 require_once 'Services\CurrencyConverter.php';
-
-
 
 $prefix = $_ENV['prefix'];
 class EventPageController {
@@ -12,7 +9,7 @@ class EventPageController {
     private $currencyConverter;
 
     public function __construct() {
-        $this->eventTable = new EventRepo();
+        $this->eventTable = new EventModel();
         $this->currencyConverter = new CurrencyConverter();
     }
     
@@ -28,11 +25,17 @@ class EventPageController {
             header("Location: home");
             die();
         }
-        if (isset($_SESSION['currency']) && $_SESSION['currency'] !== 'USD') {
-            $this->event->ticketPrice = $this->currencyConverter->convertPrice($this->event->ticketPrice, $_SESSION['currency']);
-        }
 
         $this->currentCategoryEvents = $this->eventTable->getSimilarEvents($this->event->category, $this->event->id, 7);
+
+
+        if (isset($_SESSION['currency']) && $_SESSION['currency'] !== 'USD') {
+            $this->event->ticketPrice = $this->currencyConverter->convertPrice($this->event->ticketPrice, $_SESSION['currency']);
+            foreach ($this->currentCategoryEvents as $event) {
+                $event->ticketPrice = $this->currencyConverter->convertPrice($event->ticketPrice, $_SESSION['currency']);
+            }
+        }
+
     }
     
     public function handleRequest($prefix){

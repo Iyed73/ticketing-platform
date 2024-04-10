@@ -12,7 +12,7 @@
                     <p class="text-dark fs-6 fw-bold mb-2"> <?= $e->eventDate; ?></p>
                     <p><?= $e->shortDescription; ?></p>
                     <div class="d-flex justify-content-between flex-lg-wrap">
-                        <p class="text-dark fs-5 fw-bold mb-0">$<?= $e->ticketPrice/100; ?></p>
+                        <p class="text-dark fs-5 fw-bold mb-0"><?=  $currencySymbol . $e->ticketPrice/100; ?></p>
                         <?php 
                             $prefix = $_ENV['prefix'];
                         ?>

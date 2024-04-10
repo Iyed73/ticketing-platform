@@ -1,8 +1,6 @@
 <?php
 
-require_once "Repo.php";
-
-class TicketManagementModel extends Repo
+class TicketManagementModel extends AbstractModel
 {
     public function __construct() {
         parent::__construct("ticket");
@@ -80,25 +78,44 @@ class TicketManagementModel extends Repo
         return $tickets;
     }
 
-    public function getTicketInfoById($ticketId) {
-        $query = "SELECT {$this->tableName}.*, events.name AS event_name, events.venue, events.eventDate, 
-              users.firstname AS buyer_firstname, users.lastname AS buyer_lastname
-              FROM {$this->tableName}
-              INNER JOIN events ON {$this->tableName}.event_id = events.id
-              INNER JOIN users ON {$this->tableName}.buyer_id = users.id
-              WHERE {$this->tableName}.ticket_id = :ticket_id";
 
+    public function getNearEvents($userId) {
+        $query = "SELECT E.name as name, E.venue as venue
+            FROM events E
+            INNER JOIN {$this->tableName} T ON E.id = T.event_id
+            WHERE T.buyer_id = :buyer_id 
+            AND E.eventDate BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 1 DAY)
+            AND T.is_notification_sent = 0
+            GROUP BY E.id";
         $response = $this->db->prepare($query);
-        $response->bindParam(':ticket_id', $ticketId, PDO::PARAM_STR);
+        $response->bindParam(':buyer_id', $userId, PDO::PARAM_INT);
         $response->execute();
-        $ticketInfo = $response->fetch(PDO::FETCH_OBJ);
-        return $ticketInfo;
+        return $response->fetchAll(PDO::FETCH_OBJ);
+    }
+    
+
+    public function markTicketsAsNotified($userId) {
+        $query = "UPDATE {$this->tableName} T
+            INNER JOIN events E ON T.event_id = E.id
+            SET T.is_notification_sent = 1
+            WHERE T.buyer_id = :buyer_id
+            AND E.eventDate BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 1 DAY)";
+        $response = $this->db->prepare($query);
+        $response->bindParam(':buyer_id', $userId, PDO::PARAM_INT);
+        return $response->execute();
     }
 
+    public function findTicketsDataWithOffset($offset, $totalPages) {
+        $req = "SELECT t.*, u.firstname AS buyer_first_name, u.lastname AS buyer_last_name,e.id AS event_id, e.name AS event_name, e.venue, e.eventDate
+            FROM {$this->tableName} AS t
+            LEFT JOIN users AS u ON t.buyer_id = u.id
+            LEFT JOIN events AS e ON t.event_id = e.id
+            LIMIT $offset, $totalPages";
 
-
-
-
+        $response = $this->db->query($req);
+        $response->execute();
+        return $response->fetchAll(PDO::FETCH_OBJ);
+    }
 }
 
 

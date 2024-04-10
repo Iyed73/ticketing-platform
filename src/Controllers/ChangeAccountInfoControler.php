@@ -1,5 +1,5 @@
 <?php
-require_once "src\Models\UserRepo.php";
+
 
 class ChangeAccountInfoController{
     private $userTable;
@@ -9,7 +9,7 @@ class ChangeAccountInfoController{
     public function __construct($newFirstName = null, $newLastName= null){
         $this->newFirstName = $newFirstName;
         $this->newLastName = $newLastName;
-        $this->userTable = new UserRepo();
+        $this->userTable = new UserModel();
     }
 
     public function sanitizeInput(){

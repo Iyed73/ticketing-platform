@@ -1,13 +1,11 @@
 <?php
-require_once "src\Models\UserRepo.php";
-require_once "src\Models\TicketManagementModel.php";
 
 class TicketsPageController {
-    private $userRepo;
+    private $UserModel;
     private $ticketModel;
 
     public function __construct() {
-        $this->userRepo = new UserRepo();
+        $this->UserModel = new UserModel();
         $this->ticketModel = new TicketManagementModel();
     }
 

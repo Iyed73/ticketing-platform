@@ -1,7 +1,7 @@
 <?php 
 require_once "Database/dbConnection.php";
 
-abstract class Repo {
+abstract class AbstractModel {
     protected $db;
     public function __construct(protected $tableName) {
         $this->db = dbConnection::getconnection();

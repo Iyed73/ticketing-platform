@@ -8,32 +8,30 @@
             <thead>
             <tr>
                 <th scope="col">#</th>
+                <th scope="col">Holder Name</th>
+                <th scope="col">Buyer Name</th>
                 <th scope="col">Purchase Date</th>
                 <th scope="col">Price</th>
-                <th scope="col">Buyer Firstname</th>
-                <th scope="col">Buyer Lastname</th>
+                <th scope="col">Event Name</th>
+                <th scope="col"> View Event</th>
             </tr>
             </thead>
             <tbody>
             <?php foreach ($allTickets as $ticket): ?>
                 <tr>
                     <td><?php echo $ticket->ticket_id; ?></td>
-                    <?php
-                    $ticketInfo = $ticketModel->getTicketInfoById($ticket->ticket_id);
-                    if ($ticketInfo !== null) {
-                        ?>
-                        <td><?php echo $ticketInfo->buy_date; ?></td>
-                        <td><?php echo $ticketInfo->price; ?></td>
-                        <td><?php echo $ticketInfo->buyer_firstname; ?></td>
-                        <td><?php echo $ticketInfo->buyer_lastname; ?></td>
-
-                        <?php
-                    } else {
-                        ?>
-                        <td colspan="3">Ticket info not found</td>
-                        <?php
-                    }
-                    ?>
+                    <td><?php echo $ticket->first_name . " " . $ticket->last_name ; ?></td>
+                    <td><?php echo $ticket->buyer_first_name . " " . $ticket->buyer_last_name; ?></td>
+                    <td><?php echo $ticket->buy_date; ?></td>
+                    <td><?php echo $currencySymbol . ($ticket->price / 100); ?></td>
+                    <td><?php echo $ticket->event_name; ?></td>
+                    <td>
+                        <div class="btn-group" role="group" aria-label="View Event">
+                            <a href="<?= "{$prefix}/event?id={$ticket->event_id}" ?>" class="btn btn-primary">
+                                <i class="fa fa-eye me-2 text-white"></i>
+                            </a>
+                        </div>
+                    </td>
                 </tr>
             <?php endforeach; ?>
             </tbody>

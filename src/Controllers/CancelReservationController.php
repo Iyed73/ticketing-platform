@@ -1,6 +1,4 @@
 <?php
-require_once "src/Models/EventReservationModel.php";
-
 
 class CancelReservationController {
     private EventReservationModel $eventReservationModel;

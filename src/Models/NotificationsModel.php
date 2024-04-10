@@ -1,6 +1,6 @@
 <?php
-require_once "src\Models\Repo.php";
-class NotificationsRepo extends Repo {
+
+class NotificationsModel extends AbstractModel {
     public function __construct() {
         parent::__construct('notifications');
     }
@@ -41,4 +41,5 @@ class NotificationsRepo extends Repo {
         $response->bindParam(':userId', $userId);
         return $response->execute();
     }
+
 }

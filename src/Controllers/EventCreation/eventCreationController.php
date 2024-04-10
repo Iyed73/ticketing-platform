@@ -1,5 +1,4 @@
 <?php
-require_once("../../Models/EventRepo.php");
 class eventCreationController {
     private $name;
     private $venue;
@@ -74,7 +73,7 @@ class eventCreationController {
 
 
     public function is_name_taken() {
-        $eventTable = new EventRepo();
+        $eventTable = new EventModel();
         $event = $eventTable->findByName($this->name);
         if($event) {
             return true;
@@ -83,7 +82,7 @@ class eventCreationController {
     }
 
     public function addEvent() {
-        $eventTable = new EventRepo();
+        $eventTable = new EventModel();
         
         
         $eventTable->insert([

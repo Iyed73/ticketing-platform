@@ -1,6 +1,4 @@
 <?php
-require_once "src/Models/CategoryRepo.php";
-require_once "src\Models\EventRepo.php";
 
 class SearchController {
     private $eventTable;
@@ -9,8 +7,8 @@ class SearchController {
     private $categories;
 
     public function __construct() {
-        $this->eventTable = new EventRepo();
-        $this->categoryTable = new CategoryRepo();
+        $this->eventTable = new EventModel();
+        $this->categoryTable = new CategoryModel();
     }
     
     private function getData(){

@@ -1,6 +1,4 @@
 <?php 
-require_once "src\Models\UserRepo.php";
-require_once "src\Controllers\includes\configSession.inc.php";
 require_once 'Services\rememberMeService.php';
 
 class loginController {
@@ -11,7 +9,7 @@ class loginController {
     public function __construct($email, $pwd) {
         $this->email = $email;
         $this->pwd = $pwd;
-        $this->userTable = new UserRepo();
+        $this->userTable = new UserModel();
     }
     
     public function sanitizeInput() {

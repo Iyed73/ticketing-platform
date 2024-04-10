@@ -50,7 +50,7 @@ $currencySymbol = match ($_SESSION['currency']) {
                 <?php if ($role === "customer"): ?>
                     <a href="view-tickets" class="nav-item nav-link">Manage Tickets</a>
                 <?php elseif ($role === "admin"): ?>
-                    <a href="#" class="nav-item nav-link">Dashboard</a>
+                    <a href="dashboard" class="nav-item nav-link">Dashboard</a>
                     <a href="<?= "{$prefix}/customerSupport" ?>" class="nav-item nav-link">Customer Support</a>
                 <?php endif; ?>
                 <form id="currencyForm" method="post" action="set_currency" class="me-3 d-inline-block">
@@ -80,7 +80,9 @@ $currencySymbol = match ($_SESSION['currency']) {
                 </div>
                 <?php if ($role === "customer"):            ?>
                     <?php $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);?>
-                    <?php $notificationController = new notificationController(); ?>
+                    <?php $notificationController = new notificationController();
+                          $notificationController->addNearEventNotification($user_id);
+                    ?>
                     <div class="notification">
                         <a href="#">
                             <div class="notBtn" href="#">

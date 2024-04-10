@@ -1,7 +1,4 @@
 <?php
-require_once "src\Models\UserRepo.php";
-require_once "src\Models\EventRepo.php";
-require_once "src\Models\CategoryRepo.php";
 require_once 'Services\rememberMeService.php';
 require_once 'Services\CurrencyConverter.php';
 
@@ -17,9 +14,9 @@ class HomeController {
 
 
     public function __construct() {
-        $this->eventTable = new EventRepo();
-        $this->categoryTable = new CategoryRepo();
-        $this->userTable = new UserRepo();
+        $this->eventTable = new EventModel();
+        $this->categoryTable = new CategoryModel();
+        $this->userTable = new UserModel();
         $this->currencyConverter = new CurrencyConverter();
     }
     

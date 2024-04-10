@@ -1,20 +1,22 @@
 <?php
 
-require_once("src/Models/UserRepo.php");
-require_once("src/Models/TicketManagementModel.php");
+require_once 'Services\CurrencyConverter.php';
+
 
 class AllTicketPurchasesController {
     private TicketManagementModel $ticketManagementModel;
+    private CurrencyConverter $currencyConverter;
     public function __construct() {
         $this->ticketManagementModel = new TicketManagementModel();
+        $this->currencyConverter = new CurrencyConverter();
     }
 
 
     public function handleRequest($userID) {
 
-        $userRepo = new UserRepo();
+        $UserModel = new UserModel();
 
-        if (!$userRepo->isAdmin($userID)) {
+        if (!$UserModel->isAdmin($userID)) {
             http_response_code(401);
             exit();
         }
@@ -23,7 +25,14 @@ class AllTicketPurchasesController {
         $totalPages = $this->ticketManagementModel->totalPagesNum();
         $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
         $offset = ($currentPage - 1) * 5;
-        $allTickets = $this->ticketManagementModel->findWithOffset($offset, 5);
+
+        $allTickets = $this->ticketManagementModel->findTicketsDataWithOffset($offset, 5);
+
+        if (isset($_SESSION['currency']) && $_SESSION['currency'] !== 'USD') {
+            foreach ($allTickets as $ticket) {
+                $ticket->price = $this->currencyConverter->convertPrice($ticket->price, $_SESSION['currency']);
+            }
+        }
 
         if($allTickets == null){
             $allTickets = [];

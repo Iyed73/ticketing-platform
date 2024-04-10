@@ -1,5 +1,5 @@
 <?php 
-require_once "src/Models/UserRepo.php";
+
 class ChangePasswordController
 {
     private $userTable;
@@ -12,7 +12,7 @@ class ChangePasswordController
         $this->oldpassword = $oldpassword;
         $this->newpassword = $newpassword;
         $this->confirmpassword = $confirmpassword;
-        $this->userTable = new UserRepo();
+        $this->userTable = new UserModel();
     }
 
     public function sanitizeInput()

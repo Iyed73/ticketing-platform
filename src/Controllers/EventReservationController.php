@@ -1,19 +1,15 @@
 <?php
-require_once("src/Models/EventReservationModel.php");
-require_once("src/Models/EventRepo.php");
-require_once("src/Models/UserRepo.php");
-
 
 class EventReservationController {
     private EventReservationModel $eventReservationModel;
-    private EventRepo $eventModel;
-    private UserRepo $userModel;
+    private EventModel $eventModel;
+    private UserModel $userModel;
 
 
     public function __construct() {
         $this->eventReservationModel = new EventReservationModel();
-        $this->eventModel = new EventRepo();
-        $this->userModel = new UserRepo();
+        $this->eventModel = new EventModel();
+        $this->userModel = new UserModel();
     }
 
     public function handleReservationRequest() {

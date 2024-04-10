@@ -1,5 +1,4 @@
 <?php
-require_once "src\Models\UserRepo.php";
 require_once "Services\MailingService.php";
 require_once "Services\StatelessTokenService.php";
 $MAIL_RATE_LIMIT = 60*30; // 30 minutes
@@ -17,7 +16,7 @@ class ForgotPasswordController {
     private $recoveryLink;
 
     public function __construct() {
-        $this->userTable = new UserRepo();
+        $this->userTable = new UserModel();
     }
     
     private function sanitizeInput()
