@@ -1,5 +1,6 @@
 <?php
 $prefix = $_ENV['prefix'];
+$role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
 
 class DeleteSubmissionController {
     public function __construct() {
@@ -36,6 +37,11 @@ class DeleteSubmissionController {
     }
 }
 
-
-$deleteController = new DeleteSubmissionController();
-$deleteController->handleDeletion($prefix);
+if($role != 'admin') {
+    header("Location: {$prefix}/home");
+    exit;
+}
+else{
+    $deleteController = new DeleteSubmissionController();
+    $deleteController->handleDeletion($prefix);
+}
