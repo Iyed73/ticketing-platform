@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   deleteAllSelectedButton.addEventListener("click", function () {
     const selectedCheckboxes = document.querySelectorAll(
-      ".custom-checkbox:checked"
+      ".custom-checkbox:checked:not(#selectAll)"
     );
     const selectedSubmissionIds = Array.from(selectedCheckboxes).map(function (
       checkbox
